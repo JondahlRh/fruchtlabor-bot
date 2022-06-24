@@ -41,14 +41,13 @@ TeamSpeak.connect({
         case supportAppl.cid:
           clientList.forEach((clientRAW) => {
             const client = transform(clientRAW);
-            console.log(client.clientNickname);
             if (
-              // !client.clientServergroups.includes("85") || // Admin
-              // !client.clientServergroups.includes("77") || // Head-Mod
-              // !client.clientServergroups.includes("10") || // Mod
-              // !client.clientServergroups.includes("96") || // Trial-Mod
-              // !client.clientServergroups.includes("260") || // Supp-Benachrichtigung
-              !client.clientServergroups.includes("2552") // GamixTestGruppe
+              // !client.clientServergroups.includes("85") && // Admin
+              // !client.clientServergroups.includes("77") && // Head-Mod
+              // !client.clientServergroups.includes("10") && // Mod
+              // !client.clientServergroups.includes("96") && // Trial-Mod
+              // !client.clientServergroups.includes("260") && // Supp-Benachrichtigung
+              client.clientUniqueIdentifier !== "jNstJ3PaKEIgHx4N+leTOxVniqM=" // Gamix
             ) {
               return;
             } // groups that should get a message
@@ -64,8 +63,8 @@ TeamSpeak.connect({
           clientList.forEach((clientRAW) => {
             const client = transform(clientRAW);
             if (
-              !client.clientServergroups.includes("328") || // IT-Berater
-              !client.clientServergroups.includes("2552") // GamixTestGruppe
+              !client.clientServergroups.includes("328") && // IT-Berater
+              client.clientUniqueIdentifier !== "jNstJ3PaKEIgHx4N+leTOxVniqM=" // Gamix
             ) {
               return;
             } // groups that should get a message
@@ -81,10 +80,10 @@ TeamSpeak.connect({
           clientList.forEach((clientRAW) => {
             const client = transform(clientRAW);
             if (
-              !client.clientServergroups.includes("95") || // Head-Coach
-              !client.clientServergroups.includes("73") || // Coach
-              !client.clientServergroups.includes("230") || // Trial-Coach
-              !client.clientServergroups.includes("2552") // GamixTestGruppe
+              !client.clientServergroups.includes("95") && // Head-Coach
+              !client.clientServergroups.includes("73") && // Coach
+              !client.clientServergroups.includes("230") && // Trial-Coach
+              client.clientUniqueIdentifier !== "jNstJ3PaKEIgHx4N+leTOxVniqM=" // Gamix
             ) {
               return;
             } // groups that should get a message
@@ -100,9 +99,9 @@ TeamSpeak.connect({
           clientList.forEach((clientRAW) => {
             const client = transform(clientRAW);
             if (
-              !client.clientServergroups.includes("2484") || // Kummerkasten
-              !client.clientServergroups.includes("2485") || // Kummerkasen-Icon
-              !client.clientServergroups.includes("2552") // GamixTestGruppe
+              !client.clientServergroups.includes("2484") && // Kummerkasten
+              !client.clientServergroups.includes("2485") && // Kummerkasen-Icon
+              client.clientUniqueIdentifier !== "jNstJ3PaKEIgHx4N+leTOxVniqM=" // Gamix
             ) {
               return;
             } // groups that should get a message
