@@ -15,6 +15,9 @@ TeamSpeak.connect({
     // Code below
     // #
 
+    const self = await teamspeak.getClientByUid("Su5GYQbW1FfV4uXEaUxR7s8aeOg=");
+    teamspeak.clientMove(self, await teamspeak.getChannelById("19"));
+
     const transform = (data) => {
       return JSON.parse(JSON.stringify(data));
     };
