@@ -184,6 +184,7 @@ TeamSpeak.connect({
 
     const clientMovedHandler = async (eventRAW) => {
       const event = transform(eventRAW);
+      if (event.client.clientType === 1) return; // return if server query user
 
       const clientList = await teamspeak.clientList({ clientType: 0 });
 
