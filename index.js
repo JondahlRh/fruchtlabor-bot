@@ -38,7 +38,6 @@ const support = [
   { name: "Head-Mod", id: "77" },
   { name: "Mod", id: "10" },
   { name: "Trial-Mod", id: "96" },
-  { name: "Supporter", id: "260" },
 ];
 
 const msgClients = [];
@@ -126,23 +125,19 @@ ${groupDescription}
   });
 };
 
-const sendSupportMessage = (clientList, event, group) => {
-  msgClients.length = 0;
+const sendSupportMessage = (clientList, group) => {
   clientList.forEach((clientRAW) => {
     const client = transform(clientRAW);
 
     if (!client.clientServergroups.includes(group)) return;
     if (client.clientServergroups.includes("59")) return;
-    if (client.clientChannelGroupInheritedChannelId.includes("13")) return;
-
+    if (
+      client.clientChannelGroupInheritedChannelId.includes("13") ||
+      client.clientChannelGroupInheritedChannelId.includes("8")
+    ) {
+      return;
+    }
     msgClients.push(clientRAW);
-  });
-
-  msgClients.forEach((clientRAW) => {
-    const msgClicker = `[URL=client://${event.client.cid}/${event.client.clientUniqueIdentifier}]${event.client.clientNickname}[/URL]`;
-    clientRAW.message(
-      `Der User ${msgClicker} wartet in "${event.channel.channelName}"! (Es wurden ${msgClients.length} Supporter kontaktiert)`
-    );
   });
 };
 
@@ -188,27 +183,60 @@ TeamSpeak.connect({
 
       const clientList = await teamspeak.clientList({ clientType: 0 });
 
+      msgClients.length = 0;
+      let talk = false;
+
       switch (event.client.cid) {
         case supportAllg.cid:
-          sendSupportMessage(clientList, event, "2554");
-          break;
         case supportVeri.cid:
-          sendSupportMessage(clientList, event, "2555");
+          if (
+            event.client.clientServergroups.includes("318") ||
+            event.client.clientServergroups.includes("2480")
+          ) {
+            sendSupportMessage(clientList, "2559");
+            talk = true;
+          } else {
+            sendSupportMessage(clientList, "2554");
+            sendSupportMessage(clientList, "2559");
+          }
           break;
         case supportBewe.cid:
-          sendSupportMessage(clientList, event, "2556");
+          sendSupportMessage(clientList, "2556");
+          sendSupportMessage(clientList, "2559");
           break;
         case supportCoach.cid:
-          sendSupportMessage(clientList, event, "2558");
+          sendSupportMessage(clientList, "2558");
           break;
         case supportKummer.cid:
-          sendSupportMessage(clientList, event, "2484");
-          sendSupportMessage(clientList, event, "2485");
+          sendSupportMessage(clientList, "2484");
+          sendSupportMessage(clientList, "2485");
           break;
 
         default:
           break;
       }
+
+      msgClients.forEach((clientRAW) => {
+        const msgClicker = `[URL=client://${event.client.cid}/${event.client.clientUniqueIdentifier}]${event.client.clientNickname}[/URL]`;
+
+        let clientMessageSupp = "";
+        if (msgClients.length === 1) {
+          clientMessageSupp = `(Es wurde kein weiterer Supporter kontaktiert)`;
+        } else if (msgClients.length === 2) {
+          clientMessageSupp = `(Es wurde ein weiterer Supporter kontaktiert)`;
+        } else {
+          clientMessageSupp = `(Es wurden ${msgClients.length - 1} weitere Supporter kontaktiert)`;
+        }
+
+        let clientMessage = "";
+        if (talk) {
+          clientMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${msgClicker} meldet sich in dem Channel "${event.channel.channelName}" ${clientMessageSupp}`;
+        } else {
+          clientMessage = `Der User ${msgClicker} wartet in dem Channel "${event.channel.channelName}" ${clientMessageSupp}`;
+        }
+
+        clientRAW.message(clientMessage);
+      });
     };
 
     teamspeak.on("clientconnect", clientConnectHandler);
