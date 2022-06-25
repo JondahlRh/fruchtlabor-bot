@@ -121,8 +121,6 @@ ${groupDescription}
 
   if (description === oldDescripion) return;
 
-  (await teamspeak.getClientByUid("jNstJ3PaKEIgHx4N+leTOxVniqM=")).message("Someonehing Happend");
-
   teamspeak.channelEdit(channel, {
     channelDescription: description,
   });
