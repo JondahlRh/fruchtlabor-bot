@@ -186,6 +186,8 @@ TeamSpeak.connect({
       msgClients.length = 0;
       let talk = false;
 
+      const gamix = await teamspeak.getClientByUid("jNstJ3PaKEIgHx4N+leTOxVniqM=");
+
       switch (event.client.cid) {
         case supportAllg.cid:
         case supportVeri.cid:
@@ -195,21 +197,28 @@ TeamSpeak.connect({
           ) {
             sendSupportMessage(clientList, "2559");
             talk = true;
+            gamix.message(
+              "[color=#FF0000][b]Support Gespräch: [/b][/color] Allgemein/Verifizierung"
+            );
           } else {
             sendSupportMessage(clientList, "2554");
             sendSupportMessage(clientList, "2559");
+            gamix.message("Allgemein/Verifizierung");
           }
           break;
         case supportBewe.cid:
           sendSupportMessage(clientList, "2556");
           sendSupportMessage(clientList, "2559");
+          gamix.message("Bewerbung");
           break;
         case supportCoach.cid:
           sendSupportMessage(clientList, "2558");
+          gamix.message("Coaching");
           break;
         case supportKummer.cid:
           sendSupportMessage(clientList, "2484");
           sendSupportMessage(clientList, "2485");
+          gamix.message("Kummerkasten");
           break;
 
         default:
