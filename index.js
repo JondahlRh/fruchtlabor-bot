@@ -30,8 +30,8 @@ const teammitglieder = [
 ];
 const staff = [
   { name: "Berater", id: "231" },
-  { name: "Skin-Berater", id: "328" },
-  { name: "IT-Berater", id: "320" },
+  { name: "IT-Berater", id: "328" },
+  { name: "Skin-Berater", id: "320" },
   { name: "Kummerkasten", id: "2484" },
 ];
 const support = [
@@ -82,7 +82,13 @@ const changeDescription = async (teamspeak, title, groupData, channel) => {
 
     if (clientData.clientChannelGroupInheritedChannelId === "13") return "AFK";
     if (clientData.clientServergroups.includes("59")) return "No Support";
-    if (clientData.clientIdleTime > 900000) return "abwesend";
+    if (
+      clientData.clientIdleTime > 900000 &&
+      !clientData.clientChannelGroupInheritedChannelId === "12" &&
+      !clientData.clientChannelGroupInheritedChannelId === "78098"
+    ) {
+      return "abwesend";
+    }
     return "[color=#00ff00]online[/color]";
   };
 
