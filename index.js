@@ -90,6 +90,11 @@ const changeDescription = async (teamspeak, title, groupData, channel) => {
     const servergroup = await teamspeak.serverGroupClientList(group.id);
     let groupDescription = "";
 
+    if (servergroup.length === 0 && group.extra === undefined) {
+      console.log(servergroup, servergroup.length, group.extra);
+      groupDescription = `\n[tr][td][center] - [/center][/td][td][center] none [/td][/tr]`;
+    }
+
     for (const client of servergroup) {
       const status = await checkOnline(client);
       groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${client.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
