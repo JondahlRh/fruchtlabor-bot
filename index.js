@@ -72,30 +72,33 @@ const changeDescription = async (teamspeak, title, groupData, channel) => {
 
 [/table][table]`;
 
-  const checkOnline = (client) => {
-    return clientList.some(
-      (clientOnline) => clientOnline.clientUniqueIdentifier === client.clientUniqueIdentifier
+  const checkOnline = async (client) => {
+    const isOnline = clientList.some(
+      (clientOn) => clientOn.clientUniqueIdentifier === client.clientUniqueIdentifier
     );
+    if (!isOnline) return "[color=#FF0000]offline[/color]";
+
+    const clientData = transform(await teamspeak.getClientByUid(client.clientUniqueIdentifier));
+
+    if (clientData.clientChannelGroupInheritedChannelId === "13") return "AFK";
+    if (clientData.clientServergroups.includes("59")) return "No Support";
+    if (clientData.clientIdleTime > 900000) return "abwesend";
+    return "[color=#00ff00]online[/color]";
   };
 
   for (const group of groupData) {
     const servergroup = await teamspeak.serverGroupClientList(group.id);
     let groupDescription = "";
-    servergroup.forEach((client) => {
-      groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${
-        client.clientNickname
-      } [/URL][/td][td][center]${
-        checkOnline(client) ? "[color=#00FF00]online[/color]" : "[color=#FF0000]offline[/color]"
-      }[/td][/tr]`;
-    });
+
+    for (const client of servergroup) {
+      const status = await checkOnline(client);
+      groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${client.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
+    }
 
     if (group.extra !== undefined) {
       for (const client of group.extra) {
-        groupDescription += `\n[tr][td][URL=client:///${client.id}]${
-          client.name
-        } [/URL][/td][td][center]${
-          checkOnline(client) ? "[color=#00FF00]online[/color]" : "[color=#FF0000]offline[/color]"
-        }[/td][/tr]`;
+        const status = await checkOnline(client);
+        groupDescription += `\n[tr][td][URL=client:///${client.id}]${client.name} [/URL][/td][td][center]${status}[/td][/tr]`;
       }
     }
 
@@ -252,8 +255,6 @@ TeamSpeak.connect({
     teamspeak.on("clientdisconnect", clientConnectHandler);
     teamspeak.on("clientmoved", clientMovedHandler);
     teamspeak.on("clientconnect", clientMovedHandler);
-
-    clientConnectHandler();
 
     // #
     // Code above
