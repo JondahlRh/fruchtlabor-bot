@@ -85,11 +85,30 @@ TeamSpeak.connect({
           await teamspeak.getClientByUid(groupClient.clientUniqueIdentifier)
         );
 
-        if (["13"].includes(client.clientChannelGroupInheritedChannelId)) return "AFK";
-        if (["59"].some((group) => client.clientServergroups.includes(group))) return "No Support";
+        const clientChannel = client.clientChannelGroupInheritedChannelId;
+        const clientChannelObject = transformData(await teamspeak.getChannelById(clientChannel));
+        const clientGroups = client.clientServergroups;
+
+        if (["13"].includes(clientChannel)) return "AFK";
+        if (["8"].includes(clientChannel)) return "Besprechung";
+        if (["20", "3805", "19054", "19055", "22", "68829"].includes(clientChannel)) {
+          return "Support";
+        }
+        if (
+          [
+            "Wettkampf | Clanintern",
+            "Wettkampf | Öffentlich",
+            "Wingman",
+            "FaceIt | Clanintern",
+            "FaceIt  Öffentlich",
+          ].some((channel) => clientChannelObject.channelName.includes(channel))
+        )
+          return "ingame";
+
+        if (["59"].some((group) => clientGroups.includes(group))) return "No Support";
         if (
           client.clientIdleTime > 900000 &&
-          !["12", "78098"].some((group) => client.clientChannelGroupInheritedChannelId === group)
+          !["12", "78098"].some((group) => clientChannel === group)
         ) {
           return "abwesend";
         }
@@ -127,7 +146,7 @@ TeamSpeak.connect({
         // add group to description
         description += `[tr]
 [th][size=12] ${group.name} [/size][/th]
-[td][size=12] Status [/size][/td]
+[td][center][size=12] Status [/size][/td]
 [/tr]
 [tr]
 [td][hr][/td]
