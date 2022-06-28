@@ -1,55 +1,56 @@
 const CREDS = require("./.creds");
+const groupData = require("./groupData");
 const { TeamSpeak } = require("ts3-nodejs-library");
 
-const leitende_teammitglieder = [
-  { name: "Admin", id: "85" },
-  { name: "Supervisor", id: "2487" },
-  { name: "Head-Developer", id: "81" },
-  { name: "Head-Mod", id: "77" },
-  { name: "Head-Designer", id: "2537" },
-  { name: "Head-Coach", id: "95" },
-];
-const teammitglieder = [
-  { name: "Developer", id: "326" },
-  { name: "Servertechniker", id: "354" },
-  { name: "Mod", id: "10" },
-  { name: "Inspektor", id: "321" },
-  { name: "Recruiter", id: "319" },
-  { name: "Teambetreuer", id: "334" },
-  { name: "Redakteur", id: "307" },
-  { name: "Social-Media", id: "308" },
-  { name: "Designer", id: "78" },
-  { name: "Cutter", id: "2501" },
-  { name: "Event", id: "94" },
-  { name: "Caster", id: "82" },
-  { name: "Coach", id: "73" },
-  { name: "Trial-Developer", id: "2538" },
-  { name: "Trial-Mod", id: "96" },
-  { name: "Trial-Recruiter", id: "2539" },
-  { name: "Trial-Coach", id: "230" },
-];
-const staff = [
-  { name: "Berater", id: "231" },
-  { name: "IT-Berater", id: "328" },
-  { name: "Skin-Berater", id: "320" },
-  { name: "Kummerkasten", id: "2484" },
-];
-const support = [
-  { name: "Head-Mod", id: "77" },
-  { name: "Mod", id: "10" },
-  { name: "Trial-Mod", id: "96" },
-];
-
-const msgClients = [];
-
-const transform = (data) => {
+const transformData = (data) => {
   return JSON.parse(JSON.stringify(data));
 };
 
-const changeDescription = async (teamspeak, title, groupData, channel) => {
-  const clientList = transform(await teamspeak.clientList({ clientType: 0 }));
+TeamSpeak.connect({
+  host: CREDS.SERVER_IP,
+  serverport: CREDS.SERVER_PORT,
+  username: CREDS.QUERY_USERNAME,
+  password: CREDS.QUERY_PASSWORD,
+  nickname: "Fruchtlabor Bot",
+})
+  .then(async (teamspeak) => {
+    console.log("connected");
 
-  let description = `[center][table]
+    // get the bot client and move it to the support spacer
+    const self = await teamspeak.getClientByUid("Su5GYQbW1FfV4uXEaUxR7s8aeOg=");
+    teamspeak.clientMove(self, await teamspeak.getChannelById("19"));
+
+    // #
+    // code below
+    // #
+
+    // timeout for the change description function
+    let executeChangeDescription = true;
+    const timeoutChangeDescription = () => {
+      setTimeout(() => {
+        executeChangeDescription = true;
+      }, 20000);
+      executeChangeDescription = false;
+    };
+
+    // extra users/groups for group data
+    const groupDataExtra = async () => {
+      groupData["Staff"][3].extra = [];
+      for (const client of await teamspeak.serverGroupClientList("2485")) {
+        groupData["Staff"][3].extra.push({
+          clientNickname: client.clientNickname,
+          clientUniqueIdentifier: client.clientUniqueIdentifier,
+        });
+      }
+    };
+
+    // change description function
+    const changeDescription = async (title, channel) => {
+      // get online clients array
+      const clientList = transformData(await teamspeak.clientList({ clientType: 0 }));
+
+      // description title
+      let description = `[center][table]
 
 [tr]
 [td][hr][/td]
@@ -72,48 +73,59 @@ const changeDescription = async (teamspeak, title, groupData, channel) => {
 
 [/table][table]`;
 
-  const checkOnline = async (client) => {
-    const isOnline = clientList.some(
-      (clientOn) => clientOn.clientUniqueIdentifier === client.clientUniqueIdentifier
-    );
-    if (!isOnline) return "[color=#FF0000]offline[/color]";
+      // function to check the status of the client
+      const checkStatus = async (groupClient) => {
+        const isOnline = clientList.some(
+          (client) => client.clientUniqueIdentifier === groupClient.clientUniqueIdentifier
+        );
 
-    const clientData = transform(await teamspeak.getClientByUid(client.clientUniqueIdentifier));
+        if (!isOnline) return "[color=#FF0000]offline[/color]";
 
-    if (clientData.clientChannelGroupInheritedChannelId === "13") return "AFK";
-    if (clientData.clientServergroups.includes("59")) return "No Support";
-    if (
-      clientData.clientIdleTime > 900000 &&
-      !clientData.clientChannelGroupInheritedChannelId === "12" &&
-      !clientData.clientChannelGroupInheritedChannelId === "78098"
-    ) {
-      return "abwesend";
-    }
-    return "[color=#00ff00]online[/color]";
-  };
+        const client = transformData(
+          await teamspeak.getClientByUid(groupClient.clientUniqueIdentifier)
+        );
 
-  for (const group of groupData) {
-    const servergroup = await teamspeak.serverGroupClientList(group.id);
-    let groupDescription = "";
+        if (["13"].includes(client.clientChannelGroupInheritedChannelId)) return "AFK";
+        if (["59"].some((group) => client.clientServergroups.includes(group))) return "No Support";
+        if (
+          client.clientIdleTime > 900000 &&
+          !["12", "78098"].some((group) => client.clientChannelGroupInheritedChannelId === group)
+        ) {
+          return "abwesend";
+        }
 
-    if (servergroup.length === 0 && group.extra === undefined) {
-      console.log(servergroup, servergroup.length, group.extra);
-      groupDescription = `\n[tr][td][center] - [/center][/td][td][center] none [/td][/tr]`;
-    }
+        return "[color=#00ff00]online[/color]";
+      };
 
-    for (const client of servergroup) {
-      const status = await checkOnline(client);
-      groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${client.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
-    }
+      // loop all groups in groupData
+      for (const group of groupData[title]) {
+        // get server group clients
+        const serverGroup = await teamspeak.serverGroupClientList(group.id);
 
-    if (group.extra !== undefined) {
-      for (const client of group.extra) {
-        const status = await checkOnline(client);
-        groupDescription += `\n[tr][td][URL=client:///${client.id}]${client.name} [/URL][/td][td][center]${status}[/td][/tr]`;
-      }
-    }
+        // initalize variable
+        let groupDescription = "";
 
-    description += `[tr]
+        // add specific text if no clients in server group (or extra group)
+        if (serverGroup.length === 0 && group.extra === undefined) {
+          groupDescription = `\n[tr][td][center] - [/center][/td][td][center] none [/td][/tr]`;
+        }
+
+        // add specific text for all clients in servergroup (+ add status)
+        for (const client of serverGroup) {
+          const status = await checkStatus(client);
+          groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${client.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
+        }
+
+        // add specific text for all extra users (+ add status)
+        if (group.extra !== undefined) {
+          for (const client of group.extra) {
+            const status = await checkStatus(client);
+            groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${client.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
+          }
+        }
+
+        // add group to description
+        description += `[tr]
 [th][size=12] ${group.name} [/size][/th]
 [td][size=12] Status [/size][/td]
 [/tr]
@@ -124,154 +136,178 @@ const changeDescription = async (teamspeak, title, groupData, channel) => {
 ${groupDescription}
 
 [tr][/tr]`;
-  }
+      }
 
-  description += `[/table]`;
+      // description end
+      description += `[/table]`;
 
-  const getChannel = await teamspeak.getChannelById(channel);
-  const getChannelInfo = await getChannel.getInfo();
-  const oldDescripion = getChannelInfo.channelDescription;
+      // get current description und check if something changed
+      const getChannel = await teamspeak.getChannelById(channel);
+      const getChannelInfo = await getChannel.getInfo();
+      const oldDescripion = getChannelInfo.channelDescription;
+      if (description === oldDescripion) return;
 
-  if (description === oldDescripion) return;
-
-  teamspeak.channelEdit(channel, {
-    channelDescription: description,
-  });
-};
-
-const sendSupportMessage = (clientList, group) => {
-  clientList.forEach((clientRAW) => {
-    const client = transform(clientRAW);
-
-    if (!client.clientServergroups.includes(group)) return;
-    if (client.clientServergroups.includes("59")) return;
-    if (
-      client.clientChannelGroupInheritedChannelId.includes("13") ||
-      client.clientChannelGroupInheritedChannelId.includes("8")
-    ) {
-      return;
-    }
-    msgClients.push(clientRAW);
-  });
-};
-
-TeamSpeak.connect({
-  host: CREDS.SERVER_IP,
-  serverport: CREDS.SERVER_PORT,
-  username: CREDS.QUERY_USERNAME,
-  password: CREDS.QUERY_PASSWORD,
-  nickname: "Fruchtlabor Bot",
-})
-  .then(async (teamspeak) => {
-    console.log("connected");
-
-    // #
-    // Code below
-    // #
-
-    const self = await teamspeak.getClientByUid("Su5GYQbW1FfV4uXEaUxR7s8aeOg=");
-    teamspeak.clientMove(self, await teamspeak.getChannelById("19"));
-
-    const clientConnectHandler = async () => {
-      staff[3].extra = [];
-      (await teamspeak.serverGroupClientList("2485")).forEach((client) => {
-        staff[3].extra.push({ name: client.clientNickname, id: client.clientUniqueIdentifier });
+      // change channel description
+      teamspeak.channelEdit(channel, {
+        channelDescription: description,
       });
-
-      changeDescription(teamspeak, "Leitende Teammitglieder", leitende_teammitglieder, "4");
-      changeDescription(teamspeak, "Teammitglieder", teammitglieder, "12");
-      changeDescription(teamspeak, "Staff", staff, "78098");
-      changeDescription(teamspeak, "Supporter", support, "19");
     };
 
-    // support channel objects
-    const supportAllg = transform(await teamspeak.getChannelById("24"));
-    const supportVeri = transform(await teamspeak.getChannelById("25"));
-    const supportBewe = transform(await teamspeak.getChannelById("27"));
-    const supportCoach = transform(await teamspeak.getChannelById("61154"));
-    const supportKummer = transform(await teamspeak.getChannelById("68837"));
+    // send support message function
+    const sendSupportMessage = async (event) => {
+      // if (event.client.clientType === 1) return; // return if server query user
 
-    const clientMovedHandler = async (eventRAW) => {
-      const event = transform(eventRAW);
-      if (event.client.clientType === 1) return; // return if server query user
+      // get support channel objects
+      const supportAllg = transformData(await teamspeak.getChannelById("24"));
+      const supportVeri = transformData(await teamspeak.getChannelById("25"));
+      const supportBewe = transformData(await teamspeak.getChannelById("27"));
+      const supportCoach = transformData(await teamspeak.getChannelById("61154"));
+      const supportKummer = transformData(await teamspeak.getChannelById("68837"));
 
+      // get online clients array
       const clientList = await teamspeak.clientList({ clientType: 0 });
 
-      msgClients.length = 0;
+      // initalize variables/ arrays
+      const msgClientList = [];
+      const msgGroupList = [];
       let talk = false;
 
-      const gamix = await teamspeak.getClientByUid("jNstJ3PaKEIgHx4N+leTOxVniqM=");
+      // get event client groups
+      const eventClientGroups = event.client.clientServergroups;
 
+      // check for event client channel ID and add specific group IDs to array
       switch (event.client.cid) {
         case supportAllg.cid:
-        case supportVeri.cid:
-          if (
-            event.client.clientServergroups.includes("318") ||
-            event.client.clientServergroups.includes("2480")
-          ) {
-            sendSupportMessage(clientList, "2559");
+          if (eventClientGroups.some((group) => ["318", "2480"].includes(group))) {
+            msgGroupList.push("2559");
             talk = true;
-            gamix.message(
-              "[color=#FF0000][b]Support Gespräch: [/b][/color] Allgemein/Verifizierung"
-            );
           } else {
-            sendSupportMessage(clientList, "2554");
-            sendSupportMessage(clientList, "2559");
-            gamix.message("Allgemein/Verifizierung");
+            msgGroupList.push("2554", "2559");
           }
           break;
+        case supportVeri.cid:
+          msgGroupList.push("2554", "2559");
+          break;
         case supportBewe.cid:
-          sendSupportMessage(clientList, "2556");
-          sendSupportMessage(clientList, "2559");
-          gamix.message("Bewerbung");
+          msgGroupList.push("2556", "2559");
           break;
         case supportCoach.cid:
-          sendSupportMessage(clientList, "2558");
-          gamix.message("Coaching");
+          msgGroupList.push("2558");
           break;
         case supportKummer.cid:
-          sendSupportMessage(clientList, "2484");
-          sendSupportMessage(clientList, "2485");
-          gamix.message("Kummerkasten");
+          msgGroupList.push("2484", "2485");
           break;
-
         default:
           break;
       }
 
-      msgClients.forEach((clientRAW) => {
-        const msgClicker = `[URL=client://${event.client.cid}/${event.client.clientUniqueIdentifier}]${event.client.clientNickname}[/URL]`;
+      // check if any group should be notified
+      if (msgGroupList.length === 0) return;
 
-        let clientMessageSupp = "";
-        if (msgClients.length === 1) {
-          clientMessageSupp = `(Es wurde kein weiterer Supporter kontaktiert)`;
-        } else if (msgClients.length === 2) {
-          clientMessageSupp = `(Es wurde ein weiterer Supporter kontaktiert)`;
-        } else {
-          clientMessageSupp = `(Es wurden ${msgClients.length - 1} weitere Supporter kontaktiert)`;
-        }
+      // loop online clients array
+      for (const clientRAW of clientList) {
+        const client = transformData(clientRAW);
 
-        let clientMessage = "";
-        if (talk) {
-          clientMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${msgClicker} meldet sich in dem Channel "${event.channel.channelName}" ${clientMessageSupp}`;
-        } else {
-          clientMessage = `Der User ${msgClicker} wartet in dem Channel "${event.channel.channelName}" ${clientMessageSupp}`;
-        }
+        // format the client variables
+        const clientGroups = client.clientServergroups;
+        const clientChannel = client.clientChannelGroupInheritedChannelId;
 
-        clientRAW.message(clientMessage);
-      });
+        // filter specific clients with groups or in channel
+        if (!clientGroups.some((group) => msgGroupList.includes(group))) continue;
+        if (clientGroups.some((group) => ["59"].includes(group))) continue;
+        if (["8", "13"].includes(clientChannel)) continue;
+
+        // add clients to array
+        msgClientList.push(clientRAW);
+      }
+
+      // format the event user name wih link
+      const eventClientClicker = `[URL=client:///${event.client.clientUniqueIdentifier}]${event.client.clientNickname}[/URL]`;
+
+      // initalize support message variable
+      let supportMessage = "";
+
+      // check for special support
+      if (talk) {
+        supportMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${eventClientClicker} meldet sich in dem Channel "${event.channel.channelName}"`;
+      } else {
+        supportMessage = `Der User ${eventClientClicker} wartet in dem Channel "${event.channel.channelName}"`;
+      }
+
+      // add count of other support contacted
+      if (msgClientList.length === 1) {
+        supportMessage += ` (Es wurde kein weiterer Supporter kontaktiert)`;
+      } else if (msgClientList.length === 2) {
+        supportMessage += ` (Es wurde ein weiterer Supporter kontaktiert)`;
+      } else {
+        supportMessage += ` (Es wurden ${msgClientList.length - 1} weitere Supporter kontaktiert)`;
+      }
+
+      // send each support the support message
+      for (const msgClient of msgClientList) {
+        msgClient.message(supportMessage);
+      }
     };
 
-    teamspeak.on("clientconnect", clientConnectHandler);
-    teamspeak.on("clientdisconnect", clientConnectHandler);
-    teamspeak.on("clientmoved", clientMovedHandler);
-    teamspeak.on("clientconnect", clientMovedHandler);
+    // execute when client connects to server
+    teamspeak.on("clientconnect", (eventRAW) => {
+      const event = transformData(eventRAW);
+
+      // add group data extra clients
+      groupDataExtra();
+
+      // check if description should be updated
+      if (executeChangeDescription) {
+        timeoutChangeDescription();
+        changeDescription("Leitende Teammitglieder", "4");
+        changeDescription("Teammitglieder", "12");
+        changeDescription("Staff", "78098");
+        changeDescription("Supporter", "19");
+      }
+    });
+
+    // execute when client disconnects to server
+    teamspeak.on("clientdisconnect", (eventRAW) => {
+      const event = transformData(eventRAW);
+
+      // add group data extra clients
+      groupDataExtra();
+
+      // check if description should be updated
+      if (executeChangeDescription) {
+        timeoutChangeDescription();
+        changeDescription("Leitende Teammitglieder", "4");
+        changeDescription("Teammitglieder", "12");
+        changeDescription("Staff", "78098");
+        changeDescription("Supporter", "19");
+      }
+    });
+
+    // execute when client moved in the server
+    teamspeak.on("clientmoved", (eventRAW) => {
+      const event = transformData(eventRAW);
+
+      // add group data extra clients
+      groupDataExtra();
+
+      // check if description should be updated
+      if (executeChangeDescription) {
+        timeoutChangeDescription();
+        changeDescription("Leitende Teammitglieder", "4");
+        changeDescription("Teammitglieder", "12");
+        changeDescription("Staff", "78098");
+        changeDescription("Supporter", "19");
+      }
+
+      // send support message
+      sendSupportMessage(event);
+    });
 
     // #
-    // Code above
+    // code above
     // #
   })
-  .catch((e) => {
+  .catch((error) => {
     console.log("Catched an error!");
-    console.log(e);
+    console.log(error);
   });
