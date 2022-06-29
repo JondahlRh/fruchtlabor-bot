@@ -176,7 +176,7 @@ ${groupDescription}
 
     // send support message function
     const sendSupportMessage = async (event) => {
-      // if (event.client.clientType === 1) return; // return if server query user
+      if (event.client.clientType === 1) return; // return if server query user
 
       // get support channel objects
       const supportAllg = transformData(await teamspeak.getChannelById("24"));
