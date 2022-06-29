@@ -250,22 +250,30 @@ ${groupDescription}
 
       // check for special support
       if (talk) {
-        supportMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${eventClientClicker} meldet sich in dem Channel "${event.channel.channelName}"`;
+        supportMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${eventClientClicker} meldet sich in dem Channel "${event.channel.channelName}" `;
       } else {
-        supportMessage = `Der User ${eventClientClicker} wartet in dem Channel "${event.channel.channelName}"`;
+        supportMessage = `Der User ${eventClientClicker} wartet in dem Channel "${event.channel.channelName}" `;
       }
 
       // loop supporter array
-      for (const msgClient of msgClientList) {
-        // add other supporter to support message
-        for (const otherSupporterRAW of msgClientList) {
-          if (otherSupporterRAW === msgClient) continue;
-          const otherSupporter = transformData(otherSupporter);
-          supportMessage += `[URL=client:///${otherSupporter.clientUniqueIdentifier}]${otherSupporter.clientNickname}[/URL]`;
+      for (const msgClientRAW of msgClientList) {
+        const msgClient = transformData(msgClientRAW);
+
+        // fill other suporter list
+        let supporterList = "(Diese weiteren Supporter wurden kontaktiert: ";
+        if (msgClientList.length > 1) {
+          for (const supClientRAW of msgClientList) {
+            const supClient = transformData(supClientRAW);
+            if (supClient.clientUniqueIdentifier === msgClient.clientUniqueIdentifier) continue;
+            supporterList += `[URL=client:///${supClient.clientUniqueIdentifier}]${supClient.clientNickname}[/URL], `;
+          }
+          supporterList = supporterList.slice(0, -2) + ")";
+        } else {
+          supporterList = "(Keine weiteren Suporter kontaktiert)";
         }
 
         // send the support message
-        msgClient.message(supportMessage);
+        msgClientRAW.message(supportMessage + supporterList);
       }
     };
 
