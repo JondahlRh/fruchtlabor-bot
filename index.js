@@ -237,17 +237,6 @@ ${groupDescription}
         if (!clientGroups.some((group) => msgGroupList.includes(group))) continue;
         if (clientGroups.some((group) => ["59"].includes(group))) continue;
         if (["8", "13"].includes(clientChannel)) continue;
-        if (
-          [
-            "Wettkampf | Clanintern",
-            "Wettkampf | Öffentlich",
-            "Wingman",
-            "FaceIt | Clanintern",
-            "FaceIt  Öffentlich",
-          ].some((channel) => clientChannelObject.channelName.includes(channel))
-        ) {
-          continue;
-        }
 
         // add clients to array
         msgClientList.push(clientRAW);
@@ -266,17 +255,16 @@ ${groupDescription}
         supportMessage = `Der User ${eventClientClicker} wartet in dem Channel "${event.channel.channelName}"`;
       }
 
-      // add count of other support contacted
-      if (msgClientList.length === 1) {
-        supportMessage += ` (Es wurde kein weiterer Supporter kontaktiert)`;
-      } else if (msgClientList.length === 2) {
-        supportMessage += ` (Es wurde ein weiterer Supporter kontaktiert)`;
-      } else {
-        supportMessage += ` (Es wurden ${msgClientList.length - 1} weitere Supporter kontaktiert)`;
-      }
-
-      // send each support the support message
+      // loop supporter array
       for (const msgClient of msgClientList) {
+        // add other supporter to support message
+        for (const otherSupporterRAW of msgClientList) {
+          if (otherSupporterRAW === msgClient) continue;
+          const otherSupporter = transformData(otherSupporter);
+          supportMessage += `[URL=client:///${otherSupporter.clientUniqueIdentifier}]${otherSupporter.clientNickname}[/URL]`;
+        }
+
+        // send the support message
         msgClient.message(supportMessage);
       }
     };
@@ -319,6 +307,9 @@ ${groupDescription}
     teamspeak.on("clientmoved", (eventRAW) => {
       const event = transformData(eventRAW);
 
+      // send support message
+      sendSupportMessage(event);
+
       // add group data extra clients
       groupDataExtra();
 
@@ -330,9 +321,6 @@ ${groupDescription}
         changeDescription("Staff", "78098");
         changeDescription("Supporter", "19");
       }
-
-      // send support message
-      sendSupportMessage(event);
     });
 
     // #
