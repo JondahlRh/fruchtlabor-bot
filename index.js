@@ -36,7 +36,8 @@ TeamSpeak.connect({
     // extra users/groups for group data
     const groupDataExtra = async () => {
       groupData["Staff"][3].extra = [];
-      for (const client of await teamspeak.serverGroupClientList("2485")) {
+      const kummerkastenIcon = await teamspeak.serverGroupClientList("2485");
+      for (const client of kummerkastenIcon) {
         groupData["Staff"][3].extra.push({
           clientNickname: client.clientNickname,
           clientUniqueIdentifier: client.clientUniqueIdentifier,
@@ -102,8 +103,9 @@ TeamSpeak.connect({
             "FaceIt | Clanintern",
             "FaceIt  Öffentlich",
           ].some((channel) => clientChannelObject.channelName.includes(channel))
-        )
+        ) {
           return "ingame";
+        }
 
         if (["59"].some((group) => clientGroups.includes(group))) return "No Support";
         if (
@@ -235,6 +237,17 @@ ${groupDescription}
         if (!clientGroups.some((group) => msgGroupList.includes(group))) continue;
         if (clientGroups.some((group) => ["59"].includes(group))) continue;
         if (["8", "13"].includes(clientChannel)) continue;
+        if (
+          [
+            "Wettkampf | Clanintern",
+            "Wettkampf | Öffentlich",
+            "Wingman",
+            "FaceIt | Clanintern",
+            "FaceIt  Öffentlich",
+          ].some((channel) => clientChannelObject.channelName.includes(channel))
+        ) {
+          continue;
+        }
 
         // add clients to array
         msgClientList.push(clientRAW);
