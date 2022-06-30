@@ -100,8 +100,8 @@ TeamSpeak.connect({
             "Wettkampf | Clanintern",
             "Wettkampf | Öffentlich",
             "Wingman",
-            "FaceIt | Clanintern",
-            "FaceIt  Öffentlich",
+            "FaceIT | Clanintern",
+            "FaceIT | Öffentlich",
           ].some((channel) => clientChannelObject.channelName.includes(channel))
         ) {
           return "ingame";
