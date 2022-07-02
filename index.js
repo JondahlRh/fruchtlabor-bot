@@ -24,6 +24,56 @@ TeamSpeak.connect({
     // code below
     // #
 
+    // channel and group arrays
+    const afkChannels = ["13"];
+    const meetingChannels = ["8"];
+    const supportChannels = ["20", "3805", "19054", "19055", "22", "68829"];
+    const noSuppportGroups = ["59"];
+    const availableChannels = ["12", "78098"];
+
+    // support waiting channels
+    const supportAllg = "24";
+    const supportVeri = "25";
+    const supportBewe = "27";
+    const supportCoach = "61154";
+    const supportKummer = "68837";
+
+    // function to check the status of the client
+    const checkStatus = async (client) => {
+      const clientChannelID = client.clientChannelGroupInheritedChannelId;
+      const clientGroups = client.clientServergroups;
+
+      const matchChannels = [
+        ...(await teamspeak.channelFind("● Wettkampf |")),
+        ...(await teamspeak.channelFind("● Wingman")),
+        ...(await teamspeak.channelFind("● FaceIT |")),
+      ];
+
+      if (afkChannels.includes(clientChannelID)) return 1; // AFK
+      if (meetingChannels.includes(clientChannelID)) return 2; // Besprechung
+      if (supportChannels.includes(clientChannelID)) return 3; // Support
+      if (matchChannels.some((group) => clientChannelID === group.cid)) return 4; // ingame
+      if (noSuppportGroups.some((group) => clientGroups.includes(group))) return 5; // No Support
+      if (
+        client.clientIdleTime > 900000 &&
+        !availableChannels.some((group) => clientChannelID === group)
+      ) {
+        return 6; // abwesend
+      }
+    };
+
+    // convert the status code to text
+    const getStatusText = (value) => {
+      if (value === 0) return "[color=#FF0000]offline[/color]";
+      if (value === 1) return "AFK";
+      if (value === 2) return "Besprechung";
+      if (value === 3) return "Support";
+      if (value === 4) return "ingame";
+      if (value === 5) return "No Support";
+      if (value === 6) return "abwesend";
+      return "[color=#00ff00]online[/color]";
+    };
+
     // timeout for the change description function
     let executeChangeDescription = true;
     const timeoutChangeDescription = () => {
@@ -33,23 +83,8 @@ TeamSpeak.connect({
       executeChangeDescription = false;
     };
 
-    // extra users/groups for group data
-    const groupDataExtra = async () => {
-      groupData["Staff"][3].extra = [];
-      const kummerkastenIcon = await teamspeak.serverGroupClientList("2485");
-      for (const client of kummerkastenIcon) {
-        groupData["Staff"][3].extra.push({
-          clientNickname: client.clientNickname,
-          clientUniqueIdentifier: client.clientUniqueIdentifier,
-        });
-      }
-    };
-
     // change description function
     const changeDescription = async (title, channel) => {
-      // get online clients array
-      const clientList = transformData(await teamspeak.clientList({ clientType: 0 }));
-
       // description title
       let description = `[center][table]
 
@@ -74,75 +109,30 @@ TeamSpeak.connect({
 
 [/table][table]`;
 
-      // function to check the status of the client
-      const checkStatus = async (groupClient) => {
-        const isOnline = clientList.some(
-          (client) => client.clientUniqueIdentifier === groupClient.clientUniqueIdentifier
-        );
-
-        if (!isOnline) return "[color=#FF0000]offline[/color]";
-
-        const client = transformData(
-          await teamspeak.getClientByUid(groupClient.clientUniqueIdentifier)
-        );
-
-        const clientChannel = client.clientChannelGroupInheritedChannelId;
-        const clientChannelObject = transformData(await teamspeak.getChannelById(clientChannel));
-        const clientGroups = client.clientServergroups;
-
-        if (["13"].includes(clientChannel)) return "AFK";
-        if (["8"].includes(clientChannel)) return "Besprechung";
-        if (["20", "3805", "19054", "19055", "22", "68829"].includes(clientChannel)) {
-          return "Support";
-        }
-        if (
-          [
-            "Wettkampf | Clanintern",
-            "Wettkampf | Öffentlich",
-            "Wingman",
-            "FaceIT | Clanintern",
-            "FaceIT | Öffentlich",
-          ].some((channel) => clientChannelObject.channelName.includes(channel))
-        ) {
-          return "ingame";
-        }
-
-        if (["59"].some((group) => clientGroups.includes(group))) return "No Support";
-        if (
-          client.clientIdleTime > 900000 &&
-          !["12", "78098"].some((group) => clientChannel === group)
-        ) {
-          return "abwesend";
-        }
-
-        return "[color=#00ff00]online[/color]";
-      };
-
       // loop all groups in groupData
       for (const group of groupData[title]) {
+        const groupClientList = [];
+
         // get server group clients
-        const serverGroup = await teamspeak.serverGroupClientList(group.id);
+        for (const groupID of group.id) {
+          groupClientList.push(...(await teamspeak.serverGroupClientList(groupID)));
+        }
 
         // initalize variable
         let groupDescription = "";
 
-        // add specific text if no clients in server group (or extra group)
-        if (serverGroup.length === 0 && group.extra === undefined) {
+        // add specific text if no clients in server group(s)
+        if (groupClientList.length === 0) {
           groupDescription = `\n[tr][td][center] - [/center][/td][td][center] none [/td][/tr]`;
         }
 
-        // add specific text for all clients in servergroup (+ add status)
-        for (const client of serverGroup) {
-          const status = await checkStatus(client);
-          groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${client.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
-        }
+        // add specific text for all clients in groupClientList (+ add status)
+        for (const groupClient of groupClientList) {
+          const clientRAW = await teamspeak.getClientByUid(groupClient.clientUniqueIdentifier);
+          const statusCode = clientRAW ? await checkStatus(transformData(clientRAW)) : 0;
+          const status = getStatusText(statusCode);
 
-        // add specific text for all extra users (+ add status)
-        if (group.extra !== undefined) {
-          for (const client of group.extra) {
-            const status = await checkStatus(client);
-            groupDescription += `\n[tr][td][URL=client:///${client.clientUniqueIdentifier}]${client.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
-          }
+          groupDescription += `\n[tr][td][URL=client:///${groupClient.clientUniqueIdentifier}]${groupClient.clientNickname} [/URL][/td][td][center]${status}[/td][/tr]`;
         }
 
         // add group to description
@@ -175,15 +165,8 @@ ${groupDescription}
     };
 
     // send support message function
-    const sendSupportMessage = async (event) => {
+    const sendSupportMessage = async (event, t0) => {
       if (event.client.clientType === 1) return; // return if server query user
-
-      // get support channel objects
-      const supportAllg = transformData(await teamspeak.getChannelById("24"));
-      const supportVeri = transformData(await teamspeak.getChannelById("25"));
-      const supportBewe = transformData(await teamspeak.getChannelById("27"));
-      const supportCoach = transformData(await teamspeak.getChannelById("61154"));
-      const supportKummer = transformData(await teamspeak.getChannelById("68837"));
 
       // get online clients array
       const clientList = await teamspeak.clientList({ clientType: 0 });
@@ -198,7 +181,7 @@ ${groupDescription}
 
       // check for event client channel ID and add specific group IDs to array
       switch (event.client.cid) {
-        case supportAllg.cid:
+        case supportAllg:
           if (eventClientGroups.some((group) => ["318", "2480"].includes(group))) {
             msgGroupList.push("2559");
             talk = true;
@@ -206,16 +189,16 @@ ${groupDescription}
             msgGroupList.push("2554", "2559");
           }
           break;
-        case supportVeri.cid:
+        case supportVeri:
           msgGroupList.push("2554", "2559");
           break;
-        case supportBewe.cid:
+        case supportBewe:
           msgGroupList.push("2556", "2559");
           break;
-        case supportCoach.cid:
+        case supportCoach:
           msgGroupList.push("2558");
           break;
-        case supportKummer.cid:
+        case supportKummer:
           msgGroupList.push("2484", "2485");
           break;
         default:
@@ -231,12 +214,16 @@ ${groupDescription}
 
         // format the client variables
         const clientGroups = client.clientServergroups;
-        const clientChannel = client.clientChannelGroupInheritedChannelId;
 
-        // filter specific clients with groups or in channel
+        // filter supporter of clients
         if (!clientGroups.some((group) => msgGroupList.includes(group))) continue;
-        if (clientGroups.some((group) => ["59"].includes(group))) continue;
-        if (["8", "13"].includes(clientChannel)) continue;
+
+        // check status
+        const statusCode = await checkStatus(client);
+        if (statusCode === 1) continue;
+        if (statusCode === 2) continue;
+        if (statusCode === 4) continue;
+        if (statusCode === 5) continue;
 
         // add clients to array
         msgClientList.push(clientRAW);
@@ -250,9 +237,9 @@ ${groupDescription}
 
       // check for special support
       if (talk) {
-        supportMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${eventClientClicker} meldet sich in dem Channel "${event.channel.channelName}" `;
+        supportMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${eventClientClicker} meldet sich in dem Channel "${event.channel.channelName}"`;
       } else {
-        supportMessage = `Der User ${eventClientClicker} wartet in dem Channel "${event.channel.channelName}" `;
+        supportMessage = `Der User ${eventClientClicker} wartet in dem Channel "${event.channel.channelName}"`;
       }
 
       // loop supporter array
@@ -260,30 +247,31 @@ ${groupDescription}
         const msgClient = transformData(msgClientRAW);
 
         // fill other suporter list
-        let supporterList = "(Diese weiteren Supporter wurden kontaktiert: ";
-        if (msgClientList.length > 1) {
+        let supporterList;
+        if (msgClientList.length === 1) {
+          supporterList = "(Keine weiteren Suporter kontaktiert)";
+        } else {
+          if (msgClientList.length === 2) {
+            supporterList = "(Dieser weitere Supporter wurde kontaktiert: ";
+          }
+          if (msgClientList.length > 2) {
+            supporterList = "(Diese weiteren Supporter wurden kontaktiert: ";
+          }
           for (const supClientRAW of msgClientList) {
             const supClient = transformData(supClientRAW);
             if (supClient.clientUniqueIdentifier === msgClient.clientUniqueIdentifier) continue;
             supporterList += `[URL=client:///${supClient.clientUniqueIdentifier}]${supClient.clientNickname}[/URL], `;
           }
           supporterList = supporterList.slice(0, -2) + ")";
-        } else {
-          supporterList = "(Keine weiteren Suporter kontaktiert)";
         }
 
         // send the support message
-        msgClientRAW.message(supportMessage + supporterList);
+        msgClientRAW.message(`${supportMessage} ${supporterList}`);
       }
     };
 
     // execute when client connects to server
-    teamspeak.on("clientconnect", (eventRAW) => {
-      const event = transformData(eventRAW);
-
-      // add group data extra clients
-      groupDataExtra();
-
+    teamspeak.on("clientconnect", () => {
       // check if description should be updated
       if (executeChangeDescription) {
         timeoutChangeDescription();
@@ -295,12 +283,7 @@ ${groupDescription}
     });
 
     // execute when client disconnects to server
-    teamspeak.on("clientdisconnect", (eventRAW) => {
-      const event = transformData(eventRAW);
-
-      // add group data extra clients
-      groupDataExtra();
-
+    teamspeak.on("clientdisconnect", () => {
       // check if description should be updated
       if (executeChangeDescription) {
         timeoutChangeDescription();
@@ -317,9 +300,6 @@ ${groupDescription}
 
       // send support message
       sendSupportMessage(event);
-
-      // add group data extra clients
-      groupDataExtra();
 
       // check if description should be updated
       if (executeChangeDescription) {
