@@ -165,7 +165,7 @@ ${groupDescription}
     };
 
     // send support message function
-    const sendSupportMessage = async (event, t0) => {
+    const sendSupportMessage = async (event) => {
       if (event.client.clientType === 1) return; // return if server query user
 
       // get online clients array
