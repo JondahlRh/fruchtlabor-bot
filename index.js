@@ -30,6 +30,15 @@ TeamSpeak.connect({
     const supportChannels = ["20", "3805", "19054", "19055", "22", "68829"];
     const noSuppportGroups = ["59"];
     const availableChannels = ["12", "78098"];
+    let matchChannels = [];
+
+    const setMatchChannels = async () => {
+      matchChannels = [
+        ...(await teamspeak.channelFind("● Wettkampf |")),
+        ...(await teamspeak.channelFind("● Wingman")),
+        ...(await teamspeak.channelFind("● FaceIT |")),
+      ];
+    };
 
     // support waiting channels
     const supportAllg = "24";
@@ -42,12 +51,6 @@ TeamSpeak.connect({
     const checkStatus = async (client) => {
       const clientChannelID = client.clientChannelGroupInheritedChannelId;
       const clientGroups = client.clientServergroups;
-
-      const matchChannels = [
-        ...(await teamspeak.channelFind("● Wettkampf |")),
-        ...(await teamspeak.channelFind("● Wingman")),
-        ...(await teamspeak.channelFind("● FaceIT |")),
-      ];
 
       if (afkChannels.includes(clientChannelID)) return 1; // AFK
       if (meetingChannels.includes(clientChannelID)) return 2; // Besprechung
@@ -85,6 +88,9 @@ TeamSpeak.connect({
 
     // change description function
     const changeDescription = async (title, channel) => {
+      // get match channels
+      await setMatchChannels();
+
       // description title
       let description = `[center][table]
 
@@ -167,6 +173,9 @@ ${groupDescription}
     // send support message function
     const sendSupportMessage = async (event) => {
       if (event.client.clientType === 1) return; // return if server query user
+
+      // get match channels
+      await setMatchChannels();
 
       // get online clients array
       const clientList = await teamspeak.clientList({ clientType: 0 });
