@@ -19,8 +19,8 @@ TeamSpeak.connect({
     console.log("connected");
 
     // get the bot client and move it to the support spacer
-    // const self = await teamspeak.getClientByUid("Su5GYQbW1FfV4uXEaUxR7s8aeOg=");
-    // teamspeak.clientMove(self, await teamspeak.getChannelById("19"));
+    const self = await teamspeak.getClientByUid("Su5GYQbW1FfV4uXEaUxR7s8aeOg=");
+    teamspeak.clientMove(self, await teamspeak.getChannelById("19"));
 
     // #
     // code below
@@ -54,16 +54,10 @@ TeamSpeak.connect({
         activityList[CUID].last = now;
       }
 
-      setTimeout(() => {
-        activityBot();
-      }, 1000);
+      activityBot();
     };
 
     activityBot();
-
-    // setInterval(() => {
-    //   console.log(activityList);
-    // }, 5000);
 
     // #
     // code above
