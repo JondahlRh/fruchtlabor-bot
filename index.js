@@ -300,7 +300,7 @@ ${groupDescription}
           const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
 
           clientRAW.message(
-            `[b][color=#11BBFF]Nachricht:[/color][/b] ${msgClientClicker} übenimmt den User ${supportClientClicker}`
+            `[b]Nachricht:[/color][/b] ${msgClientClicker} übenimmt den User ${supportClientClicker}`
           );
         }
       }
@@ -314,9 +314,7 @@ ${groupDescription}
           const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
           const msgBody = event["msg"].slice(6);
 
-          clientRAW.message(
-            `[b][color=#11BBFF]Nachricht von ${msgClientClicker}:[/color][/b] ${msgBody}`
-          );
+          clientRAW.message(`[b]Nachricht von ${msgClientClicker}:[/color][/b] ${msgBody}`);
         }
       }
     };
