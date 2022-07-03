@@ -71,14 +71,14 @@ TeamSpeak.connect({
 
     // convert the status code to text
     const getStatusText = (value) => {
-      if (value === 0) return "[color=#FF0000]offline[/color]";
+      if (value === 0) return "[color=#ff4444]offline[/color]";
       if (value === 1) return "AFK";
       if (value === 2) return "Besprechung";
       if (value === 3) return "Support";
       if (value === 4) return "ingame";
       if (value === 5) return "No Support";
       if (value === 6) return "abwesend";
-      return "[color=#00ff00]online[/color]";
+      return "[color=#44ff44]online[/color]";
     };
 
     // timeout for the change description function
@@ -254,7 +254,7 @@ ${groupDescription}
 
       // check for special support
       if (talk) {
-        supportMessage = `[color=#FF0000][b]Support Gespräch: [/b][/color]Der User ${eventClientClicker} meldet sich in dem Channel "${event.channel.channelName}"`;
+        supportMessage = `[color=#ff4444][b]Support Gespräch: [/b][/color]Der User ${eventClientClicker} meldet sich in dem Channel "${event.channel.channelName}"`;
       } else {
         supportMessage = `Der User ${eventClientClicker} wartet in dem Channel "${event.channel.channelName}"`;
       }
@@ -288,33 +288,69 @@ ${groupDescription}
     };
 
     // send (custom) message to suporter
-    const sendCustomMessage = (event) => {
+    const sendCustomMessage = async (event) => {
+      // create user clicker
+      const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
+      const supportClientClicker = `[URL=client:///${lastSupport.supportClient.clientUniqueIdentifier}]${lastSupport.supportClient.clientNickname}[/URL]`;
+
       // check message for "!me"
       if (event["msg"].startsWith("!me")) {
         for (const clientRAW of lastSupport.msgClientList) {
           const client = transformData(clientRAW);
 
-          if (client.clientNickname === event.invoker.clientNickname) continue;
-
-          const supportClientClicker = `[URL=client:///${lastSupport.supportClient.clientUniqueIdentifier}]${lastSupport.supportClient.clientNickname}[/URL]`;
-          const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
+          // check for the sender
+          if (client.clientUniqueIdentifier === event.invoker.clientUniqueIdentifier) {
+            clientRAW.message(`Nachricht gesendet`);
+            continue;
+          }
 
           clientRAW.message(
-            `[b]Nachricht:[/color][/b] ${msgClientClicker} übenimmt den User ${supportClientClicker}`
+            `[b][color=#ffff44]Nachricht:[/color][/b] ${msgClientClicker} übenimmt den User ${supportClientClicker}`
           );
         }
       }
 
       // check message for "!send"
       if (event["msg"].startsWith("!send")) {
+        const msgBody = event["msg"].slice(6);
+
         for (const clientRAW of lastSupport.msgClientList) {
           const client = transformData(clientRAW);
-          if (client.clientNickname === event.invoker.clientNickname) continue;
 
-          const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
-          const msgBody = event["msg"].slice(6);
+          // check for the sender
+          if (client.clientUniqueIdentifier === event.invoker.clientUniqueIdentifier) {
+            clientRAW.message(`Nachricht gesendet`);
+            continue;
+          }
 
-          clientRAW.message(`[b]Nachricht von ${msgClientClicker}:[/color][/b] ${msgBody}`);
+          clientRAW.message(
+            `[b][color=#aaff44]An Supporter von [/color]${msgClientClicker}:[/b] ${msgBody}`
+          );
+        }
+      }
+
+      // check message for "@mods"
+      if (event["msg"].startsWith("@mods")) {
+        const msgBody = event["msg"].slice(6);
+
+        const clientList = await teamspeak.clientList({ clientType: 0 });
+        for (const clientRAW of clientList) {
+          const client = transformData(clientRAW);
+
+          // check for the sender
+          if (client.clientUniqueIdentifier === event.invoker.clientUniqueIdentifier) {
+            clientRAW.message(`Nachricht gesendet`);
+            continue;
+          }
+
+          // check for groups
+          if (!client.clientServergroups.some((group) => ["96", "10", "77"].includes(group))) {
+            continue;
+          }
+
+          clientRAW.message(
+            `[b][color=#aaff44]An alle Mods von [/color]${msgClientClicker}:[/b] ${msgBody}`
+          );
         }
       }
     };
