@@ -17,8 +17,9 @@ TeamSpeak.connect({
     console.log("connected");
 
     // get the bot client and move it to the support spacer
-    const self = await teamspeak.getClientByUid("Su5GYQbW1FfV4uXEaUxR7s8aeOg=");
-    teamspeak.clientMove(self, await teamspeak.getChannelById("19"));
+    const selfRAW = await teamspeak.getClientByUid("Su5GYQbW1FfV4uXEaUxR7s8aeOg=");
+    const self = transformData(selfRAW);
+    teamspeak.clientMove(selfRAW, await teamspeak.getChannelById("19"));
 
     // #
     // code below
@@ -46,6 +47,9 @@ TeamSpeak.connect({
     const supportBewe = "27";
     const supportCoach = "61154";
     const supportKummer = "68837";
+
+    // last support
+    const lastSupport = { msgClientList: [], supportClient: {} };
 
     // function to check the status of the client
     const checkStatus = async (client) => {
@@ -238,6 +242,10 @@ ${groupDescription}
         msgClientList.push(clientRAW);
       }
 
+      // last support
+      lastSupport.msgClientList = msgClientList;
+      lastSupport.supportClient = event.client;
+
       // format the event user name wih link
       const eventClientClicker = `[URL=client:///${event.client.clientUniqueIdentifier}]${event.client.clientNickname}[/URL]`;
 
@@ -276,6 +284,39 @@ ${groupDescription}
 
         // send the support message
         msgClientRAW.message(`${supportMessage} ${supporterList}`);
+      }
+    };
+
+    // send (custom) message to suporter
+    const sendCustomMessage = (event) => {
+      // check message for "!me"
+      if (event["msg"].startsWith("!me")) {
+        for (const clientRAW of lastSupport.msgClientList) {
+          const client = transformData(clientRAW);
+
+          if (client.clientNickname === event.invoker.clientNickname) continue;
+
+          const supportClientClicker = `[URL=client:///${lastSupport.supportClient.clientUniqueIdentifier}]${lastSupport.supportClient.clientNickname}[/URL]`;
+          const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
+
+          clientRAW.message(
+            `[color=#FFFF00]Nachricht:[/color] ${msgClientClicker} übenimmt den User ${supportClientClicker}`
+          );
+        }
+      }
+
+      // check message for "!send"
+      if (event["msg"].startsWith("!send")) {
+        for (const clientRAW of lastSupport.msgClientList) {
+          const client = transformData(clientRAW);
+          if (client.clientNickname === event.invoker.clientNickname) continue;
+
+          const msgBody = event["msg"].slice(6);
+
+          clientRAW.message(
+            `[color=#FFFF00]Nachricht von ${event.invoker.clientNickname}:[/color] ${msgBody}`
+          );
+        }
       }
     };
 
@@ -318,6 +359,14 @@ ${groupDescription}
         changeDescription("Staff", "78098");
         changeDescription("Supporter", "19");
       }
+    });
+
+    teamspeak.on("textmessage", (eventRAW) => {
+      const event = transformData(eventRAW);
+
+      if (self.clientUniqueIdentifier === event.invoker.clientUniqueIdentifier) return;
+
+      sendCustomMessage(event);
     });
 
     // #
