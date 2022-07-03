@@ -176,7 +176,7 @@ ${groupDescription}
 
     // send support message function
     const sendSupportMessage = async (event) => {
-      if (event.client.clientType === 1) return; // return if server query user
+      // if (event.client.clientType === 1) return; // return if server query user
 
       // get match channels
       await setMatchChannels();
@@ -300,7 +300,7 @@ ${groupDescription}
           const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
 
           clientRAW.message(
-            `[color=#FFFF00]Nachricht:[/color] ${msgClientClicker} übenimmt den User ${supportClientClicker}`
+            `[b][color=#11BBFF]Nachricht:[/color][/b] ${msgClientClicker} übenimmt den User ${supportClientClicker}`
           );
         }
       }
@@ -311,10 +311,11 @@ ${groupDescription}
           const client = transformData(clientRAW);
           if (client.clientNickname === event.invoker.clientNickname) continue;
 
+          const msgClientClicker = `[URL=client:///${event.invoker.clientUniqueIdentifier}]${event.invoker.clientNickname}[/URL]`;
           const msgBody = event["msg"].slice(6);
 
           clientRAW.message(
-            `[color=#FFFF00]Nachricht von ${event.invoker.clientNickname}:[/color] ${msgBody}`
+            `[b][color=#11BBFF]Nachricht von ${msgClientClicker}:[/color][/b] ${msgBody}`
           );
         }
       }
