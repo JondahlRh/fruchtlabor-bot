@@ -29,7 +29,7 @@ TeamSpeak.connect({
     const afkChannels = ["13"];
     const meetingChannels = ["8"];
     const supportChannels = ["20", "3805", "19054", "19055", "22", "68829"];
-    const noSuppportGroups = ["59"];
+    const noSuppportGroups = ["59", "2541", "2482"];
     const availableChannels = ["12", "78098"];
     let matchChannels = [];
 
@@ -47,6 +47,7 @@ TeamSpeak.connect({
     const supportBewe = "27";
     const supportCoach = "61154";
     const supportKummer = "68837";
+    const supportBeratung = "22621";
 
     // last support
     const lastSupport = { msgClientList: [], supportClient: {} };
@@ -217,6 +218,9 @@ ${groupDescription}
         case supportKummer:
           msgGroupList.push("2484", "2485");
           break;
+        case supportBeratung:
+          msgGroupList.push("320");
+          break;
         default:
           break;
       }
@@ -314,6 +318,9 @@ ${groupDescription}
 
       switch (event.client.cid) {
         case supportAllg:
+        case supportCoach:
+        case supportKummer:
+        case supportBeratung:
           eventRAW.client.message(`${setEventClientMsg("")}`);
           break;
         case supportVeri:
@@ -321,12 +328,6 @@ ${groupDescription}
           break;
         case supportBewe:
           eventRAW.client.message(`${setEventClientMsg(customBewe)}`);
-          break;
-        case supportCoach:
-          eventRAW.client.message(`${setEventClientMsg("")}`);
-          break;
-        case supportKummer:
-          eventRAW.client.message(`${setEventClientMsg("")}`);
           break;
         default:
           break;
