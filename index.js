@@ -175,8 +175,11 @@ ${groupDescription}
     };
 
     // send support message function
-    const sendSupportMessage = async (event) => {
-      if (event.client.clientType === 1) return; // return if server query user
+    const sendSupportMessage = async (eventRAW) => {
+      const event = transformData(eventRAW);
+
+      // return if server query user
+      if (event.client.clientType === 1) return;
 
       // get match channels
       await setMatchChannels();
@@ -264,7 +267,7 @@ ${groupDescription}
         const msgClient = transformData(msgClientRAW);
 
         // fill other suporter list
-        let supporterList;
+        let supporterList = "";
         if (msgClientList.length === 1) {
           supporterList = "(Keine weiteren Suporter kontaktiert)";
         } else {
@@ -284,6 +287,49 @@ ${groupDescription}
 
         // send the support message
         msgClientRAW.message(`${supportMessage} ${supporterList}`);
+      }
+
+      let supporterList = "";
+      for (const supClientRAW of msgClientList) {
+        const supClient = transformData(supClientRAW);
+        supporterList += `[URL=client:///${supClient.clientUniqueIdentifier}]${supClient.clientNickname}[/URL], `;
+      }
+      supporterList = supporterList.slice(0, -2);
+
+      const setEventClientMsg = (extraContent) => {
+        if (msgClientList.length === 0) {
+          return `Lieber ${event.client.clientNickname}, es ist zur Zeit leider kein Supporter erreichbar. Komm gerne später noch einmal.`;
+        }
+        if (msgClientList.length === 1) {
+          return `Lieber ${event.client.clientNickname}, bitte warte kurz, wir helfen dir gleich. ${extraContent}Folgender Supporter wurde kontaktiert: ${supporterList}`;
+        }
+        if (msgClientList.length > 2) {
+          return `Lieber ${event.client.clientNickname}, bitte warte kurz, wir helfen dir gleich. ${extraContent}Folgende Supporter wurden kontaktiert: ${supporterList}`;
+        }
+      };
+
+      const customVeri = "Du kannst uns zur Ranganpassung auch schriftlich kontaktieren. ";
+      const customBewe =
+        "Du kannst gerne die Steamprofillinks von allen Accounts bereithalten. Das Gespräch dauert in der Regel 20 bis 30 Minuten. ";
+
+      switch (event.client.cid) {
+        case supportAllg:
+          eventRAW.client.message(`${setEventClientMsg("")}`);
+          break;
+        case supportVeri:
+          eventRAW.client.message(`${setEventClientMsg(customVeri)}`);
+          break;
+        case supportBewe:
+          eventRAW.client.message(`${setEventClientMsg(customBewe)}`);
+          break;
+        case supportCoach:
+          eventRAW.client.message(`${setEventClientMsg("")}`);
+          break;
+        case supportKummer:
+          eventRAW.client.message(`${setEventClientMsg("")}`);
+          break;
+        default:
+          break;
       }
     };
 
@@ -381,10 +427,8 @@ ${groupDescription}
 
     // execute when client moved in the server
     teamspeak.on("clientmoved", (eventRAW) => {
-      const event = transformData(eventRAW);
-
       // send support message
-      sendSupportMessage(event);
+      sendSupportMessage(eventRAW);
 
       // check if description should be updated
       if (executeChangeDescription) {
