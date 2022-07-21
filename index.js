@@ -307,7 +307,7 @@ ${groupDescription}
         if (msgClientList.length === 1) {
           return `Lieber ${event.client.clientNickname}, bitte warte kurz, wir helfen dir gleich. ${extraContent}Folgender Supporter wurde kontaktiert: ${supporterList}`;
         }
-        if (msgClientList.length > 2) {
+        if (msgClientList.length > 1) {
           return `Lieber ${event.client.clientNickname}, bitte warte kurz, wir helfen dir gleich. ${extraContent}Folgende Supporter wurden kontaktiert: ${supporterList}`;
         }
       };
@@ -316,18 +316,22 @@ ${groupDescription}
       const customBewe =
         "Du kannst gerne die Steamprofillinks von allen Accounts bereithalten. Das Gespräch dauert in der Regel 20 bis 30 Minuten. ";
 
+      let userMessage;
       switch (event.client.cid) {
         case supportAllg:
         case supportCoach:
         case supportKummer:
         case supportBeratung:
-          eventRAW.client.message(`${setEventClientMsg("")}`);
+          userMessage = setEventClientMsg("");
+          eventRAW.client.message(userMessage);
           break;
         case supportVeri:
-          eventRAW.client.message(`${setEventClientMsg(customVeri)}`);
+          userMessage = setEventClientMsg(customVeri);
+          eventRAW.client.message(userMessage);
           break;
         case supportBewe:
-          eventRAW.client.message(`${setEventClientMsg(customBewe)}`);
+          userMessage = setEventClientMsg(customBewe);
+          eventRAW.client.message(userMessage);
           break;
         default:
           break;
