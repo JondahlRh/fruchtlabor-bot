@@ -242,7 +242,7 @@ ${groupDescription}
         if (!clientGroups.some((group) => msgGroupList.includes(group))) continue;
 
         // check status
-        const statusCode = checkStatus(client);
+        const statusCode = await checkStatus(client);
         if (statusCode === 1) continue;
         if (statusCode === 2) continue;
         if (statusCode === 4) continue;
