@@ -29,7 +29,8 @@ TeamSpeak.connect({
     const afkChannels = ["13"];
     const meetingChannels = ["8"];
     const supportChannels = ["20", "3805", "19054", "19055", "22", "68829"];
-    const noSuppportGroups = ["59", "2541", "2482"];
+    const noSuppportGroups = ["59"];
+    const dontDisturbGroups = ["2541", "2482"];
     const availableChannels = ["12", "78098"];
     let matchChannels = [];
 
@@ -62,11 +63,12 @@ TeamSpeak.connect({
       if (supportChannels.includes(clientChannelID)) return 3; // Support
       if (matchChannels.some((group) => clientChannelID === group.cid)) return 4; // ingame
       if (noSuppportGroups.some((group) => clientGroups.includes(group))) return 5; // No Support
+      if (dontDisturbGroups.some((group) => clientGroups.includes(group))) return 6; // No Support
       if (
         client.clientIdleTime > 900000 &&
         !availableChannels.some((group) => clientChannelID === group)
       ) {
-        return 6; // abwesend
+        return 7; // abwesend
       }
     };
 
@@ -78,7 +80,8 @@ TeamSpeak.connect({
       if (value === 3) return "Support";
       if (value === 4) return "ingame";
       if (value === 5) return "No Support";
-      if (value === 6) return "abwesend";
+      if (value === 6) return "Do Not Disturb";
+      if (value === 7) return "abwesend";
       return "[color=#44ff44]online[/color]";
     };
 
@@ -239,11 +242,12 @@ ${groupDescription}
         if (!clientGroups.some((group) => msgGroupList.includes(group))) continue;
 
         // check status
-        const statusCode = await checkStatus(client);
+        const statusCode = checkStatus(client);
         if (statusCode === 1) continue;
         if (statusCode === 2) continue;
         if (statusCode === 4) continue;
         if (statusCode === 5) continue;
+        if (statusCode === 6) continue;
 
         // add clients to array
         msgClientList.push(clientRAW);
