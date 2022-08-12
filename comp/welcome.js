@@ -8,7 +8,7 @@ const welcome = async (teamspeak, event) => {
     "CS:GO Suche benutzen kannst, dann geh bitte in den Channel 'Support | Verifizierung + Ranganpassung'. " +
     "Falls du dem Clan beitreten willst, kannst du in den Channel 'Support | Clan Bewerbung' gehen.";
 
-  console.log({ name: client.propcache.clientNickname, msg: message });
+  // console.log({ name: client.propcache.clientNickname, msg: message });
   client.message(message);
 };
 

@@ -122,10 +122,10 @@ const support = async (teamspeak, event) => {
       supMessageSupporterList = supMessageSupporterList.slice(0, -2) + ")";
     }
 
-    console.log({
-      name: supporter.propcache.clientNickname,
-      msg: `${supMessage} ${supMessageSupporterList}`,
-    });
+    // console.log({
+    //   name: supporter.propcache.clientNickname,
+    //   msg: `${supMessage} ${supMessageSupporterList}`,
+    // });
     supporter.message(`${supMessage} ${supMessageSupporterList}`);
   }
 
@@ -135,10 +135,10 @@ const support = async (teamspeak, event) => {
   }
   cliMessageSupporterList = cliMessageSupporterList.slice(0, -2);
 
-  console.log({
-    name: event.client.propcache.clientNickname,
-    msg: `${cliMessage} ${cliMessageSupporterList}`,
-  });
+  // console.log({
+  //   name: event.client.propcache.clientNickname,
+  //   msg: `${cliMessage} ${cliMessageSupporterList}`,
+  // });
   event.client.message(`${cliMessage} ${cliMessageSupporterList}`);
 };
 
