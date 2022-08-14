@@ -2,14 +2,16 @@
   "name": "fruchtlaborbot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "author": "Jondahl \"Gamix\" Rhenius",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1",
     "ts3-nodejs-library": "^3.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
