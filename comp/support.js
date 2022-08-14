@@ -130,10 +130,12 @@ const support = async (teamspeak, event) => {
   }
 
   // fill all supporter and send the full message (to the client)
-  for (const supporter of supporterList) {
-    cliMessageSupporterList += `[URL=client:///${supporter.propcache.clientUniqueIdentifier}]${supporter.propcache.clientNickname}[/URL], `;
+  if (supporterList.length > 1) {
+    for (const supporter of supporterList) {
+      cliMessageSupporterList += `[URL=client:///${supporter.propcache.clientUniqueIdentifier}]${supporter.propcache.clientNickname}[/URL], `;
+    }
+    cliMessageSupporterList = cliMessageSupporterList.slice(0, -2);
   }
-  cliMessageSupporterList = cliMessageSupporterList.slice(0, -2);
 
   // console.log({
   //   name: event.client.propcache.clientNickname,
