@@ -4,7 +4,6 @@ const { TeamSpeak } = require("ts3-nodejs-library");
 const support = require("./comp/support");
 const welcome = require("./comp/welcome");
 const description = require("./comp/description");
-const message = require("./comp/message");
 
 const app = async () => {
   const teamspeak = await TeamSpeak.connect({
@@ -33,26 +32,23 @@ const app = async () => {
       }
     }, 30000);
 
-    description(teamspeak);
+    description.edit(teamspeak);
   };
 
   descriptionExecuteChecker();
 
   // listen for events
   teamspeak.on("clientconnect", (event) => {
-    welcome(teamspeak, event);
-    support(teamspeak, event);
+    welcome.message(teamspeak, event);
+    support.message(teamspeak, event);
     descriptionExecuteChecker();
   });
   teamspeak.on("clientmoved", (event) => {
-    support(teamspeak, event);
+    support.message(teamspeak, event);
     descriptionExecuteChecker();
   });
   teamspeak.on("clientdisconnect", (event) => {
     descriptionExecuteChecker();
-  });
-  teamspeak.on("textmessage", (event) => {
-    message(teamspeak, event);
   });
 };
 

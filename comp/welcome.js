@@ -12,4 +12,4 @@ const welcome = async (teamspeak, event) => {
   client.message(message);
 };
 
-module.exports = welcome;
+module.exports = { message: welcome };

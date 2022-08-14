@@ -109,11 +109,11 @@ ${groupDescription}
     if (channel.channelDescription === description) continue;
 
     // change description
-    // console.log({ description, same: channel.channelDescription === description });
+    // console.log({ title: descriptionType.title });
     teamspeak.channelEdit(descriptionType.channel, {
       channelDescription: description,
     });
   }
 };
 
-module.exports = description;
+module.exports = { edit: description };

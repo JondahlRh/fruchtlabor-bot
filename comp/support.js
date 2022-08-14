@@ -144,4 +144,4 @@ const support = async (teamspeak, event) => {
   event.client.message(`${cliMessage} ${cliMessageSupporterList}`);
 };
 
-module.exports = support;
+module.exports = { message: support };
