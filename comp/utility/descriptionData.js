@@ -4,6 +4,7 @@ const descriptionData = [
     channel: "4",
     groups: [
       { name: "Admin", id: ["85"] },
+      { name: "Turnierleitung", id: ["2571"] },
       { name: "Supervisor", id: ["2487"] },
       { name: "Head-Developer", id: ["81"] },
       { name: "Head-Mod", id: ["77"] },
@@ -32,6 +33,7 @@ const descriptionData = [
       { name: "Trial-Mod", id: ["96"] },
       { name: "Trial-Recruiter", id: ["2539"] },
       { name: "Trial-Coach", id: ["230"] },
+      { name: "Trial-Caster", id: ["2569"] },
     ],
   },
   {
