@@ -31,15 +31,18 @@ const getStatus = (client, matchChannels) => {
 
 const description = async (teamspeak) => {
   // get current match channels
-  const matchChannels = await (async () => {
-    return [
-      ...(await teamspeak.channelFind("Wettkampf | Clanintern")),
-      ...(await teamspeak.channelFind("Wettkampf | Öffentlich")),
-      ...(await teamspeak.channelFind("Wingman")),
-      ...(await teamspeak.channelFind("FaceIT | Clanintern")),
-      ...(await teamspeak.channelFind("FaceIT | Öffentlich")),
-    ];
-  })();
+  const matchChannels = [];
+  const matchChannelNames = [
+    "Wettkampf | Clanintern",
+    "Wettkampf | Öffentlich",
+    "Wingman - ",
+    "FaceIT | Clanintern",
+    "FaceIT | Öffentlich",
+    "Teamchannel | ",
+  ];
+  for (const channelName of matchChannelNames) {
+    matchChannels.push(...(await teamspeak.channelFind(channelName)));
+  }
 
   // loop all description types
   for (const descriptionType of descriptionData) {
