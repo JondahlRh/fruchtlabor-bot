@@ -14,7 +14,10 @@ const app = async () => {
     nickname: "Fruchtlabor Bot",
   });
   console.log("connected");
-  teamspeak.clientMove(await teamspeak.self(), await teamspeak.getChannelById("19"));
+  teamspeak.clientMove(
+    await teamspeak.self(),
+    await teamspeak.getChannelById("19")
+  );
 
   // execute "description" if last execute >30s ago or queued execute
   let recentExecute, queuedExecute;
@@ -39,16 +42,70 @@ const app = async () => {
 
   // listen for events
   teamspeak.on("clientconnect", (event) => {
-    welcome.message(teamspeak, event);
-    support.message(teamspeak, event);
-    descriptionExecuteChecker();
+    try {
+      welcome.message(teamspeak, event);
+    } catch (err) {
+      console.log({
+        date: new Date(),
+        error: err,
+        type: "welcome.message(teamspeak, event)",
+        event: "clientconnect",
+      });
+    }
+    try {
+      support.message(teamspeak, event);
+    } catch (err) {
+      console.log({
+        date: new Date(),
+        error: err,
+        type: "support.message(teamspeak, event)",
+        event: "clientconnect",
+      });
+    }
+    try {
+      descriptionExecuteChecker();
+    } catch (err) {
+      console.log({
+        date: new Date(),
+        error: err,
+        type: "descriptionExecuteChecker()",
+        event: "clientconnect",
+      });
+    }
   });
   teamspeak.on("clientmoved", (event) => {
-    support.message(teamspeak, event);
-    descriptionExecuteChecker();
+    try {
+      support.message(teamspeak, event);
+    } catch (err) {
+      console.log({
+        date: new Date(),
+        error: err,
+        type: "support.message(teamspeak, event)",
+        event: "clientmoved",
+      });
+    }
+    try {
+      descriptionExecuteChecker();
+    } catch (err) {
+      console.log({
+        date: new Date(),
+        error: err,
+        type: "descriptionExecuteChecker()",
+        event: "clientmoved",
+      });
+    }
   });
   teamspeak.on("clientdisconnect", (event) => {
-    descriptionExecuteChecker();
+    try {
+      descriptionExecuteChecker();
+    } catch (err) {
+      console.log({
+        date: new Date(),
+        error: err,
+        type: "descriptionExecuteChecker()",
+        event: "clientdisconnect",
+      });
+    }
   });
 };
 
