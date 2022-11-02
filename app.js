@@ -42,70 +42,20 @@ const app = async () => {
 
   // listen for events
   teamspeak.on("clientconnect", (event) => {
-    try {
-      welcome.message(teamspeak, event);
-    } catch (err) {
-      console.log({
-        date: new Date(),
-        error: err,
-        type: "welcome.message(teamspeak, event)",
-        event: "clientconnect",
-      });
-    }
-    try {
-      support.message(teamspeak, event);
-    } catch (err) {
-      console.log({
-        date: new Date(),
-        error: err,
-        type: "support.message(teamspeak, event)",
-        event: "clientconnect",
-      });
-    }
-    try {
-      descriptionExecuteChecker();
-    } catch (err) {
-      console.log({
-        date: new Date(),
-        error: err,
-        type: "descriptionExecuteChecker()",
-        event: "clientconnect",
-      });
-    }
+    welcome.message(teamspeak, event);
+    support.message(teamspeak, event);
+    descriptionExecuteChecker();
   });
   teamspeak.on("clientmoved", (event) => {
-    try {
-      support.message(teamspeak, event);
-    } catch (err) {
-      console.log({
-        date: new Date(),
-        error: err,
-        type: "support.message(teamspeak, event)",
-        event: "clientmoved",
-      });
-    }
-    try {
-      descriptionExecuteChecker();
-    } catch (err) {
-      console.log({
-        date: new Date(),
-        error: err,
-        type: "descriptionExecuteChecker()",
-        event: "clientmoved",
-      });
-    }
+    support.message(teamspeak, event);
+    descriptionExecuteChecker();
   });
   teamspeak.on("clientdisconnect", (event) => {
-    try {
-      descriptionExecuteChecker();
-    } catch (err) {
-      console.log({
-        date: new Date(),
-        error: err,
-        type: "descriptionExecuteChecker()",
-        event: "clientdisconnect",
-      });
-    }
+    descriptionExecuteChecker();
+  });
+
+  teamspeak.on("error", (error) => {
+    console.log({date: new Date(), error});
   });
 };
 
