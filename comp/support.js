@@ -42,9 +42,6 @@ const support = async (teamspeak, event) => {
     case "68837": // Kummerkasten
       supporterListSGID.push("2484", "2485");
       break;
-    case "108922": // IT-Beratung
-      supporterListSGID.push("328");
-      break;
 
     default:
       return;
