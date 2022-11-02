@@ -41,7 +41,6 @@ const descriptionData = [
     channel: "78098",
     groups: [
       { name: "Berater", id: ["231"] },
-      { name: "IT-Berater", id: ["328"] },
       { name: "Skin-Berater", id: ["320"] },
       { name: "Kummerkasten", id: ["2484", "2485"] },
     ],
