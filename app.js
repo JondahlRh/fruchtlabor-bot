@@ -4,6 +4,7 @@ const { TeamSpeak } = require("ts3-nodejs-library");
 const support = require("./comp/support");
 const welcome = require("./comp/welcome");
 const description = require("./comp/description");
+const customChannel = require("./comp/customChannel");
 
 const app = async () => {
   const teamspeak = await TeamSpeak.connect({
@@ -14,10 +15,8 @@ const app = async () => {
     nickname: "Fruchtlabor Bot",
   });
   console.log("connected");
-  teamspeak.clientMove(
-    await teamspeak.self(),
-    await teamspeak.getChannelById("19")
-  );
+  const self = await teamspeak.self();
+  teamspeak.clientMove(self, await teamspeak.getChannelById("19"));
 
   // execute "description" if last execute >30s ago or queued execute
   let recentExecute, queuedExecute;
@@ -47,6 +46,9 @@ const app = async () => {
     descriptionExecuteChecker();
   });
   teamspeak.on("clientmoved", (event) => {
+    if (self === event.client) return;
+
+    customChannel.create(teamspeak, event, self);
     support.message(teamspeak, event);
     descriptionExecuteChecker();
   });
@@ -55,7 +57,7 @@ const app = async () => {
   });
 
   teamspeak.on("error", (error) => {
-    console.log({date: new Date(), error});
+    console.log({ date: new Date(), error });
   });
 };
 
