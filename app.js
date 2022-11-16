@@ -4,7 +4,7 @@ const { TeamSpeak } = require("ts3-nodejs-library");
 const support = require("./comp/support");
 const welcome = require("./comp/welcome");
 const description = require("./comp/description");
-const customChannel = require("./comp/customChannel");
+const channel = require("./comp/channel");
 
 const app = async () => {
   const teamspeak = await TeamSpeak.connect({
@@ -48,7 +48,7 @@ const app = async () => {
   teamspeak.on("clientmoved", (event) => {
     if (self === event.client) return;
 
-    customChannel.create(teamspeak, event, self);
+    channel.custom(teamspeak, event, self);
     support.message(teamspeak, event);
     descriptionExecuteChecker();
   });

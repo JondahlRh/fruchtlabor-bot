@@ -1,4 +1,4 @@
-const create = async (teamspeak, event, self) => {
+const custom = async (teamspeak, event, self) => {
   const eClient = event.client.propcache;
 
   const customChannelName =
@@ -24,4 +24,4 @@ const create = async (teamspeak, event, self) => {
   } catch (error) {}
 };
 
-module.exports = { create };
+module.exports = { custom };
