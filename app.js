@@ -5,6 +5,7 @@ const support = require("./comp/support");
 const welcome = require("./comp/welcome");
 const description = require("./comp/description");
 const channel = require("./comp/channel");
+const server = require("./comp/server");
 
 const app = async () => {
   const teamspeak = await TeamSpeak.connect({
@@ -64,6 +65,10 @@ const app = async () => {
   teamspeak.on("error", (error) => {
     console.log({ date: new Date(), error });
   });
+
+  setInterval(() => {
+    server.online(teamspeak);
+  }, 60000);
 };
 
 app();

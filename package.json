@@ -9,6 +9,7 @@
   "author": "Jondahl \"Gamix\" Rhenius",
   "license": "ISC",
   "dependencies": {
+    "source-server-query": "^3.0.3",
     "ts3-nodejs-library": "^3.4.1"
   },
   "devDependencies": {
