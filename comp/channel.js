@@ -25,6 +25,8 @@ const custom = async (teamspeak, event, self) => {
     case "127":
       customChannelName = "Customchannel" + " - " + eClient.clientNickname;
       break;
+    default:
+      break;
   }
 
   if (customChannelName) {
@@ -34,13 +36,19 @@ const custom = async (teamspeak, event, self) => {
     } catch (error) {}
 
     if (!customChannelID) {
-      const newChannel = await teamspeak.channelCreate(customChannelName, { cpid: eClient.cid });
-      customChannelID = self.propcache.cid;
+      try {
+        const newChannel = await teamspeak.channelCreate(customChannelName, {
+          cpid: eClient.cid,
+        });
+        customChannelID = self.propcache.cid;
 
-      await teamspeak.channelSetPerm(newChannel, {
-        permname: "i_channel_needed_join_power",
-        permvalue: customChannelJoinPower,
-      });
+        await teamspeak.channelSetPerm(newChannel, {
+          permname: "i_channel_needed_join_power",
+          permvalue: customChannelJoinPower,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     await teamspeak.setClientChannelGroup(
