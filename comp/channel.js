@@ -6,31 +6,48 @@ const propsCsgoPublic = { clientLimit: 5, joinPower: 0 };
 const propsCsgoMember = { clientLimit: 5, joinPower: 20 };
 const propsCsgoWingman = { clientLimit: 2, joinPower: 0 };
 
-const preFixMmPublic = "● Wettkampf | Öffentlich - ";
-const preFixMmMember = "● Wettkampf | Clanintern - ";
-const preFixFaceitPublic = "● FaceIt | Öffentlich - ";
-const preFixFaceitMember = "● FaceIt | Clanintern - ";
-const preFixWingman = "● Wingman - ";
-
 // custom channel system
 const custom = async (teamspeak, event, self) => {
   const eClient = event.client.propcache;
 
-  const customChannelName =
-    (eClient.cid === "78" ? "Spielersuche" : "Customchannel") + " - " + eClient.clientNickname;
+  // Channels: 19 "Support", 78 "Suche", 127 "andere games"
+  let customChannelName;
+  let customChannelJoinPower = 0;
+  switch (eClient.cid) {
+    case "19":
+      customChannelName = "Support" + " - " + eClient.clientNickname;
+      customChannelJoinPower = 35;
+      break;
+    case "78":
+      customChannelName = "Spielersuche" + " - " + eClient.clientNickname;
+      customChannelJoinPower = 20;
+      break;
+    case "127":
+      customChannelName = "Customchannel" + " - " + eClient.clientNickname;
+      break;
+  }
 
-  if (["78", "127"].includes(eClient.cid)) {
+  if (customChannelName) {
     let customChannelID;
     try {
       customChannelID = (await teamspeak.channelFind(customChannelName))[0].cid;
     } catch (error) {}
 
     if (!customChannelID) {
-      await teamspeak.channelCreate(customChannelName, { cpid: eClient.cid });
+      const newChannel = await teamspeak.channelCreate(customChannelName, { cpid: eClient.cid });
       customChannelID = self.propcache.cid;
+
+      await teamspeak.channelSetPerm(newChannel, {
+        permname: "i_channel_needed_join_power",
+        permvalue: customChannelJoinPower,
+      });
     }
 
-    await teamspeak.setClientChannelGroup("90", customChannelID, eClient.clientDatabaseId);
+    await teamspeak.setClientChannelGroup(
+      "90",
+      customChannelID,
+      eClient.clientDatabaseId
+    );
     await teamspeak.clientMove(eClient.clid, customChannelID);
   }
 
@@ -56,15 +73,22 @@ const lobbyChannelSystem = async (props) => {
   block.end();
 
   // randomize all fruits and find first unused fruit
-  const newChannelList = channelList.filter((c) => filterChannels.includes(c.propcache.pid));
+  const newChannelList = channelList.filter((c) =>
+    filterChannels.includes(c.propcache.pid)
+  );
   fruits.sort(() => 0.5 - Math.random());
   const newFruit =
-    fruits.find((f) => newChannelList.every((c) => !c.propcache.channelName.includes(f))) ||
-    Date.now();
+    fruits.find((f) =>
+      newChannelList.every((c) => !c.propcache.channelName.includes(f))
+    ) || Date.now();
 
   // get all channels and filter match channel and empty match channel
-  const allChannels = channelList.filter((c) => c.propcache.pid === parentChannel);
-  const emptyChannels = allChannels.filter((c) => c.propcache.totalClients === 0);
+  const allChannels = channelList.filter(
+    (c) => c.propcache.pid === parentChannel
+  );
+  const emptyChannels = allChannels.filter(
+    (c) => c.propcache.totalClients === 0
+  );
 
   // delete all empty channels except the first one (except: minimun of channels reached)
   const channelMinimum = 2;
@@ -77,7 +101,10 @@ const lobbyChannelSystem = async (props) => {
         date: new Date(),
         customErrorMsg: "error @ deletingChannel",
         errorMsg: error.msg,
-        channel: { n: emptyChannels[i].propcache.channelName, i: emptyChannels[i].propcache.cid },
+        channel: {
+          n: emptyChannels[i].propcache.channelName,
+          i: emptyChannels[i].propcache.cid,
+        },
       });
     }
   }
@@ -155,7 +182,7 @@ const lobby = (teamspeak, event, block) => {
     teamspeak,
     filterChannels: csgoChannelList,
     properties: propsCsgoPublic,
-    preFix: preFixMmPublic,
+    preFix: "● Wettkampf | Öffentlich - ",
     block,
   });
   lobbyChannelSystem({
@@ -163,7 +190,7 @@ const lobby = (teamspeak, event, block) => {
     teamspeak,
     filterChannels: csgoChannelList,
     properties: propsCsgoMember,
-    preFix: preFixMmMember,
+    preFix: "● Wettkampf | Clanintern - ",
     block,
   });
   lobbyChannelSystem({
@@ -171,7 +198,7 @@ const lobby = (teamspeak, event, block) => {
     teamspeak,
     filterChannels: csgoChannelList,
     properties: propsCsgoPublic,
-    preFix: preFixFaceitPublic,
+    preFix: "● FaceIt | Öffentlich - ",
     block,
   });
   lobbyChannelSystem({
@@ -179,7 +206,7 @@ const lobby = (teamspeak, event, block) => {
     teamspeak,
     filterChannels: csgoChannelList,
     properties: propsCsgoMember,
-    preFix: preFixFaceitMember,
+    preFix: "● FaceIt | Clanintern - ",
     block,
   });
   lobbyChannelSystem({
@@ -187,7 +214,7 @@ const lobby = (teamspeak, event, block) => {
     teamspeak,
     filterChannels: csgoChannelList,
     properties: propsCsgoWingman,
-    preFix: preFixWingman,
+    preFix: "● Wingman - ",
     block,
   });
 };
