@@ -39,6 +39,10 @@ const app = async () => {
 
   descriptionExecuteChecker();
 
+  let isBlogged = false;
+  const start = () => (isBlogged = true);
+  const end = () => (isBlogged = false);
+
   // listen for events
   teamspeak.on("clientconnect", (event) => {
     welcome.message(teamspeak, event);
@@ -49,6 +53,7 @@ const app = async () => {
     if (self === event.client) return;
 
     channel.custom(teamspeak, event, self);
+    channel.lobby(teamspeak, event, { isBlogged, start, end });
     support.message(teamspeak, event);
     descriptionExecuteChecker();
   });
