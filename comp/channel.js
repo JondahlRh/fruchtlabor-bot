@@ -51,12 +51,16 @@ const custom = async (teamspeak, event, self) => {
       }
     }
 
-    await teamspeak.setClientChannelGroup(
-      "90",
-      customChannelID,
-      eClient.clientDatabaseId
-    );
-    await teamspeak.clientMove(eClient.clid, customChannelID);
+    try {
+      await teamspeak.setClientChannelGroup(
+        "90",
+        customChannelID,
+        eClient.clientDatabaseId
+      );
+      await teamspeak.clientMove(eClient.clid, customChannelID);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   try {
