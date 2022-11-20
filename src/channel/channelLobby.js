@@ -6,7 +6,7 @@ const queue = { length: 0, block: false };
 const channelLobby = async (props) => {
   const { teamspeak } = props;
 
-  // check for block and set block
+  // check for block and add queue or set block
   if (queue.block) return (queue.length += 1);
   queue.block = true;
 
@@ -127,7 +127,7 @@ const channelLobby = async (props) => {
     }
   }
 
-  // remove block and check for queue
+  // remove block, check for queue
   queue.block = false;
   if (queue.length > 0) {
     queue.length -= 1;
