@@ -75,7 +75,7 @@ const channelCustom = async (props) => {
     }
 
     // move querry user back to def channel
-    if (self.propcache.cid !== fsData.channels.botChannel.propcache.cid) {
+    if (self.propcache.cid !== fsData.channels.botChannel) {
       try {
         await teamspeak.clientMove(self, fsData.channels.botChannel);
       } catch (error) {
