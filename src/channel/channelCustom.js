@@ -2,10 +2,12 @@ const fs = require("fs");
 const errorMessage = require("../errorMessage");
 
 const channelCustom = async (props) => {
-  const { teamspeak, event, self, defChannel } = props;
+  const { teamspeak, event, self } = props;
 
   const { cid, clid, clientNickname, clientDatabaseId } =
     event.client.propcache;
+
+  const defChannel = fsData.channels.botChannel;
 
   // get definition data
   let fsData;

@@ -1,5 +1,7 @@
 require("dotenv").config();
 const { TeamSpeak } = require("ts3-nodejs-library");
+const fs = require("fs");
+
 const CREDS = require("./.creds");
 
 const errorMessage = require("./src/errorMessage");
@@ -16,17 +18,26 @@ const app = async () => {
   });
   console.log("connected:", new Date());
 
+  // get definition data
+  let fsData;
+  try {
+    const data = fs.readFileSync(
+      `src/utility/${process.env.VERSION}/teamspeakData.json`,
+      "utf8"
+    );
+    fsData = JSON.parse(data);
+  } catch (error) {
+    return errorMessage("app @ fs", error);
+  }
+
   const self = await teamspeak.self();
-  const defChannel = await teamspeak.getChannelById(
-    process.env.VERSION === "PROD" ? "19" : "81483"
-  );
-  await teamspeak.clientMove(self, defChannel);
+  await teamspeak.clientMove(self, fsData.channels.botChannel);
 
   // event listener
   teamspeak.on("clientconnect", (event) => {
     if (self === event.client) return;
 
-    channel.custom({ teamspeak, event, self, defChannel });
+    channel.custom({ teamspeak, event, self });
     channel.lobby({ teamspeak });
     message.support({ teamspeak, event });
     message.welcome({ event });
@@ -35,7 +46,7 @@ const app = async () => {
   teamspeak.on("clientmoved", (event) => {
     if (self === event.client) return;
 
-    channel.custom({ teamspeak, event, self, defChannel });
+    channel.custom({ teamspeak, event, self });
     channel.lobby({ teamspeak });
     message.support({ teamspeak, event });
   });
@@ -54,7 +65,7 @@ const app = async () => {
 
   // error - event listener
   teamspeak.on("error", (error) => {
-    errorMessage("error listener", error);
+    errorMessage("app @ errer event", error);
   });
 };
 
