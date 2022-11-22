@@ -77,14 +77,28 @@ const channelLobby = async (props) => {
       const lobbyChannelNames = [lobbyChannelName, lobbyChannelName2];
 
       for (let i = 0; i < l.minimum - lobbyChannels.length; i++) {
+        let newChannel;
         try {
-          await teamspeak.channelCreate(
+          newChannel = await teamspeak.channelCreate(
             l.name + lobbyChannelNames[i],
             createProperties
           );
         } catch (error) {
           errorMessage("lobby channel @ channelCreate", error);
           continue;
+        }
+
+        // add permissions
+        const permissions = l.permissions ? Object.entries(l.permissions) : [];
+        for (const [permname, permvalue] of permissions) {
+          try {
+            await teamspeak.channelSetPerm(newChannel, {
+              permname,
+              permvalue,
+            });
+          } catch (error) {
+            return errorMessage("lobby channel @ channelSetPerm", error);
+          }
         }
       }
       continue;
@@ -103,14 +117,28 @@ const channelLobby = async (props) => {
     }
     // create empty channel
     if (emptyLobbyChannels.length < 1) {
+      let newChannel;
       try {
-        await teamspeak.channelCreate(
+        newChannel = await teamspeak.channelCreate(
           l.name + lobbyChannelName,
           createProperties
         );
       } catch (error) {
         errorMessage("lobby channel @ channelCreate", error);
         continue;
+      }
+
+      // add permissions
+      const permissions = l.permissions ? Object.entries(l.permissions) : [];
+      for (const [permname, permvalue] of permissions) {
+        try {
+          await teamspeak.channelSetPerm(newChannel, {
+            permname,
+            permvalue,
+          });
+        } catch (error) {
+          return errorMessage("lobby channel @ channelSetPerm", error);
+        }
       }
       continue;
     }
