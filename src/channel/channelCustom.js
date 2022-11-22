@@ -2,7 +2,7 @@ const fs = require("fs");
 const errorMessage = require("../errorMessage");
 
 const channelCustom = async (props) => {
-  const { teamspeak, event, self, defChannel } = props;
+  const { teamspeak, event, self } = props;
 
   const { cid, clid, clientNickname, clientDatabaseId } =
     event.client.propcache;
@@ -75,9 +75,9 @@ const channelCustom = async (props) => {
     }
 
     // move querry user back to def channel
-    if (self.propcache.cid !== defChannel.propcache.cid) {
+    if (self.propcache.cid !== fsData.channels.botChannel) {
       try {
-        await teamspeak.clientMove(self, defChannel);
+        await teamspeak.clientMove(self, fsData.channels.botChannel);
       } catch (error) {
         return errorMessage("custom channel @ clientMove", error);
       }

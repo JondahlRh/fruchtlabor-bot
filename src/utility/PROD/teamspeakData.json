@@ -23,6 +23,7 @@
       "skin": "22621",
       "distress": "68837"
     },
+    "botChannel": "19",
     "talk": ["40"],
     "match": ["4274", "4275", "4325", "4276", "4277", "4278"],
     "afk": ["13"],
@@ -108,11 +109,9 @@
         "channel": "4",
         "groups": [
           { "name": "Admin", "id": ["85"] },
-          { "name": "Turnierleitung", "id": ["2571"] },
           { "name": "Supervisor", "id": ["2487"] },
           { "name": "Head-Developer", "id": ["81"] },
           { "name": "Head-Mod", "id": ["77"] },
-          { "name": "Head-Designer", "id": ["2537"] },
           { "name": "Head-Coach", "id": ["95"] }
         ]
       },
@@ -122,7 +121,6 @@
         "groups": [
           { "name": "Developer", "id": ["326"] },
           { "name": "Servertechniker", "id": ["354"] },
-          { "name": "Mod", "id": ["10"] },
           { "name": "Inspektor", "id": ["321"] },
           { "name": "Recruiter", "id": ["319"] },
           { "name": "Teambetreuer", "id": ["334"] },
@@ -134,7 +132,6 @@
           { "name": "Caster", "id": ["82"] },
           { "name": "Coach", "id": ["73"] },
           { "name": "Trial-Developer", "id": ["2538"] },
-          { "name": "Trial-Mod", "id": ["96"] },
           { "name": "Trial-Recruiter", "id": ["2539"] },
           { "name": "Trial-Coach", "id": ["230"] },
           { "name": "Trial-Caster", "id": ["2569"] }
@@ -153,6 +150,7 @@
         "title": "Supporter",
         "channel": "19",
         "groups": [
+          { "name": "Admin", "id": ["85"] },
           { "name": "Head-Mod", "id": ["77"] },
           { "name": "Mod", "id": ["10"] },
           { "name": "Trial-Mod", "id": ["96"] }
