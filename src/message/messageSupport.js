@@ -4,19 +4,11 @@ const errorMessage = require("../errorMessage");
 const messageSupport = async (props) => {
   const { teamspeak, event } = props;
 
-  const {
-    clientType,
-    clientServergroups,
-    cid,
-    clientUniqueIdentifier,
-    clientNickname,
-  } = event.client.propcache;
+  const { clientServergroups, cid, clientUniqueIdentifier, clientNickname } =
+    event.client.propcache;
   const { channelName } = event?.channel?.propcache || {
     channelName: event.cid,
   };
-
-  // ignore server querry clients
-  if (clientType === 1) return;
 
   // get definition data
   let fsData;
