@@ -36,7 +36,6 @@ const app = async () => {
   // event listener
   teamspeak.on("clientconnect", (event) => {
     if (self === event.client) return;
-    if (event.client.propcache.clientType === 1) return;
 
     channel.custom({ teamspeak, event, self });
     channel.lobby({ teamspeak });
@@ -46,7 +45,6 @@ const app = async () => {
 
   teamspeak.on("clientmoved", (event) => {
     if (self === event.client) return;
-    if (event.client.propcache.clientType === 1) return;
 
     channel.custom({ teamspeak, event, self });
     channel.lobby({ teamspeak });
@@ -55,7 +53,6 @@ const app = async () => {
 
   teamspeak.on("clientdisconnect", (event) => {
     if (self === event.client) return;
-    if (event.client.propcache.clientType === 1) return;
 
     channel.lobby({ teamspeak });
   });
