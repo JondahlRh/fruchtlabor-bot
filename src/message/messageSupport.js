@@ -160,7 +160,8 @@ const messageSupport = async (props) => {
   switch (supportClients.length) {
     case 0:
       userMessage +=
-        "es ist zur Zeit leider kein Supporter erreichbar. Komm gerne später noch einmal.";
+        "es ist zur Zeit leider kein Supporter erreichbar. Komm gerne später noch einmal. " +
+        extraUserMessage;
       break;
     case 1:
       supportMessage += "(Keine weiteren Suporter kontaktiert";
