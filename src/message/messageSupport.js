@@ -143,6 +143,15 @@ const messageSupport = async (props) => {
       extraUserMessage =
         "Du kannst gerne die Steamprofil-Links von allen Accounts bereithalten. " +
         "Das Gespräch dauert ca. 20 Minuten. ";
+    case fsData.channels.supportWaiting.coach:
+      extraUserMessage =
+        "Du kannst gerne auch einen Coach direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ";
+    case fsData.channels.supportWaiting.skin:
+      extraUserMessage =
+        "Du kannst gerne auch einen Skin Berater direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ";
+    case fsData.channels.supportWaiting.distress:
+      extraUserMessage =
+        "Du kannst uns gerne auch direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ";
     default:
       break;
   }
