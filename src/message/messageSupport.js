@@ -46,7 +46,7 @@ const messageSupport = async (props) => {
   const supportGroups = [];
   switch (cid) {
     case fsData.channels.supportWaiting.allg:
-      if (reportToTeamSup) {
+      if (reportToTeamSup && !reportToSupport) {
         supportGroups.push(fsData.groups.support.teamSup);
         break;
       }
