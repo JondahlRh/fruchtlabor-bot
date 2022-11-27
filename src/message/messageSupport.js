@@ -36,14 +36,23 @@ const messageSupport = async (props) => {
       fsData.groups.reportToSupport.includes(group)
     ) && fsData.channels.supportWaiting.allg === cid;
 
+  // get clients with report to team supervisor group
+  const reportToTeamSup =
+    clientServergroups.some((group) =>
+      fsData.groups.reportToTeamSup.includes(group)
+    ) && fsData.channels.supportWaiting.allg === cid;
+
   // get support groups
   const supportGroups = [];
   switch (cid) {
     case fsData.channels.supportWaiting.allg:
-      supportGroups.push(fsData.groups.support.mod);
-      if (!reportToSupport) {
-        supportGroups.push(fsData.groups.support.allg);
+      if (reportToTeamSup) {
+        supportGroups.push(fsData.groups.support.teamSup);
+        break;
       }
+      supportGroups.push(fsData.groups.support.mod);
+      if (reportToSupport) break;
+      supportGroups.push(fsData.groups.support.allg);
       break;
     case fsData.channels.supportWaiting.veri:
       supportGroups.push(fsData.groups.support.mod);

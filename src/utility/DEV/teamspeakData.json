@@ -1,13 +1,15 @@
 {
   "groups": {
     "reportToSupport": ["2578", "2579"],
+    "reportToTeamSup": ["2593"],
     "support": {
       "allg": "2580",
       "appl": "2581",
       "mod": "2582",
       "coach": "2583",
       "skin": "2584",
-      "distress": "2585"
+      "distress": "2585",
+      "teamSup": "2592"
     },
     "guest": "2519",
     "channelManager": "91",
