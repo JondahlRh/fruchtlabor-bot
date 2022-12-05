@@ -192,6 +192,14 @@
           "name": "Retakes Communitymaps"
         }
       }
-    ]
+    ],
+    "afkMover": {
+      "maxIdleTime": "900000",
+      "from": {
+        "cid": ["30"],
+        "pid": ["40", "4274", "4275", "4325", "4276", "4277"]
+      },
+      "to": "137"
+    }
   }
 }
