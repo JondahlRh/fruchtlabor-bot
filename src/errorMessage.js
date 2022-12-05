@@ -11,7 +11,7 @@ const errorMessage = async (custom, error) => {
   today = yyyy + "-" + mm + "-" + dd;
 
   const data = `\ndate: ${new Date()}\ncustom: ${custom}\nerror: ${error}\n`;
-  fs.appendFile(`logs/${today}.log`, data, (err) => {
+  fs.appendFile(`logs/errors.log`, data, (err) => {
     if (err) {
       console.error({ date: new Date(), custom, error, err });
     }
