@@ -7,6 +7,7 @@ const CREDS = require("./.creds");
 const errorMessage = require("./src/errorMessage");
 const channel = require("./src/channel");
 const message = require("./src/message");
+const move = require("./src/move");
 
 const app = async () => {
   const teamspeak = await TeamSpeak.connect({
@@ -61,6 +62,7 @@ const app = async () => {
   setInterval(() => {
     channel.online({ teamspeak });
     channel.server({ teamspeak });
+    move.afk({ teamspeak });
   }, 30000);
 
   // error - event listener

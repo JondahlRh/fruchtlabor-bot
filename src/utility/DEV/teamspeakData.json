@@ -119,6 +119,14 @@
           "name": "Retakes Standard"
         }
       }
-    ]
+    ],
+    "afkMover": {
+      "maxIdleTime": "200000",
+      "from": {
+        "cid": ["81388"],
+        "pid": ["131852", "131853"]
+      },
+      "to": "81526"
+    }
   }
 }
