@@ -42,7 +42,7 @@ const moveAfk = async (props) => {
   // get all clients
   let clients;
   try {
-    clients = await teamspeak.clientList();
+    clients = await teamspeak.clientList({ clientType: 0 });
   } catch (error) {
     return errorMessage("move afk @ clientList", error);
   }
@@ -50,7 +50,7 @@ const moveAfk = async (props) => {
   clients.forEach(async (client) => {
     const { clientIdleTime, cid, clientOutputMuted } = client.propcache;
 
-    if (clientOutputMuted && clientIdleTime < +maxIdleTime) return;
+    if (!clientOutputMuted || clientIdleTime < +maxIdleTime) return;
 
     if (from.cid.includes(cid)) {
       clMsg(client, maxIdleTime);
