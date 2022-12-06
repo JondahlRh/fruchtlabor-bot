@@ -48,9 +48,9 @@ const moveAfk = async (props) => {
   }
 
   clients.forEach(async (client) => {
-    const { clientIdleTime, cid } = client.propcache;
+    const { clientIdleTime, cid, clientOutputMuted } = client.propcache;
 
-    if (clientIdleTime < +maxIdleTime) return;
+    if (clientOutputMuted && clientIdleTime < +maxIdleTime) return;
 
     if (from.cid.includes(cid)) {
       clMsg(client, maxIdleTime);
