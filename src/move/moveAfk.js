@@ -37,7 +37,7 @@ const moveAfk = async (props) => {
   } catch (error) {
     return errorMessage("move afk @ fs", error);
   }
-  const { maxIdleTime, from, to } = fsData.channels.afkMover;
+  const { types, to } = fsData.channels.afkMover;
 
   // get all clients
   let clients;
@@ -47,28 +47,34 @@ const moveAfk = async (props) => {
     return errorMessage("move afk @ clientList", error);
   }
 
-  clients.forEach(async (client) => {
-    const { clientIdleTime, cid, clientOutputMuted } = client.propcache;
+  // get all channels
+  let channels;
+  try {
+    channels = await teamspeak.channelList();
+  } catch (error) {
+    return errorMessage("move afk @ channelList", error);
+  }
 
-    if (!clientOutputMuted || clientIdleTime < +maxIdleTime) return;
+  types.forEach((move) => {
+    const { maxIdleTime, soundMuteNeeded } = move;
 
-    if (from.cid.includes(cid)) {
-      clMsg(client, maxIdleTime);
-      clMove(client, to);
-    }
+    for (const client of clients) {
+      const { clientIdleTime, cid, clientOutputMuted } = client.propcache;
 
-    // get all clChannel
-    let clChannel;
-    try {
-      clChannel = await teamspeak.getChannelById(cid);
-    } catch (error) {
-      return errorMessage("move afk @ getChannelById", error);
-    }
-    const { pid } = clChannel.propcache;
+      if (clientIdleTime < +maxIdleTime) continue;
+      if (soundMuteNeeded && !clientOutputMuted) continue;
 
-    if (from.pid.includes(pid)) {
-      clMsg(client, maxIdleTime);
-      clMove(client, to);
+      if (move.cid.includes(cid)) {
+        clMove(client, to.user);
+        clMsg(client, maxIdleTime);
+      }
+
+      const channel = channels.find((c) => c.propcache.cid === cid);
+
+      if (move.pid.includes(channel.propcache.pid)) {
+        clMove(client, to.user);
+        clMsg(client, maxIdleTime);
+      }
     }
   });
 };

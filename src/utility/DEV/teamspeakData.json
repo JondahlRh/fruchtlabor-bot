@@ -121,12 +121,18 @@
       }
     ],
     "afkMover": {
-      "maxIdleTime": "200000",
-      "from": {
-        "cid": ["81388"],
-        "pid": ["131852", "131853"]
+      "to": {
+        "team": "",
+        "user": "81516"
       },
-      "to": "81526"
+      "types": [
+        {
+          "maxIdleTime": "5000",
+          "soundMuteNeeded": true,
+          "cid": ["81388"],
+          "pid": ["131869"]
+        }
+      ]
     }
   }
 }
