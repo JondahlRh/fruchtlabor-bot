@@ -41,7 +41,7 @@ const app = async () => {
     channel.custom({ teamspeak, event, self });
     channel.lobby({ teamspeak });
     message.support({ teamspeak, event });
-    message.welcome({ event });
+    message.join({ event });
   });
 
   teamspeak.on("clientmoved", (event) => {
