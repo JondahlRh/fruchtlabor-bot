@@ -1,0 +1,62 @@
+[
+  { "id": 85, "name": "Admin", "categorie": ["admin", "support", "teamAfk"] },
+  { "id": 2487, "name": "Supervisor", "categorie": ["admin", "teamAfk"] },
+  { "id": 2486, "name": "FL Netzwerk", "categorie": ["admin", "teamAfk"] },
+  { "id": 2571, "name": "Turnierleitung", "categorie": ["admin", "teamAfk"] },
+
+  { "id": 81, "name": "Head Developer", "categorie": ["head", "teamAfk"] },
+  { "id": 77, "name": "Head Mod", "categorie": ["head", "support", "teamAfk"] },
+  { "id": 2537, "name": "Head Designer", "categorie": ["head", "teamAfk"] },
+  { "id": 95, "name": "Head Coach", "categorie": ["head", "teamAfk"] },
+
+  { "id": 326, "name": "Developer", "categorie": ["team", "teamAfk"] },
+  { "id": 354, "name": "Servertechniker", "categorie": ["team", "teamAfk"] },
+  { "id": 10, "name": "Mod", "categorie": ["team", "support", "teamAfk"] },
+  { "id": 321, "name": "Inspektor", "categorie": ["team", "teamAfk"] },
+  { "id": 319, "name": "Recruiter", "categorie": ["team", "teamAfk"] },
+  { "id": 334, "name": "Teambetreuer", "categorie": ["team", "teamAfk"] },
+  { "id": 307, "name": "Redakteur", "categorie": ["team", "teamAfk"] },
+  { "id": 308, "name": "Social Media", "categorie": ["team", "teamAfk"] },
+  { "id": 78, "name": "Designer", "categorie": ["team", "teamAfk"] },
+  { "id": 2501, "name": "Cutter", "categorie": ["team", "teamAfk"] },
+  { "id": 94, "name": "Event", "categorie": ["team", "teamAfk"] },
+  { "id": 82, "name": "Caster", "categorie": ["team", "teamAfk"] },
+  { "id": 73, "name": "Coach", "categorie": ["team", "teamAfk"] },
+
+  {
+    "id": 2538,
+    "name": "Trial Developer",
+    "categorie": ["trialTeam", "teamAfk"]
+  },
+  {
+    "id": 96,
+    "name": "Trial Mod",
+    "categorie": ["trialTeam", "support", "teamAfk"]
+  },
+  {
+    "id": 2539,
+    "name": "Trial Recruiter",
+    "categorie": ["trialTeam", "teamAfk"]
+  },
+  { "id": 230, "name": "Trial Coach", "categorie": ["trialTeam", "teamAfk"] },
+  { "id": 2569, "name": "Trial Caster", "categorie": ["trialTeam", "teamAfk"] },
+
+  { "id": 231, "name": "Berater", "categorie": ["staff", "teamAfk"] },
+  { "id": 320, "name": "Skin Berater", "categorie": ["staff", "teamAfk"] },
+  { "id": 2576, "name": "Kummerkasten", "categorie": ["staff", "teamAfk"] },
+
+  { "id": 2567, "name": "Ehrenmember", "categorie": ["member"] },
+  { "id": 2566, "name": "Gold Member", "categorie": ["member"] },
+  { "id": 2565, "name": "Silber Member", "categorie": ["member"] },
+  { "id": 2564, "name": "Bronze Member", "categorie": ["member"] },
+  { "id": 51, "name": "Member", "categorie": ["member"] },
+  { "id": 58, "name": "Trial", "categorie": ["member"] },
+
+  { "id": 2507, "name": "Clanvertretung", "categorie": ["special"] },
+  { "id": 50, "name": "Partner", "categorie": ["special"] },
+  { "id": 2479, "name": "Veteran", "categorie": ["special"] },
+
+  { "id": 44, "name": "Verifiziert", "categorie": ["verified"] },
+
+  { "id": 9, "name": "Gast", "categorie": ["guest"] }
+]

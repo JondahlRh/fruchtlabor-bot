@@ -1,3 +1,3 @@
-const afk = require("./moveAfk");
+const afk = require("./afk");
 
 module.exports = { afk };

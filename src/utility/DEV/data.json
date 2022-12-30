@@ -1,0 +1,328 @@
+{
+  "servergroup": {
+    "reportTo": {
+      "moderation": 2621,
+      "moderationDirectly": 2622,
+      "teamModeration": 2623
+    },
+    "guest": 2519,
+    "noSupport": 2624,
+    "doNotDisturb": 2625,
+    "live": 2626,
+    "support": {
+      "general": 2627,
+      "application": 2628,
+      "moderation": 2629,
+      "coaching": 2630,
+      "skinCouncil": 2631,
+      "workCouncil": 2632,
+      "teamModeration": 2633
+    }
+  },
+  "channelgroup": {
+    "channelManager": 99
+  },
+  "channel": {
+    "default": 81388,
+    "meeting": {
+      "team": 138275
+    },
+    "spacer": {
+      "teamtalk": 138276,
+      "support": 138277,
+      "playerSearch": 138278,
+      "csgoTeam": 138279,
+      "custom": 138280
+    },
+    "talk": { "default": 138281 },
+    "match": {
+      "esportal": 138282,
+      "mmIntern": 138283,
+      "mmPublic": 138284,
+      "wingman": 138285,
+      "faceitIntern": 138286,
+      "faceitPublic": 138287
+    },
+    "afk": {
+      "team": {
+        "availableTeam": 138288,
+        "availableStaff": 138289,
+        "away": 138290
+      },
+      "user": {
+        "available": 138291,
+        "doNotDisturb": 138292,
+        "away": 138293,
+        "differentServer": 138294
+      }
+    },
+    "supportWaiting": {
+      "general": 138295,
+      "verification": 138296,
+      "application": 138297,
+      "skinCouncil": 138298,
+      "coaching": 138299,
+      "workCouncil": 138300
+    },
+    "server": {
+      "overview": 138301,
+      "playercount": {
+        "duels": 138302,
+        "noAwp": 138303,
+        "default": 138304,
+        "community": 138305
+      }
+    }
+  },
+  "functions": {
+    "botDefaultChannel": ["spacer", "support"],
+    "channel": {
+      "custom": [
+        {
+          "channelParent": ["spacer", "support"],
+          "channelGroup": ["channelManager"],
+          "prefix": "Support",
+          "permissions": { "i_channel_needed_join_power": 35 }
+        },
+        {
+          "channelParent": ["spacer", "playerSearch"],
+          "channelGroup": ["channelManager"],
+          "prefix": "Spielersuche",
+          "permissions": { "i_channel_needed_join_power": 20 }
+        },
+        {
+          "channelParent": ["spacer", "custom"],
+          "channelGroup": ["channelManager"],
+          "prefix": "Customchannel",
+          "permissions": {}
+        }
+      ],
+      "lobby": [
+        {
+          "channelParent": ["talk", "default"],
+          "categorie": "talk",
+          "prefix": "",
+          "minimum": 2,
+          "clientLimit": false,
+          "permissions": { "i_channel_needed_join_power": 5 }
+        },
+        {
+          "channelParent": ["match", "esportal"],
+          "categorie": "match",
+          "prefix": "● Esportal",
+          "minimum": 3,
+          "clientLimit": 5,
+          "permissions": {}
+        },
+        {
+          "channelParent": ["match", "mmIntern"],
+          "categorie": "match",
+          "prefix": "● Wettkampf | Clanintern",
+          "minimum": 2,
+          "clientLimit": 5,
+          "permissions": { "i_channel_needed_join_power": 20 }
+        },
+        {
+          "channelParent": ["match", "mmPublic"],
+          "categorie": "match",
+          "prefix": "● Wettkampf | Öffentlich",
+          "minimum": 2,
+          "clientLimit": 5,
+          "permissions": {}
+        },
+        {
+          "channelParent": ["match", "wingman"],
+          "categorie": "match",
+          "prefix": "● Wingman",
+          "minimum": 2,
+          "clientLimit": 2,
+          "permissions": {}
+        },
+        {
+          "channelParent": ["match", "faceitIntern"],
+          "categorie": "match",
+          "prefix": "● FaceIt | Clanintern",
+          "minimum": 2,
+          "clientLimit": 5,
+          "permissions": { "i_channel_needed_join_power": 20 }
+        },
+        {
+          "channelParent": ["match", "faceitPublic"],
+          "categorie": "match",
+          "prefix": "● FaceIT | Öffentlich",
+          "minimum": 2,
+          "clientLimit": 5,
+          "permissions": {}
+        }
+      ],
+      "online": [
+        {
+          "channel": ["spacer", "teamtalk"],
+          "title": "Leitende Teammitglieder",
+          "categories": ["admin", "head"]
+        },
+        {
+          "channel": ["afk", "team", "availableTeam"],
+          "title": "Teammitglieder",
+          "categories": ["team", "trialTeam"]
+        },
+        {
+          "channel": ["afk", "team", "availableStaff"],
+          "title": "Staff",
+          "categories": ["staff"]
+        },
+        {
+          "channel": ["spacer", "support"],
+          "title": "Supporter",
+          "categories": ["support"]
+        }
+      ]
+    },
+    "message": {
+      "support": [
+        {
+          "channel": ["supportWaiting", "general"],
+          "contact": ["general", "moderation"],
+          "extraUserMessage": "",
+          "exceptions": [
+            {
+              "servergroup": ["reportTo", "moderation"],
+              "contact": ["moderation"],
+              "extraSupporterMessage": "Support Gespräch"
+            },
+            {
+              "servergroup": ["reportTo", "moderationDirectly"],
+              "contact": ["moderation"],
+              "extraSupporterMessage": "Support Gespräch"
+            },
+            {
+              "servergroup": ["reportTo", "teamModeration"],
+              "contact": ["teamModeration"],
+              "extraSupporterMessage": "Teambetreuer Gespräch"
+            }
+          ]
+        },
+        {
+          "channel": ["supportWaiting", "verification"],
+          "contact": ["general", "moderation"],
+          "extraUserMessage": "Du kannst uns zur Ranganpassung auch schriftlich kontaktieren. ",
+          "exceptions": []
+        },
+        {
+          "channel": ["supportWaiting", "application"],
+          "contact": ["application", "moderation"],
+          "extraUserMessage": "Du kannst gerne die Steamprofil-Links von allen Accounts bereithalten. Das Gespräch dauert ca. 20 Minuten. ",
+          "exceptions": []
+        },
+        {
+          "channel": ["supportWaiting", "skinCouncil"],
+          "contact": ["skinCouncil"],
+          "extraUserMessage": "Du kannst gerne auch einen Skin Berater direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ",
+          "exceptions": []
+        },
+        {
+          "channel": ["supportWaiting", "coaching"],
+          "contact": ["coaching"],
+          "extraUserMessage": "Du kannst gerne auch einen Coach direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ",
+          "exceptions": []
+        },
+        {
+          "channel": ["supportWaiting", "workCouncil"],
+          "contact": ["workCouncil"],
+          "extraUserMessage": "Du kannst uns gerne auch direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ",
+          "exceptions": []
+        }
+      ],
+      "join": [
+        {
+          "servergroup": ["reportTo", "moderation"],
+          "message": [
+            "Bitte melde dich in dem Channel 'Support | Wartezimmer' bei einem Moderator."
+          ]
+        },
+        {
+          "servergroup": ["reportTo", "moderationDirectly"],
+          "message": [
+            "",
+            "Bitte melde dich sofort in dem Channel 'Support | Wartezimmer' bei einem Moderator!",
+            "Du kannst keinem anderem Channel beitreten!"
+          ]
+        },
+        {
+          "servergroup": ["reportTo", "teamModeration"],
+          "message": [
+            "Bitte melde dich in dem Channel 'Support | Wartezimmer' bei einem Teambetreuer."
+          ]
+        },
+        {
+          "servergroup": ["guest"],
+          "message": [
+            "",
+            "Willkommen auf dem FruchtLabor Teamspeak. Über der Eingangshalle ist unser Supportbereich.",
+            "Falls du dem Clan beitreten willst, kannst du in den Channel 'Support | Clan Bewerbung' gehen.",
+            "Wenn du dich nur verifizieren lassen möchtest, damit du unsere Laberecke und unsere öffentliche",
+            "CS:GO Suche benutzen kannst, dann geh bitte in den Channel 'Support | Verifizierung + Ranganpassung'."
+          ]
+        }
+      ]
+    },
+    "move": {
+      "afk": {
+        "def": {
+          "def": false,
+          "micMuted": 2000,
+          "sndMuted": 2000
+        },
+        "specials": [
+          {
+            "channels": [],
+            "channelParents": [
+              ["spacer", "playerSearch"],
+              ["match", "esportal"],
+              ["match", "mmIntern"],
+              ["match", "mmPublic"],
+              ["match", "wingman"],
+              ["match", "faceitIntern"],
+              ["match", "faceitPublic"]
+            ],
+            "conditions": {
+              "def": false,
+              "micMuted": 1000,
+              "sndMuted": 1000
+            }
+          }
+        ]
+      }
+    },
+    "server": {
+      "overview": {
+        "channel": ["server", "overview"],
+        "title": "Claninterne Server",
+        "subTitle": "Instaconnect Links",
+        "description": "Tutorial für die Trainingsserver: [b][url=https://github.com/splewis/csgo-practice-mode#commands]*klick*[/url][/b]"
+      },
+      "playercount": [
+        {
+          "channel": ["server", "playercount", "duels"],
+          "prefix": "Duels (1v1)",
+          "server": ["fight", "duels"]
+        },
+        {
+          "channel": ["server", "playercount", "noAwp"],
+          "prefix": "NoAWP",
+          "server": ["retake", "noAwp"]
+        },
+        {
+          "channel": ["server", "playercount", "default"],
+          "prefix": "Standard",
+          "server": ["retake", "default"]
+        },
+        {
+          "channel": ["server", "playercount", "community"],
+          "prefix": "Communitymaps",
+          "server": ["retake", "community"]
+        }
+      ]
+    }
+  }
+}

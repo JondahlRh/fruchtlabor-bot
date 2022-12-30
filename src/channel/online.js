@@ -1,24 +1,38 @@
 const fs = require("fs");
-const errorMessage = require("../errorMessage");
+const errorMessage = require("../functions/errorMessage");
+const pathReducer = require("../functions/pathReducer");
+const readJsonFile = require("../functions/readJsonFile");
 
-const insertStatus = (client, fsData, matchChannels) => {
+const insertStatus = (client, clientChannel, fsData) => {
   if (!client) return "[color=#ff4444]offline[/color]";
 
   const { clientServergroups, cid, clientIdleTime } = client.propcache;
+  const { pid } = clientChannel.propcache;
 
-  if (fsData.channels.afk.includes(cid)) return "AFK";
-  if (fsData.channels.meeting.includes(cid)) return "Besprechung";
-  if (fsData.channels.support.includes(cid)) return "Support";
-  if (matchChannels.some((c) => c.cid === cid)) return "ingame";
-  if (fsData.groups.noSupport.some((g) => clientServergroups.includes(g))) {
+  if (fsData.channel.afk.team.away === +cid) return "AFK";
+  if (fsData.channel.meeting.team === +cid) return "Besprechung";
+  if (fsData.channel.spacer.support === +pid) return "Support";
+  if (Object.entries(fsData.channel.match).find((m) => m[1] === +pid)) {
+    return "ingame";
+  }
+  if (clientServergroups.some((sg) => +sg === fsData.servergroup.noSupport)) {
     return "No Support";
   }
-  if (fsData.groups.dnd.some((g) => clientServergroups.includes(g))) {
+  if (
+    clientServergroups.some(
+      (sg) =>
+        +sg === fsData.servergroup.live ||
+        +sg === fsData.servergroup.doNotDisturb
+    )
+  ) {
     return "Do Not Disturb";
   }
   if (
     clientIdleTime > 900000 &&
-    !fsData.channels.ignoreIdle.some((c) => c === cid)
+    !(
+      fsData.channel.afk.availableTeam === cid ||
+      !fsData.channel.afk.availableStaff === cid
+    )
   ) {
     return "abwesend";
   }
@@ -72,20 +86,17 @@ ${groupGroups
   .join("")}`;
 };
 
-const channelOnline = async (props) => {
+const online = async (props) => {
   const { teamspeak } = props;
 
-  // get definition data
-  let fsData;
-  try {
-    const data = fs.readFileSync(
-      `src/utility/${process.env.VERSION}/teamspeakData.json`,
-      "utf8"
-    );
-    fsData = JSON.parse(data);
-  } catch (error) {
-    return errorMessage("online channel @ fs", error);
-  }
+  const fsData = readJsonFile(
+    `${process.env.VERSION}/data.json`,
+    "online channel @ fsData"
+  );
+  if (!fsData) return;
+
+  const fsRanks = readJsonFile("ranks.json", "online channel @ fsRanks");
+  if (!fsRanks) return;
 
   // get all channels
   let channels;
@@ -95,26 +106,25 @@ const channelOnline = async (props) => {
     return errorMessage("online channel @ channelList", error);
   }
 
-  // get match channels
-  const matchChannels = channels.filter((c) =>
-    fsData.channels.match.includes(c.propcache.pid)
-  );
-
   // edit descriptions
-  fsData.channels.online.forEach(async (c) => {
+  fsData.functions.channel.online.forEach(async (c) => {
     // get all group categories
+
+    const ranksFiltered = ranks.filter((rank) =>
+      rank.categorie.some((cat) => c.categories.includes(cat))
+    );
+
     const listGroups = [];
-    for (const group of c.groups) {
+    for (const group of ranksFiltered) {
       // get all group clients
-      const listGroupClients = [];
-      for (const id of group.id) {
-        try {
-          listGroupClients.push(...(await teamspeak.serverGroupClientList(id)));
-        } catch (error) {
-          errorMessage("online channel @ serverGroupClientList", error);
-          continue;
-        }
+      let listGroupClients;
+      try {
+        listGroupClients = await teamspeak.serverGroupClientList(group.id);
+      } catch (error) {
+        errorMessage("online channel @ serverGroupClientList", error);
+        continue;
       }
+
       // get status for all group clients
       for (const mc of listGroupClients) {
         let client;
@@ -123,7 +133,13 @@ const channelOnline = async (props) => {
         } catch (error) {
           errorMessage("online channel @ serverGroupClientList", error);
         }
-        mc.status = insertStatus(client, fsData, matchChannels);
+        let clientChannel;
+        try {
+          clientChannel = await teamspeak.getChannelById(client.propcache.cid);
+        } catch (error) {
+          errorMessage("online channel @ serverGroupClientList", error);
+        }
+        mc.status = insertStatus(client, clientChannel, fsData);
       }
       listGroups.push({ name: group.name, clients: listGroupClients });
     }
@@ -131,9 +147,11 @@ const channelOnline = async (props) => {
     // get description
     const description = insertDescriptionData(c.title, listGroups);
 
+    const onlineChannelId = pathReducer(c.channel, fsData.channel);
+
     // check for changes
     try {
-      const channel = await teamspeak.channelInfo(c.channel);
+      const channel = await teamspeak.channelInfo(onlineChannelId);
       if (channel.channelDescription === description) return;
     } catch (error) {
       return errorMessage("online channel @ channelInfo", error);
@@ -141,7 +159,7 @@ const channelOnline = async (props) => {
 
     // edit description
     try {
-      await teamspeak.channelEdit(c.channel, {
+      await teamspeak.channelEdit(onlineChannelId, {
         channelDescription: description,
       });
     } catch (error) {
@@ -150,4 +168,4 @@ const channelOnline = async (props) => {
   });
 };
 
-module.exports = channelOnline;
+module.exports = online;

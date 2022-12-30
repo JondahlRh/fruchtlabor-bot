@@ -1,49 +1,41 @@
-const fs = require("fs");
-const errorMessage = require("../errorMessage");
+const errorMessage = require("../functions/errorMessage");
+const pathReducer = require("../functions/pathReducer");
+const readJsonFile = require("../functions/readJsonFile");
 
 const queue = { length: 0, block: false };
 
-const channelLobby = async (props) => {
-  const { teamspeak } = props;
+const lobby = async (props) => {
+  const { fsData, teamspeak } = props;
 
   // check for block and add queue or set block
   if (queue.block) return (queue.length += 1);
   queue.block = true;
 
-  // get definition data
-  let fsData;
-  try {
-    const data = fs.readFileSync(
-      `src/utility/${process.env.VERSION}/teamspeakData.json`,
-      "utf8"
-    );
-    fsData = JSON.parse(data);
-  } catch (error) {
-    return errorMessage("lobby channel @ fs (fsData)", error);
-  }
+  const fsDescription = readJsonFile(
+    "description.json",
+    "lobby channel @ fsDescription"
+  );
+  if (!fsDescription) return;
 
-  // get random list of fruits
-  let fruits;
-  try {
-    const data = fs.readFileSync(`src/utility/fruits.json`, "utf8");
-    fruits = JSON.parse(data);
-    fruits.sort(() => 0.5 - Math.random());
-  } catch (error) {
-    return errorMessage("lobby channel @ fs (fruits)", error);
-  }
+  const fsFruits = readJsonFile("fruits.json", "lobby channel @ fsFruits");
+  if (!fsFruits) return;
+  fsFruits.sort(() => 0.5 - Math.random());
 
-  for (const l of fsData.channels.lobby) {
+  for (const l of fsData.functions.channel.lobby) {
     // get all channels
     let channels;
     try {
       channels = await teamspeak.channelList();
     } catch (error) {
       errorMessage("lobby channel @ channelList", error);
-      continue;
+      return;
     }
 
     // get all lobby channels and empty lobby channels
-    const lobbyChannels = channels.filter((c) => c.propcache.pid === l.cid);
+    const lobbyChannelPid = pathReducer(l.channelParent, fsData.channel);
+    const lobbyChannels = channels.filter(
+      (c) => +c.propcache.pid === lobbyChannelPid
+    );
     const emptyLobbyChannels = lobbyChannels.filter(
       (c) => c.propcache.totalClients === 0
     );
@@ -51,58 +43,40 @@ const channelLobby = async (props) => {
     // define createChannel properties
     const createProperties = {
       channelFlagPermanent: true,
-      cpid: l.cid,
+      cpid: lobbyChannelPid,
       channelOrder: lobbyChannels[0]?.propcache?.channelOrder,
-      channelDescription: l?.description || null,
+      channelDescription: fsDescription.join("\n") || null,
       channelFlagMaxclientsUnlimited: !l?.clientLimit,
       channelMaxclients: l?.clientLimit || null,
     };
 
     // get lobbyChannelName
-    const filterList = fsData.channels[l.list];
+    const filterList = Object.entries(fsData.channel[l.categorie]).map(
+      (c) => c[1]
+    );
     const filterLobbyChannels = channels.filter((c) =>
       filterList.includes(c.propcache.pid)
     );
-    const lobbyChannelName = fruits.find((f) =>
+    const lobbyChannelName = fsFruits.find((f) =>
       filterLobbyChannels.every((c) => !c.propcache.channelName.includes(f))
     );
 
-    // create minimum amount of channels
-    if (lobbyChannels.length < l.minimum) {
-      const lobbyChannelName2 = fruits.find(
-        (f) =>
-          f !== lobbyChannelName &&
-          filterLobbyChannels.every((c) => !c.propcache.channelName.includes(f))
-      );
-      const lobbyChannelNames = [lobbyChannelName, lobbyChannelName2];
+    // delete lobby channels
+    if (emptyLobbyChannels.length > 1 && lobbyChannels.length > l.minimum) {
+      const cv = lobbyChannels.length < l.minimum ? l.minimum : 1;
 
-      for (let i = 0; i < l.minimum - lobbyChannels.length; i++) {
-        let newChannel;
-        try {
-          newChannel = await teamspeak.channelCreate(
-            l.name + lobbyChannelNames[i],
-            createProperties
-          );
-        } catch (error) {
-          errorMessage("lobby channel @ channelCreate", error);
-          continue;
-        }
-
-        // add permissions
-        const permissions = l.permissions ? Object.entries(l.permissions) : [];
-        for (const [permname, permvalue] of permissions) {
-          try {
-            await teamspeak.channelSetPerm(newChannel, {
-              permname,
-              permvalue,
-            });
-          } catch (error) {
-            return errorMessage("lobby channel @ channelSetPerm", error);
-          }
-        }
+      for (let i = cv; i < emptyLobbyChannels.length; i++) {
+        console.log({
+          lo: lobbyChannels.length,
+          em: emptyLobbyChannels.length,
+        });
       }
-      continue;
     }
+
+    // create lobby channels
+    if (emptyLobbyChannels.length === 0 || lobbyChannels.length < l.minimum) {
+    }
+
     // remove empty channel (except 1 or minimum of channels)
     if (emptyLobbyChannels.length > 1) {
       const CV = lobbyChannels.length <= l.minimum ? l.minimum : 1;
@@ -116,11 +90,17 @@ const channelLobby = async (props) => {
       }
     }
     // create empty channel
-    if (emptyLobbyChannels.length < 1) {
+    if (emptyLobbyChannels.length < 1 || lobbyChannels.length < l.minimum) {
+      if (lobbyChannels.length + 1 < l.minimum) {
+        setTimeout(() => {
+          lobby({ fsData, teamspeak });
+        }, 0);
+      }
+
       let newChannel;
       try {
         newChannel = await teamspeak.channelCreate(
-          l.name + lobbyChannelName,
+          `${l.prefix} ${l.prefix ? "-" : ""} ${lobbyChannelName}`,
           createProperties
         );
       } catch (error) {
@@ -159,8 +139,8 @@ const channelLobby = async (props) => {
   queue.block = false;
   if (queue.length > 0) {
     queue.length -= 1;
-    channelLobby({ teamspeak });
+    lobby({ fsData, teamspeak });
   }
 };
 
-module.exports = channelLobby;
+module.exports = lobby;

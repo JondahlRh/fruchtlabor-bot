@@ -1,4 +1,4 @@
-const support = require("./messageSupport");
-const join = require("./messageJoin");
+const support = require("./support");
+const join = require("./join");
 
 module.exports = { support, join };

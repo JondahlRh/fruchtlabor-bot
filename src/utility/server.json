@@ -1,0 +1,116 @@
+[
+  {
+    "name": "retake",
+    "title": "Retake",
+    "servers": [
+      {
+        "name": "noAwp",
+        "title": "Retake NoAWP",
+        "ip": "162.55.2.85",
+        "port": 27003
+      },
+      {
+        "name": "default",
+        "title": "Retake Standard",
+        "ip": "162.55.2.85",
+        "port": 27011
+      },
+      {
+        "name": "community",
+        "title": "Retake Communitymaps",
+        "ip": "162.55.2.85",
+        "port": 27004
+      }
+    ]
+  },
+  {
+    "name": "surf",
+    "title": "Surf",
+    "servers": [
+      {
+        "name": "amateur",
+        "title": "Surf 1-2",
+        "ip": "162.55.2.85",
+        "port": 27007
+      },
+      {
+        "name": "expert",
+        "title": "Surf 3-6",
+        "ip": "162.55.2.85",
+        "port": 27008
+      }
+    ]
+  },
+  {
+    "name": "kz",
+    "title": "KZ",
+    "servers": [
+      {
+        "name": "amateur",
+        "title": "KZ 1-2",
+        "ip": "162.55.2.85",
+        "port": 27005
+      },
+      {
+        "name": "expert",
+        "title": "KZ 3-7",
+        "ip": "162.55.2.85",
+        "port": 27006
+      }
+    ]
+  },
+  {
+    "name": "training",
+    "title": "Trainings",
+    "servers": [
+      {
+        "name": "64tick",
+        "title": "Training 64-Tick",
+        "ip": "162.55.2.85",
+        "port": 27001
+      },
+      {
+        "name": "128tick",
+        "title": "Training 128-Tick",
+        "ip": "162.55.2.85",
+        "port": 27002
+      }
+    ]
+  },
+  {
+    "name": "fight",
+    "title": "1v1",
+    "servers": [
+      {
+        "name": "duels",
+        "title": "Duels (1v1)",
+        "ip": "162.55.2.85",
+        "port": 25005
+      },
+      {
+        "name": "multi",
+        "title": "Multi 1v1",
+        "ip": "162.55.2.85",
+        "port": 27012
+      },
+      {
+        "name": "default",
+        "title": "1v1 / 2v2",
+        "ip": "162.55.2.85",
+        "port": 27009
+      }
+    ]
+  },
+  {
+    "name": "dm",
+    "title": "DM",
+    "servers": [
+      {
+        "name": "ffa",
+        "title": "FFA",
+        "ip": "162.55.2.85",
+        "port": 27010
+      }
+    ]
+  }
+]

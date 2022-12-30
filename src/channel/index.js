@@ -1,6 +1,5 @@
-const custom = require("./channelCustom");
-const lobby = require("./channelLobby");
-const online = require("./channelOnline");
-const server = require("./channelServer");
+const custom = require("./custom");
+const lobby = require("./lobby");
+const online = require("./online");
 
-module.exports = { custom, lobby, online, server };
+module.exports = { custom, lobby, online };

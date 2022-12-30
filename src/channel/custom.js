@@ -1,8 +1,8 @@
-const fs = require("fs");
-const errorMessage = require("../errorMessage");
+const errorMessage = require("../functions/errorMessage");
+const pathReducer = require("../functions/pathReducer");
 
-const channelCustom = async (props) => {
-  const { teamspeak, event, self } = props;
+const custom = async (props) => {
+  const { fsData, teamspeak, event, self } = props;
 
   const { cid, clid, clientType, clientNickname, clientDatabaseId } =
     event.client.propcache;
@@ -10,22 +10,13 @@ const channelCustom = async (props) => {
   // ignore querry users
   if (clientType === 1) return;
 
-  // get definition data
-  let fsData;
-  try {
-    const data = fs.readFileSync(
-      `src/utility/${process.env.VERSION}/teamspeakData.json`,
-      "utf8"
-    );
-    fsData = JSON.parse(data);
-  } catch (error) {
-    return errorMessage("custom channel @ fs", error);
-  }
-
   // check for custom parent channel
-  const customChannel = fsData.channels.custom.find((c) => c.cid === cid);
+  const customChannel = fsData.functions.channel.custom.find(
+    (c) => pathReducer(c.channelParent, fsData.channel) === +cid
+  );
+
   if (customChannel) {
-    const channelName = customChannel.name + " - " + clientNickname;
+    const channelName = customChannel.prefix + " - " + clientNickname;
     const sliceChannelName = channelName.slice(-channelName.length, 40);
 
     // check if channel exists
@@ -63,7 +54,7 @@ const channelCustom = async (props) => {
     // set chanel manager group
     try {
       await teamspeak.setClientChannelGroup(
-        fsData.groups.channelManager,
+        fsData.channelgroup.channelManager,
         customChannelId,
         clientDatabaseId
       );
@@ -77,10 +68,15 @@ const channelCustom = async (props) => {
       return errorMessage("custom channel @ clientMove", error);
     }
 
+    const botDefaultChannel = pathReducer(
+      fsData.functions.botDefaultChannel,
+      fsData.channel
+    );
+
     // move querry user back to def channel
-    if (self.propcache.cid !== fsData.channels.botChannel) {
+    if (self.propcache.cid !== botDefaultChannel) {
       try {
-        await teamspeak.clientMove(self, fsData.channels.botChannel);
+        await teamspeak.clientMove(self, botDefaultChannel);
       } catch (error) {
         return errorMessage("custom channel @ clientMove", error);
       }
@@ -88,4 +84,4 @@ const channelCustom = async (props) => {
   }
 };
 
-module.exports = channelCustom;
+module.exports = custom;
