@@ -1,76 +1,79 @@
 {
   "servergroup": {
     "reportTo": {
-      "moderation": 318,
-      "moderationDirectly": 2480,
-      "teamModeration": 2568
+      "moderation": 2621,
+      "moderationDirectly": 2622,
+      "teamModeration": 2623
     },
-    "guest": 9,
-    "noSupport": 59,
-    "doNotDisturb": 2482,
-    "live": 2541,
+    "guest": 2519,
+    "noSupport": 2624,
+    "doNotDisturb": 2625,
+    "live": 2626,
     "support": {
-      "general": 2554,
-      "application": 2556,
-      "moderation": 2559,
-      "coaching": 2558,
-      "skinCouncil": 2574,
-      "workCouncil": 2576,
-      "teamModeration": 2591
+      "general": 2627,
+      "application": 2628,
+      "moderation": 2629,
+      "coaching": 2630,
+      "skinCouncil": 2631,
+      "workCouncil": 2632,
+      "teamModeration": 2633
     }
   },
   "channelgroup": {
-    "channelManager": 90
+    "channelManager": 99
   },
   "channel": {
-    "default": 30,
+    "default": 81388,
     "meeting": {
-      "team": 8
+      "team": 138275
     },
     "spacer": {
-      "teamtalk": 4,
-      "support": 19,
-      "playerSearch": 78,
-      "csgoTeam": 4278,
-      "custom": 127
+      "teamtalk": 138276,
+      "support": 138277,
+      "playerSearch": 138278,
+      "csgoTeam": 138279,
+      "custom": 138280
     },
-    "talk": { "default": 40 },
+    "search": {
+      "intern": 140636
+    },
+    "talk": { "default": 138281 },
     "match": {
-      "esportal": 135266,
-      "mmIntern": 4274,
-      "mmPublic": 4275,
-      "wingman": 4325,
-      "faceitIntern": 4276,
-      "faceitPublic": 4277
+      "esportal": 138282,
+      "mmIntern": 138283,
+      "mmPublic": 138284,
+      "wingman": 138285,
+      "faceitIntern": 138286,
+      "faceitPublic": 138287
     },
     "afk": {
       "team": {
-        "availableTeam": 12,
-        "availableStaff": 78098,
-        "away": 13
+        "availableTeam": 138288,
+        "availableStaff": 138289,
+        "away": 138290
       },
       "user": {
-        "available": 135,
-        "doNotDisturb": 136,
-        "away": 137,
-        "differentServer": 138
+        "available": 138291,
+        "doNotDisturb": 138292,
+        "away": 138293,
+        "differentServer": 138294
       }
     },
     "supportWaiting": {
-      "general": 24,
-      "verification": 25,
-      "application": 27,
-      "skinCouncil": 22621,
-      "coaching": 61154,
-      "workCouncil": 68837
+      "general": 138295,
+      "verification": 138296,
+      "application": 138297,
+      "skinCouncil": 138298,
+      "coaching": 138299,
+      "workCouncil": 138300
     },
     "server": {
-      "overview": 10270,
+      "overview": 138301,
       "playercount": {
-        "duels": 131494,
-        "noAwp": 15094,
-        "default": 51566,
-        "community": 18855
+        "duels": 138302,
+        "noAwp": 138303,
+        "default": 138304,
+        "community": 138305
       }
     }
   },
@@ -197,7 +200,7 @@
             },
             {
               "servergroup": ["reportTo", "teamModeration"],
-              "contact": ["teamModeration"],
+              "contact": ["teamModeration", "moderation"],
               "extraSupporterMessage": "Teambetreuer Gespräch"
             }
           ]
@@ -268,19 +271,36 @@
     },
     "move": {
       "afk": {
-        "def": {
+        "general": {
           "def": false,
-          "micMuted": false,
-          "sndMuted": false
+          "micMuted": 3600000,
+          "sndMuted": 1800000
         },
-        "specials": [
+        "moveTypes": [
+          {
+            "channels": [["default"]],
+            "channelParents": [],
+            "conditions": {
+              "def": 300000,
+              "micMuted": false,
+              "sndMuted": false
+            }
+          },
           {
             "channels": [],
-            "channelParents": [],
+            "channelParents": [
+              ["spacer", "playerSearch"],
+              ["match", "esportal"],
+              ["match", "mmIntern"],
+              ["match", "mmPublic"],
+              ["match", "wingman"],
+              ["match", "faceitIntern"],
+              ["match", "faceitPublic"]
+            ],
             "conditions": {
               "def": false,
               "micMuted": false,
-              "sndMuted": false
+              "sndMuted": 1200000
             }
           }
         ]
@@ -291,7 +311,8 @@
         "channel": ["server", "overview"],
         "title": "Claninterne Server",
         "subTitle": "Instaconnect Links",
-        "description": "Tutorial für die Trainingsserver: [b][url=https://github.com/splewis/csgo-practice-mode#commands]*klick*[/url][/b]"
+        "description": "Tutorial für die Trainingsserver: [b][url=https://github.com/splewis/csgo-practice-mode#commands]*klick*[/url][/b]",
+        "serverTypes": ["retake", "surf", "kz", "training", "fight", "dm"]
       },
       "playercount": [
         {
@@ -314,7 +335,22 @@
           "prefix": "Communitymaps",
           "server": ["retake", "community"]
         }
-      ]
+      ],
+      "intern": {
+        "channel": ["search", "intern"],
+        "title": "Claninterne Matches",
+        "subTitle": "Zur Suche von internen Clanmatches",
+        "description": [
+          "Die Demos findest du hier:",
+          "[url]https://demos.fruchtlabor.net/clanintern/[/url]\n",
+          "Alternativ könnt ihr auch unsere FaceIt Hub benutzen:",
+          "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]\n"
+        ],
+        "footer": [
+          "Communitymap Vorschläge könnt ihr hier einbringen:",
+          "[url=https://docs.google.com/forms/d/e/1FAIpQLSdIrtQ5vKiL_1doCF0pzO1UPGd1MRi7hRZtmFEBveC_vaACpA/viewform]Google Form[/url]"
+        ]
+      }
     }
   }
 }

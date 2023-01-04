@@ -1,10 +1,8 @@
-const fs = require("fs");
-const errorMessage = require("../functions/errorMessage");
-const pathReducer = require("../functions/pathReducer");
-const readJsonFile = require("../functions/readJsonFile");
+const errorMessage = require("../utility/errorMessage");
+const pathReducer = require("../utility/pathReducer");
 
 const support = async (props) => {
-  const { teamspeak, event } = props;
+  const { fsData, teamspeak, event } = props;
 
   const {
     clientServergroups,
@@ -13,30 +11,24 @@ const support = async (props) => {
     clientUniqueIdentifier,
     clientNickname,
   } = event.client.propcache;
-  const { channelName } = event?.channel?.propcache || {
-    channelName: event.cid,
-  };
+  const channelName = event?.channel?.propcache.channelName || event.cid;
 
   // ignore querry users
   if (clientType === 1) return;
 
-  const fsData = readJsonFile(
-    `${process.env.VERSION}/data.json`,
-    "support message @ fsData"
-  );
-  if (!fsData) return;
-
-  // get support groups
+  // get support group ids
   let extraSupporterMessage;
   let extraUserMessage;
   const supportGroups = [];
   outer: for (const sup of fsData.functions.message.support) {
+    // check client channel found
     if (pathReducer(sup.channel, fsData.channel) !== +cid) {
       continue outer;
     }
 
     extraUserMessage = sup.extraUserMessage;
 
+    // add support group ids (check exception first)
     inner: for (const exception of sup.exceptions) {
       const exceptionGroupId = pathReducer(
         exception.servergroup,
@@ -58,7 +50,6 @@ const support = async (props) => {
     });
     break outer;
   }
-
   if (supportGroups.length === 0) return;
 
   // get all channels
@@ -84,8 +75,10 @@ const support = async (props) => {
     const clientChannel = channels.find((c) => c.propcache.cid === cid);
     const { pid } = clientChannel.propcache;
 
+    // check if client is supporter
     if (!clientServergroups.some((g) => supportGroups.includes(+g))) return;
 
+    // checks if supporter should be ignored
     const ingame = Object.entries(fsData.channel.match).find(
       (m) => m[1] === +pid
     );
@@ -99,7 +92,6 @@ const support = async (props) => {
         +sg === fsData.servergroup.live ||
         +sg === fsData.servergroup.doNotDisturb
     );
-
     if (ingame || away || meeting || noSupport || doNotDisturb) return;
 
     supportClients.push(client);

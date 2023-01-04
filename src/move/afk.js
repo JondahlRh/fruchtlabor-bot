@@ -1,108 +1,124 @@
-const fs = require("fs");
-const errorMessage = require("../functions/errorMessage");
-const pathReducer = require("../functions/pathReducer");
-const readJsonFile = require("../functions/readJsonFile");
+const errorMessage = require("../utility/errorMessage");
+const pathReducer = require("../utility/pathReducer");
+const readJsonFile = require("../utility/readJsonFile");
 
-// move client
-const checkClientMove = async (client, conditions, moveChannel) => {
-  const { clientIdleTime, clientInputMuted, clientOutputMuted } =
-    client.propcache;
+const moveClient = async (client, channelId, maxIdleTime) => {
+  const idleTimeMinutes = Math.floor(maxIdleTime / 1000 / 60);
+  const message = `Du warst über ${idleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`;
 
-  const { def, micMuted, sndMuted } = conditions;
-
-  if (
-    (!def || clientIdleTime < def) &&
-    (!micMuted || !clientInputMuted || clientIdleTime < micMuted) &&
-    (!sndMuted || !clientOutputMuted || clientIdleTime < sndMuted)
-  ) {
-    return;
-  }
-
+  // move client
   try {
-    await client.move(moveChannel);
+    await client.move(channelId);
   } catch (error) {
     return errorMessage("move afk @ move", error);
   }
 
-  const idleMinute = Math.floor(clientIdleTime / 1000 / 60);
+  // message client
   try {
-    await client.message(
-      `Du warst ${idleMinute} Minuten abwesend und wurdest in unseren Afk Channel gemoved!`
-    );
+    await client.message(message);
   } catch (error) {
     return errorMessage("move afk @ message", error);
   }
 };
 
+const checkMove = (client, conditions) => {
+  const { clientIdleTime, clientInputMuted, clientOutputMuted } =
+    client.propcache;
+  const { def, micMuted, sndMuted } = conditions;
+
+  // checks if specefic condition should be checked and if idle time exceeded
+  if (def && clientIdleTime > def) {
+    return def;
+  }
+  if (micMuted && clientInputMuted && clientIdleTime > micMuted) {
+    return micMuted;
+  }
+  if (sndMuted && clientOutputMuted && clientIdleTime > sndMuted) {
+    return sndMuted;
+  }
+};
+
 const afk = async (props) => {
-  const { teamspeak } = props;
+  const { fsData, teamspeak } = props;
 
-  const fsData = readJsonFile(
-    `${process.env.VERSION}/data.json`,
-    "move afk @ fsData"
+  // get ranks data
+  const fsRanks = readJsonFile(
+    `${process.env.VERSION}/ranks.json`,
+    "move afk @ fsRanks"
   );
-  if (!fsData) return;
-
-  const fsRanks = readJsonFile("ranks.json", "move afk @ fsRanks");
   if (!fsRanks) return;
 
-  const { def, specials } = fsData.functions.move.afk;
-
-  // get all clients
+  // get clients
   let clients;
   try {
     clients = await teamspeak.clientList({ clientType: 0 });
   } catch (error) {
-    return errorMessage("move afk @ clientList", error);
+    return errorMessage("move afk @ clientList");
   }
 
-  // get all channels
-  let allChannels;
+  // get channels
+  let channels;
   try {
-    allChannels = await teamspeak.channelList();
+    channels = await teamspeak.channelList();
   } catch (error) {
-    return errorMessage("move afk @ channelList", error);
+    return errorMessage("move afk @ channelList");
   }
 
-  clients.forEach((client) => {
+  // get afk channel ids
+  const afkChannels = [
+    ...Object.values(fsData.channel.afk.team),
+    ...Object.values(fsData.channel.afk.user),
+  ];
+
+  outer: for (const client of clients) {
     const { cid, clientServergroups } = client.propcache;
 
-    // check if user is already in afk channel
-    const afkChannels = [
-      ...Object.entries(fsData.channel.afk.team).map((a) => a[1]),
-      ...Object.entries(fsData.channel.afk.user).map((a) => a[1]),
-    ];
-    if (afkChannels.includes(+cid)) return;
+    // get parent channel id
+    const pid = channels.find((c) => c.propcache.cid === cid)?.propcache?.pid;
 
-    // differentiate between team or user afk channel
-    const tm = ranks.find((r) => clientServergroups.some((sg) => +sg === r.id));
-    let moveChannel;
-    if (tm?.categorie.includes("teamAfk")) {
-      moveChannel = fsData.channel.afk.team.away;
+    // get move channel id
+    const teamAfkRankIds = fsRanks
+      .filter((r) => r.categorie.includes("teamAfk"))
+      .map((r) => r.id);
+    let moveChannelId;
+    if (clientServergroups.some((sg) => teamAfkRankIds.includes(+sg))) {
+      moveChannelId = fsData.channel.afk.team.away;
     } else {
-      moveChannel = fsData.channel.afk.user.away;
+      moveChannelId = fsData.channel.afk.user.away;
     }
 
-    checkClientMove(client, def, moveChannel);
+    // ignore users in afk channel
+    if (afkChannels.includes(+cid)) continue outer;
 
-    for (const type of specials) {
-      const { channels, channelParents, conditions } = type;
+    // check move for default data
+    const maxIdleTime = checkMove(client, fsData.functions.move.afk.general);
+    if (maxIdleTime) {
+      moveClient(client, moveChannelId, maxIdleTime);
+      continue outer;
+    }
 
-      for (const c of channels) {
-        const channelId = pathReducer(c, fsData.channel);
+    inner: for (const moveType of fsData.functions.move.afk.moveTypes) {
+      // get channel and parent channel ids
+      const channelIds = moveType.channels.map((c) =>
+        pathReducer(c, fsData.channel)
+      );
+      const pchannelIds = moveType.channelParents.map((c) =>
+        pathReducer(c, fsData.channel)
+      );
 
-        if (+cid !== channelId) continue;
-        checkClientMove(client, conditions, moveChannel);
+      // check channel and parent channel
+      if (!channelIds.includes(+cid) && !pchannelIds.includes(+pid)) {
+        continue inner;
       }
-      for (const c of channelParents) {
-        const pChannelId = pathReducer(c, fsData.channel);
-        const channel = allChannels.find((ch) => +ch.propcache.cid === +cid);
 
-        if (+channel.propcache.pid !== pChannelId) continue;
-        checkClientMove(client, conditions, moveChannel);
+      // check move for move type
+      const maxIdleTime = checkMove(client, moveType.conditions);
+      if (maxIdleTime) {
+        moveClient(client, moveChannelId, maxIdleTime);
+        continue outer;
       }
     }
-  });
+  }
 };
 
 module.exports = afk;

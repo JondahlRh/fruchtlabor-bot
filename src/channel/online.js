@@ -1,8 +1,8 @@
-const fs = require("fs");
-const errorMessage = require("../functions/errorMessage");
-const pathReducer = require("../functions/pathReducer");
-const readJsonFile = require("../functions/readJsonFile");
+const errorMessage = require("../utility/errorMessage");
+const pathReducer = require("../utility/pathReducer");
+const readJsonFile = require("../utility/readJsonFile");
 
+// function returning status
 const insertStatus = (client, clientChannel, fsData) => {
   if (!client) return "[color=#ff4444]offline[/color]";
 
@@ -30,8 +30,8 @@ const insertStatus = (client, clientChannel, fsData) => {
   if (
     clientIdleTime > 900000 &&
     !(
-      fsData.channel.afk.availableTeam === cid ||
-      !fsData.channel.afk.availableStaff === cid
+      fsData.channel.afk.team.availableTeam === +cid ||
+      fsData.channel.afk.team.availableStaff === +cid
     )
   ) {
     return "abwesend";
@@ -40,6 +40,7 @@ const insertStatus = (client, clientChannel, fsData) => {
   return "[color=#44ff44]online[/color]";
 };
 
+// function returning desctiption
 const insertDescriptionData = (title, groupGroups) => {
   const getClient = (c) => {
     return `[tr][td][URL=client:///${c.clientUniqueIdentifier}]${c.clientNickname} [/URL][/td][td][center]${c.status}[/td][/tr]`;
@@ -87,15 +88,13 @@ ${groupGroups
 };
 
 const online = async (props) => {
-  const { teamspeak } = props;
+  const { fsData, teamspeak } = props;
 
-  const fsData = readJsonFile(
-    `${process.env.VERSION}/data.json`,
-    "online channel @ fsData"
+  // get ranks data
+  const fsRanks = readJsonFile(
+    `${process.env.VERSION}/ranks.json`,
+    "online channel @ fsRanks"
   );
-  if (!fsData) return;
-
-  const fsRanks = readJsonFile("ranks.json", "online channel @ fsRanks");
   if (!fsRanks) return;
 
   // get all channels
@@ -106,11 +105,9 @@ const online = async (props) => {
     return errorMessage("online channel @ channelList", error);
   }
 
-  // edit descriptions
   fsData.functions.channel.online.forEach(async (c) => {
     // get all group categories
-
-    const ranksFiltered = ranks.filter((rank) =>
+    const ranksFiltered = fsRanks.filter((rank) =>
       rank.categorie.some((cat) => c.categories.includes(cat))
     );
 
@@ -131,13 +128,15 @@ const online = async (props) => {
         try {
           client = await teamspeak.getClientByUid(mc.clientUniqueIdentifier);
         } catch (error) {
-          errorMessage("online channel @ serverGroupClientList", error);
+          errorMessage("online channel @ getClientByUid", error);
         }
         let clientChannel;
         try {
-          clientChannel = await teamspeak.getChannelById(client.propcache.cid);
+          clientChannel = await teamspeak.getChannelById(
+            client?.propcache?.cid
+          );
         } catch (error) {
-          errorMessage("online channel @ serverGroupClientList", error);
+          errorMessage("online channel @ getChannelById", error);
         }
         mc.status = insertStatus(client, clientChannel, fsData);
       }

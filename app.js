@@ -3,9 +3,9 @@ const { TeamSpeak } = require("ts3-nodejs-library");
 
 const CREDS = require("./.creds");
 
-const errorMessage = require("./src/functions/errorMessage");
-const pathReducer = require("./src/functions/pathReducer");
-const readJsonFile = require("./src/functions/readJsonFile");
+const errorMessage = require("./src/utility/errorMessage");
+const pathReducer = require("./src/utility/pathReducer");
+const readJsonFile = require("./src/utility/readJsonFile");
 
 const channel = require("./src/channel");
 const message = require("./src/message");
@@ -40,7 +40,6 @@ const app = async () => {
     self = await teamspeak.self();
     await teamspeak.clientMove(self, botDefaultChannel);
   } catch (error) {
-    console.log("app @ self / clientMove", error);
     return errorMessage("app @ self / clientMove", error);
   }
 
@@ -53,9 +52,9 @@ const app = async () => {
     if (!fsData) return;
 
     channel.custom({ fsData, teamspeak, event, self });
-    // channel.lobby({ fsData, teamspeak });
-    // message.join({ fsData, event });
-    // message.support({ fsData, teamspeak, event });
+    channel.lobby({ fsData, teamspeak });
+    message.join({ fsData, event });
+    message.support({ fsData, teamspeak, event });
   });
 
   teamspeak.on("clientmoved", (event) => {
@@ -66,7 +65,7 @@ const app = async () => {
 
     channel.custom({ fsData, teamspeak, event, self });
     channel.lobby({ fsData, teamspeak });
-    // message.support({ fsData, teamspeak, event });
+    message.support({ fsData, teamspeak, event });
   });
 
   teamspeak.on("clientdisconnect", (event) => {
@@ -78,16 +77,25 @@ const app = async () => {
     channel.lobby({ fsData, teamspeak });
   });
 
-  // interval 30s:
-  // read data.json + execute functions
+  // interval: read data.json + execute functions
+  // interval 30s
   setInterval(() => {
     const fsData = getDefinitionData();
     if (!fsData) return;
 
-    // channel.online({ fsData, teamspeak });
-    // move.afk({ fsData, teamspeak });
-    // server.playercount({ fsData, teamspeak });
+    channel.online({ fsData, teamspeak });
+    move.afk({ fsData, teamspeak });
   }, 30000);
+
+  // interval 100s
+  setInterval(() => {
+    const fsData = getDefinitionData();
+    if (!fsData) return;
+
+    server.playercount({ fsData, teamspeak });
+    server.overview({ fsData, teamspeak });
+    server.intern({ fsData, teamspeak });
+  }, 10000);
 
   // error - event listener
   teamspeak.on("error", (error) => {

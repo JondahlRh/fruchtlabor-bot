@@ -112,5 +112,35 @@
         "port": 27010
       }
     ]
+  },
+  {
+    "name": "pug",
+    "title": "Pug",
+    "servers": [
+      {
+        "name": "pug1",
+        "title": "Competetivemaps (Pug 1)",
+        "ip": "162.55.2.85",
+        "port": 27013
+      },
+      {
+        "name": "pug2",
+        "title": "Competetivemaps (Pug 2)",
+        "ip": "162.55.2.85",
+        "port": 27014
+      },
+      {
+        "name": "pug3",
+        "title": "Communitymaps (Pug 3)",
+        "ip": "162.55.2.85",
+        "port": 25000
+      },
+      {
+        "name": "pug4",
+        "title": "Communitymaps (Pug 4)",
+        "ip": "162.55.2.85",
+        "port": 25001
+      }
+    ]
   }
 ]

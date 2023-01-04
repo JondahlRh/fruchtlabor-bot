@@ -1,6 +1,6 @@
-const errorMessage = require("../functions/errorMessage");
-const pathReducer = require("../functions/pathReducer");
-const readJsonFile = require("../functions/readJsonFile");
+const errorMessage = require("../utility/errorMessage");
+const pathReducer = require("../utility/pathReducer");
+const readJsonFile = require("../utility/readJsonFile");
 
 const queue = { length: 0, block: false };
 
@@ -11,17 +11,69 @@ const lobby = async (props) => {
   if (queue.block) return (queue.length += 1);
   queue.block = true;
 
+  // get description data
   const fsDescription = readJsonFile(
     "description.json",
     "lobby channel @ fsDescription"
   );
   if (!fsDescription) return;
 
+  // get fruits data
   const fsFruits = readJsonFile("fruits.json", "lobby channel @ fsFruits");
   if (!fsFruits) return;
   fsFruits.sort(() => 0.5 - Math.random());
 
-  for (const l of fsData.functions.channel.lobby) {
+  // function to delete channel
+  const deleteChannel = async (cid) => {
+    // delete channel
+    try {
+      await teamspeak.channelDelete(cid);
+    } catch (error) {
+      return errorMessage("lobby channel @ channelDelete", error);
+    }
+  };
+
+  // function to create channel
+  const createChannel = async (
+    channelName,
+    channelProperties,
+    channelPermissions = {}
+  ) => {
+    // create channel
+    let createdChannel;
+    try {
+      createdChannel = await teamspeak.channelCreate(
+        channelName,
+        channelProperties
+      );
+    } catch (error) {
+      return errorMessage("lobby channel @ channelCreate", error);
+    }
+
+    // add permissions
+    for (const [permname, permvalue] of Object.entries(channelPermissions)) {
+      try {
+        await teamspeak.channelSetPerm(createdChannel.propcache.cid, {
+          permname,
+          permvalue,
+        });
+      } catch (error) {
+        return errorMessage("lobby channel @ channelSetPerm", error);
+      }
+    }
+  };
+
+  // function to move channel
+  const moveChannel = async (cid, channelOrder) => {
+    // move empty channel to top
+    try {
+      await teamspeak.channelEdit(cid, { channelOrder });
+    } catch (error) {
+      return errorMessage("lobby channel @ channelEdit", error);
+    }
+  };
+
+  for (const lobbyData of fsData.functions.channel.lobby) {
     // get all channels
     let channels;
     try {
@@ -31,107 +83,77 @@ const lobby = async (props) => {
       return;
     }
 
-    // get all lobby channels and empty lobby channels
-    const lobbyChannelPid = pathReducer(l.channelParent, fsData.channel);
-    const lobbyChannels = channels.filter(
-      (c) => +c.propcache.pid === lobbyChannelPid
+    // get all (empty) lobby channels
+    const parentChannelId = pathReducer(
+      lobbyData.channelParent,
+      fsData.channel
     );
-    const emptyLobbyChannels = lobbyChannels.filter(
-      (c) => c.propcache.totalClients === 0
+    const channelChildren = channels.filter(
+      (c) => +c.propcache.pid === parentChannelId
+    );
+    const channelChildrenEmpty = channelChildren.filter(
+      (c) => +c.propcache.totalClients === 0
     );
 
     // define createChannel properties
     const createProperties = {
       channelFlagPermanent: true,
-      cpid: lobbyChannelPid,
-      channelOrder: lobbyChannels[0]?.propcache?.channelOrder,
-      channelDescription: fsDescription.join("\n") || null,
-      channelFlagMaxclientsUnlimited: !l?.clientLimit,
-      channelMaxclients: l?.clientLimit || null,
+      cpid: parentChannelId,
+      channelOrder: channelChildren[0]?.propcache?.channelOrder,
+      channelDescription: fsDescription.join("\n"),
+      channelFlagMaxclientsUnlimited: !lobbyData?.clientLimit,
+      channelMaxclients: lobbyData?.clientLimit || null,
     };
 
-    // get lobbyChannelName
-    const filterList = Object.entries(fsData.channel[l.categorie]).map(
-      (c) => c[1]
+    // get all sibblings channels
+    const sibblingsChannelIds = Object.values(
+      fsData.channel[lobbyData.categorie]
     );
-    const filterLobbyChannels = channels.filter((c) =>
-      filterList.includes(c.propcache.pid)
+    const sibblingsChannels = channels.filter((c) =>
+      sibblingsChannelIds.includes(+c.propcache.pid)
     );
-    const lobbyChannelName = fsFruits.find((f) =>
-      filterLobbyChannels.every((c) => !c.propcache.channelName.includes(f))
+    const unusedSibblingsChannelNames = fsFruits.filter(
+      (c) => !sibblingsChannels.some((n) => n.propcache.channelName.includes(c))
     );
 
-    // delete lobby channels
-    if (emptyLobbyChannels.length > 1 && lobbyChannels.length > l.minimum) {
-      const cv = lobbyChannels.length < l.minimum ? l.minimum : 1;
-
-      for (let i = cv; i < emptyLobbyChannels.length; i++) {
-        console.log({
-          lo: lobbyChannels.length,
-          em: emptyLobbyChannels.length,
-        });
-      }
+    // delete channels
+    const channelsToBeDeleted = Math.max(
+      0,
+      Math.min(
+        channelChildren.length - lobbyData.minimum,
+        channelChildrenEmpty.length - 1
+      )
+    );
+    for (let i = 0; i < channelsToBeDeleted; i++) {
+      await deleteChannel(channelChildrenEmpty[i + 1].propcache.cid);
     }
 
-    // create lobby channels
-    if (emptyLobbyChannels.length === 0 || lobbyChannels.length < l.minimum) {
+    // create channels
+    const channelsToBeCreated = Math.max(
+      0,
+      lobbyData.minimum - channelChildren.length,
+      1 - channelChildrenEmpty.length
+    );
+    const newChannelNames = unusedSibblingsChannelNames.slice(
+      0,
+      channelsToBeCreated
+    );
+    for (const cName of newChannelNames) {
+      const fullName = lobbyData.prefix
+        ? `${lobbyData.prefix} - ${cName}`
+        : cName;
+      await createChannel(fullName, createProperties, lobbyData.permissions);
     }
 
-    // remove empty channel (except 1 or minimum of channels)
-    if (emptyLobbyChannels.length > 1) {
-      const CV = lobbyChannels.length <= l.minimum ? l.minimum : 1;
-      for (let i = CV; i < emptyLobbyChannels.length; i++) {
-        try {
-          await teamspeak.channelDelete(emptyLobbyChannels[i].propcache.cid, 1);
-        } catch (error) {
-          errorMessage("lobby channel @ channelDelete", error);
-          continue;
-        }
-      }
-    }
-    // create empty channel
-    if (emptyLobbyChannels.length < 1 || lobbyChannels.length < l.minimum) {
-      if (lobbyChannels.length + 1 < l.minimum) {
-        setTimeout(() => {
-          lobby({ fsData, teamspeak });
-        }, 0);
-      }
-
-      let newChannel;
-      try {
-        newChannel = await teamspeak.channelCreate(
-          `${l.prefix} ${l.prefix ? "-" : ""} ${lobbyChannelName}`,
-          createProperties
-        );
-      } catch (error) {
-        errorMessage("lobby channel @ channelCreate", error);
-        continue;
-      }
-
-      // add permissions
-      const permissions = l.permissions ? Object.entries(l.permissions) : [];
-      for (const [permname, permvalue] of permissions) {
-        try {
-          await teamspeak.channelSetPerm(newChannel, {
-            permname,
-            permvalue,
-          });
-        } catch (error) {
-          return errorMessage("lobby channel @ channelSetPerm", error);
-        }
-      }
-      continue;
-    }
-    // move empty channel (to the top)
-    if (lobbyChannels[0].propcache.totalClients > 0) {
-      try {
-        await teamspeak.channelEdit(emptyLobbyChannels[0].propcache.cid, {
-          channelOrder: lobbyChannels[0].propcache.channelOrder,
-        });
-      } catch (error) {
-        errorMessage("lobby channel @ channelEdit", error);
-        continue;
-      }
+    // check if empty channel is on top
+    if (
+      channelChildren[0].propcache.totalClients > 0 &&
+      channelChildrenEmpty.length > 0
+    ) {
+      await moveChannel(
+        channelChildrenEmpty[0].propcache.cid,
+        channelChildren[0].propcache.channelOrder
+      );
     }
   }
 
