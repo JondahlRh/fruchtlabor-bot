@@ -31,11 +31,25 @@ const intern = async (props) => {
   if (!fsServers) return;
 
   // get maplist data
+  let fsMaplist;
+  try {
+    const data = fs.readFileSync(
+      "files/fl-intern-communitymaplist.txt",
+      "utf8"
+    );
+    fsMaplist = data.split("\n");
+  } catch (error) {
+    fsMaplist = [""]
+    errorMessage("intern server @ fsMaplist", error);
+  }
+  /* 
+  // #### FOR JSON FILE ####
   const fsMaplist = readJsonFile(
     "fl-intern-communitymaplist.json",
     "overview server @ fsMaplist"
   );
-  if (!fsMaplist) return;
+  if (!fsMaplist) return; 
+  */
   /*
   // #### SICHERHIET ####
   let fsMaplist;
