@@ -4,6 +4,8 @@ const errorMessage = require("../utility/errorMessage");
 const pathReducer = require("../utility/pathReducer");
 const readJsonFile = require("../utility/readJsonFile");
 
+const SERVER_TITLE_WIDTH = 30;
+
 const widthDefiner = `[tr][td]                                                                                                                                                             [/td][/tr]`;
 
 const horizontalLine = `[table]
@@ -29,6 +31,13 @@ const intern = async (props) => {
   if (!fsServers) return;
 
   // get maplist data
+  const fsMaplist = readJsonFile(
+    "fl-intern-communitymaplist.json",
+    "overview server @ fsMaplist"
+  );
+  if (!fsMaplist) return;
+  /*
+  // #### SICHERHIET ####
   let fsMaplist;
   try {
     fsMaplist = JSON.parse(
@@ -37,6 +46,7 @@ const intern = async (props) => {
   } catch (error) {
     return errorMessage("intern server @ fsMaplist", error);
   }
+  */
 
   const pugServer = fsServers.find((s) => s.name === "pug");
   const { channel, title, subTitle, description, footer } =
@@ -81,16 +91,18 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
 
     // server full handler
     const serverIsFull = serverData?.players > 1;
-    const fullServerTitle = `${serverIsFull ? "[s][color=#ff4444]" : ""}${
-      server.title
-    }:`.padEnd(30);
-    const fullConnect = serverIsFull
+
+    const serverTitlePrefix = serverIsFull ? "[s][color=#ff4444]" : "";
+    const serverTitle = serverTitlePrefix + server.title + ":";
+    const serverTtitleFixed = serverTitle.padEnd(SERVER_TITLE_WIDTH);
+
+    const serverLink = serverIsFull
       ? `[URL=steam://connect/${server.ip}:${server.port}]Connectlink[/URL]  [s][color=#ff4444]Match läuft bereits![s]`
       : `[URL]steam://connect/${server.ip}:${server.port}[/URL]`;
 
     channelDescription += "[tr]";
-    channelDescription += `[th][left][size=10]${fullServerTitle}[/th]`;
-    channelDescription += `[th][left][size=9]${fullConnect}[/size][/th]`;
+    channelDescription += `[th][left][size=10]${serverTtitleFixed}[/th]`;
+    channelDescription += `[th][left][size=9]${serverLink}[/size][/th]`;
     channelDescription += "[/tr]";
   }
   channelDescription += "[/table]";

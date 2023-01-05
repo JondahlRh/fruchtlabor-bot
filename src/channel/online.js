@@ -2,6 +2,8 @@ const errorMessage = require("../utility/errorMessage");
 const pathReducer = require("../utility/pathReducer");
 const readJsonFile = require("../utility/readJsonFile");
 
+const MAX_IDLE_TIME = 900000;
+
 // function returning status
 const insertStatus = (client, clientChannel, fsData) => {
   if (!client) return "[color=#ff4444]offline[/color]";
@@ -28,7 +30,7 @@ const insertStatus = (client, clientChannel, fsData) => {
     return "Do Not Disturb";
   }
   if (
-    clientIdleTime > 900000 &&
+    clientIdleTime > MAX_IDLE_TIME &&
     !(
       fsData.channel.afk.team.availableTeam === +cid ||
       fsData.channel.afk.team.availableStaff === +cid
@@ -146,9 +148,8 @@ const online = async (props) => {
     // get description
     const description = insertDescriptionData(c.title, listGroups);
 
-    const onlineChannelId = pathReducer(c.channel, fsData.channel);
-
     // check for changes
+    const onlineChannelId = pathReducer(c.channel, fsData.channel);
     try {
       const channel = await teamspeak.channelInfo(onlineChannelId);
       if (channel.channelDescription === description) return;

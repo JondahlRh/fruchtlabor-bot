@@ -3,6 +3,9 @@ const errorMessage = require("../utility/errorMessage");
 const pathReducer = require("../utility/pathReducer");
 const readJsonFile = require("../utility/readJsonFile");
 
+const SERVER_TITLE_WIDTH = 30;
+const PLAYERCOUNT_WIDTH = 30;
+
 const widthDefiner = `[tr][td]                                                                                                                                                             [/td][/tr]`;
 
 const horizontalLine = `[table]
@@ -72,8 +75,10 @@ ${widthDefiner}
       const serverData = await getServerData(server.ip, server.port);
 
       // format title and add player count
-      const fullServerTitle = `${server.title}:`.padEnd(25);
-      const playerCount = `(Spieler: ${serverData?.players || 0})`.padStart(15);
+      const fullServerTitle = `${server.title}:`.padEnd(SERVER_TITLE_WIDTH);
+      const playerCount = `(Spieler: ${serverData?.players || 0})`.padStart(
+        PLAYERCOUNT_WIDTH
+      );
 
       channelDescription += "[tr]";
       channelDescription += `[th][left][size=10]${fullServerTitle}[/th]`;
