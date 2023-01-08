@@ -5,36 +5,31 @@ const readJsonFile = require("../utility/readJsonFile");
 const MAX_IDLE_TIME = 900000;
 
 // function returning status
-const insertStatus = (client, clientChannel, fsData) => {
+const insertStatus = (client, channel, fsData) => {
   if (!client) return "[color=#ff4444]offline[/color]";
 
-  const { clientServergroups, cid, clientIdleTime } = client.propcache;
-  const { pid } = clientChannel.propcache;
+  const { cid, clientServergroups, clientIdleTime } = client.propcache;
+  const { pid } = channel.propcache;
 
-  if (fsData.channel.afk.team.away === +cid) return "AFK";
-  if (fsData.channel.meeting.team === +cid) return "Besprechung";
-  if (fsData.channel.spacer.support === +pid) return "Support";
-  if (Object.entries(fsData.channel.match).find((m) => m[1] === +pid)) {
-    return "ingame";
-  }
-  if (clientServergroups.some((sg) => +sg === fsData.servergroup.noSupport)) {
-    return "No Support";
-  }
+  const { live, doNotDisturb, noSupport } = fsData.servergroup;
+  const { afk, meeting, match, spacer } = fsData.channel;
+
+  if (afk.team.away === +cid) return "AFK";
+  if (meeting.team === +cid) return "Besprechung";
+  if (spacer.support === +pid) return "Support";
+  if (Object.values(match).includes(+pid)) return "ingame";
+  if (clientServergroups.some((sg) => +sg === noSupport)) return "No Support";
+
   if (
-    clientServergroups.some(
-      (sg) =>
-        +sg === fsData.servergroup.live ||
-        +sg === fsData.servergroup.doNotDisturb
-    )
+    clientServergroups.some((sg) => +sg === live || +sg === doNotDisturb) ||
+    spacer.csgoTeam === +pid
   ) {
     return "Do Not Disturb";
   }
+
   if (
     clientIdleTime > MAX_IDLE_TIME &&
-    !(
-      fsData.channel.afk.team.availableTeam === +cid ||
-      fsData.channel.afk.team.availableStaff === +cid
-    )
+    !(afk.team.availableTeam === +cid || afk.team.availableStaff === +cid)
   ) {
     return "abwesend";
   }

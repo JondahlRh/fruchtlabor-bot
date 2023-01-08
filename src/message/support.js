@@ -118,7 +118,7 @@ const support = async (props) => {
         extraUserMessage;
       break;
     case 1:
-      supportMessage += "(Keine weiteren Suporter kontaktiert)";
+      supportMessage += "(Keine weiteren Suporter kontaktiert";
       userMessage +=
         "bitte warte kurz, wir helfen dir gleich. " +
         extraUserMessage +

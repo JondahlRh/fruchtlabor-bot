@@ -1,4 +1,5 @@
 const query = require("source-server-query");
+
 const errorMessage = require("../utility/errorMessage");
 const readJsonFile = require("../utility/readJsonFile");
 const pathReducer = require("../utility/pathReducer");

@@ -83,19 +83,19 @@
       "custom": [
         {
           "channelParent": ["spacer", "support"],
-          "channelGroup": ["channelManager"],
+          "channelgroup": ["channelManager"],
           "prefix": "Support",
           "permissions": { "i_channel_needed_join_power": 35 }
         },
         {
           "channelParent": ["spacer", "playerSearch"],
-          "channelGroup": ["channelManager"],
+          "channelgroup": ["channelManager"],
           "prefix": "Spielersuche",
           "permissions": { "i_channel_needed_join_power": 20 }
         },
         {
           "channelParent": ["spacer", "custom"],
-          "channelGroup": ["channelManager"],
+          "channelgroup": ["channelManager"],
           "prefix": "Customchannel",
           "permissions": {}
         }

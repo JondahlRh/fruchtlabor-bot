@@ -1,10 +1,12 @@
-const fs = require("fs");
 const query = require("source-server-query");
+
 const errorMessage = require("../utility/errorMessage");
 const pathReducer = require("../utility/pathReducer");
+const readMaplist = require("../utility/readMaplist");
 const readJsonFile = require("../utility/readJsonFile");
 
 const SERVER_TITLE_WIDTH = 30;
+const PLAYERS_SERVER_USED = 5;
 
 const widthDefiner = `[tr][td]                                                                                                                                                             [/td][/tr]`;
 
@@ -31,36 +33,7 @@ const intern = async (props) => {
   if (!fsServers) return;
 
   // get maplist data
-  let fsMaplist;
-  try {
-    const data = fs.readFileSync(
-      "files/fl-intern-communitymaplist.txt",
-      "utf8"
-    );
-    fsMaplist = data.split("\n");
-  } catch (error) {
-    fsMaplist = [""]
-    errorMessage("intern server @ fsMaplist", error);
-  }
-  /* 
-  // #### FOR JSON FILE ####
-  const fsMaplist = readJsonFile(
-    "fl-intern-communitymaplist.json",
-    "overview server @ fsMaplist"
-  );
-  if (!fsMaplist) return; 
-  */
-  /*
-  // #### SICHERHIET ####
-  let fsMaplist;
-  try {
-    fsMaplist = JSON.parse(
-      fs.readFileSync(process.env.PATHTOINTERNMAPS, "utf8")
-    );
-  } catch (error) {
-    return errorMessage("intern server @ fsMaplist", error);
-  }
-  */
+  const fsMaplist = readMaplist("intern server @ fsMaplist");
 
   const pugServer = fsServers.find((s) => s.name === "pug");
   const { channel, title, subTitle, description, footer } =
@@ -104,7 +77,7 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
     const serverData = await getServerData(server.ip, server.port);
 
     // server full handler
-    const serverIsFull = serverData?.players > 1;
+    const serverIsFull = serverData?.players > PLAYERS_SERVER_USED;
 
     const serverTitlePrefix = serverIsFull ? "[s][color=#ff4444]" : "";
     const serverTitle = serverTitlePrefix + server.title + ":";

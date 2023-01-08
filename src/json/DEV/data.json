@@ -83,19 +83,19 @@
       "custom": [
         {
           "channelParent": ["spacer", "support"],
-          "channelGroup": ["channelManager"],
+          "channelgroup": ["channelManager"],
           "prefix": "Support",
           "permissions": { "i_channel_needed_join_power": 35 }
         },
         {
           "channelParent": ["spacer", "playerSearch"],
-          "channelGroup": ["channelManager"],
+          "channelgroup": ["channelManager"],
           "prefix": "Spielersuche",
           "permissions": { "i_channel_needed_join_power": 20 }
         },
         {
           "channelParent": ["spacer", "custom"],
-          "channelGroup": ["channelManager"],
+          "channelgroup": ["channelManager"],
           "prefix": "Customchannel",
           "permissions": {}
         }
@@ -272,16 +272,16 @@
     "move": {
       "afk": {
         "general": {
-          "def": false,
-          "micMuted": 3600000,
-          "sndMuted": 1800000
+          "def": 5000,
+          "micMuted": false,
+          "sndMuted": false
         },
         "moveTypes": [
           {
             "channels": [["default"]],
             "channelParents": [],
             "conditions": {
-              "def": 300000,
+              "def": false,
               "micMuted": false,
               "sndMuted": false
             }
@@ -300,7 +300,7 @@
             "conditions": {
               "def": false,
               "micMuted": false,
-              "sndMuted": 1200000
+              "sndMuted": false
             }
           }
         ]

@@ -73,6 +73,9 @@ const afk = async (props) => {
   outer: for (const client of clients) {
     const { cid, clientServergroups } = client.propcache;
 
+    // ignore users in afk channel
+    if (afkChannels.includes(+cid)) continue outer;
+
     // get parent channel id
     const pid = channels.find((c) => c.propcache.cid === cid)?.propcache?.pid;
 
@@ -86,9 +89,6 @@ const afk = async (props) => {
     } else {
       moveChannelId = fsData.channel.afk.user.away;
     }
-
-    // ignore users in afk channel
-    if (afkChannels.includes(+cid)) continue outer;
 
     // check move for default data
     const maxIdleTime = checkMove(client, fsData.functions.move.afk.general);

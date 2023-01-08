@@ -1,10 +1,11 @@
 const query = require("source-server-query");
+
 const errorMessage = require("../utility/errorMessage");
 const pathReducer = require("../utility/pathReducer");
 const readJsonFile = require("../utility/readJsonFile");
 
-const SERVER_TITLE_WIDTH = 30;
-const PLAYERCOUNT_WIDTH = 30;
+const SERVER_TITLE_WIDTH = 25;
+const PLAYERCOUNT_WIDTH = 15;
 
 const widthDefiner = `[tr][td]                                                                                                                                                             [/td][/tr]`;
 

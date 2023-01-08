@@ -51,9 +51,13 @@ const custom = async (props) => {
   }
 
   // set channel manager group
+  const channelgroupId = pathReducer(
+    customChannel.channelgroup,
+    fsData.channelgroup
+  );
   try {
     await teamspeak.setClientChannelGroup(
-      fsData.channelgroup.channelManager,
+      channelgroupId,
       customChannelId,
       clientDatabaseId
     );

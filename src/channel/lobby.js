@@ -73,6 +73,7 @@ const lobby = async (props) => {
     }
   };
 
+  // loop all lobby channels
   for (const lobbyData of fsData.functions.channel.lobby) {
     // get all channels
     let channels;
