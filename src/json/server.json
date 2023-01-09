@@ -140,6 +140,12 @@
         "title": "Communitymaps (Pug4)",
         "ip": "162.55.2.85",
         "port": 25001
+      },
+      {
+        "name": "pug5",
+        "title": "Pugserver mit Retake Warmup (TestPug5)",
+        "ip": "162.55.2.85",
+        "port": 25006
       }
     ]
   }

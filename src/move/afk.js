@@ -41,6 +41,8 @@ const checkMove = (client, conditions) => {
 const afk = async (props) => {
   const { fsData, teamspeak } = props;
 
+  const { ignore, general, moveTypes } = fsData.functions.move.afk;
+
   // get ranks data
   const fsRanks = readJsonFile(
     `${process.env.VERSION}/ranks.json`,
@@ -70,6 +72,14 @@ const afk = async (props) => {
     ...Object.values(fsData.channel.afk.user),
   ];
 
+  // get ignore channels ids
+  const ignoreChannelIds = ignore.channels.map((c) =>
+    pathReducer(c, fsData.channel)
+  );
+  const ignorePchannelIds = ignore.channelParents.map((c) =>
+    pathReducer(c, fsData.channel)
+  );
+
   outer: for (const client of clients) {
     const { cid, clientServergroups } = client.propcache;
 
@@ -78,6 +88,10 @@ const afk = async (props) => {
 
     // get parent channel id
     const pid = channels.find((c) => c.propcache.cid === cid)?.propcache?.pid;
+
+    // ignore users in ignore channels
+    if (ignoreChannelIds.includes(+cid)) continue outer;
+    if (ignorePchannelIds.includes(+pid)) continue outer;
 
     // get move channel id
     const teamAfkRankIds = fsRanks
@@ -91,13 +105,13 @@ const afk = async (props) => {
     }
 
     // check move for default data
-    const maxIdleTime = checkMove(client, fsData.functions.move.afk.general);
+    const maxIdleTime = checkMove(client, general);
     if (maxIdleTime) {
       moveClient(client, moveChannelId, maxIdleTime);
       continue outer;
     }
 
-    inner: for (const moveType of fsData.functions.move.afk.moveTypes) {
+    inner: for (const moveType of moveTypes) {
       // get channel and parent channel ids
       const channelIds = moveType.channels.map((c) =>
         pathReducer(c, fsData.channel)

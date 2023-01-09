@@ -32,7 +32,8 @@
       "support": 138277,
       "playerSearch": 138278,
       "csgoTeam": 138279,
-      "custom": 138280
+      "custom": 138280,
+      "music": 141721
     },
     "search": {
       "intern": 140636
@@ -271,6 +272,10 @@
     },
     "move": {
       "afk": {
+        "ignore": {
+          "channels": [],
+          "channelParents": [["spacer", "music"]]
+        },
         "general": {
           "def": 5000,
           "micMuted": false,

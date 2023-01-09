@@ -32,7 +32,8 @@
       "support": 19,
       "playerSearch": 78,
       "csgoTeam": 4278,
-      "custom": 127
+      "custom": 127,
+      "music": 34
     },
     "search": {
       "intern": 2864
@@ -271,6 +272,10 @@
     },
     "move": {
       "afk": {
+        "ignore": {
+          "channels": [],
+          "channelParents": [["spacer", "music"]]
+        },
         "general": {
           "def": false,
           "micMuted": 3600000,
