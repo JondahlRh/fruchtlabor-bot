@@ -1,18 +1,14 @@
-.creds file needed
-example .creds file:
+# ################# #
+# todo's for setup: #
+# ################# #
 
-const PROD = {
-SERVER_IP: "", // add Teamspeak Server IP Adress
-SERVER_PORT: , // add Teamspeak (Voice) Port [Default: 9987]
-QUERY_USERNAME: "", // add Server Querry Username
-QUERY_PASSWORD: "", // add Server Querry Password
-};
+# ".creds" javascript file with these atributes:
+#   "SERVER_IP" 
+#   "SERVER_PORT"
+#   "QUERY_USERNAME"
+#   "QUERY_PASSWORD"
+#   "TS_ID"
 
-const DEV = {
-SERVER_IP: "", // add Teamspeak Server IP Adress
-SERVER_PORT: , // add Teamspeak (Voice) Port [Default: 9987]
-QUERY_USERNAME: "", // add Server Querry Username
-QUERY_PASSWORD: "", // add Server Querry Password
-};
+# "files" folder
 
-module.exports = { PROD, DEV };
+# "logs" folder
