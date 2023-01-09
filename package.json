@@ -16,6 +16,7 @@
     "ts3-nodejs-library": "^3.4.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "prettier": "2.8.1"
   }
 }
