@@ -168,7 +168,7 @@
         {
           "channel": ["afk", "team", "availableTeam"],
           "title": "Teammitglieder",
-          "categories": ["team", "trialTeam"]
+          "categories": ["team"]
         },
         {
           "channel": ["afk", "team", "availableStaff"],

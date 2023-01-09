@@ -84,7 +84,7 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
     const serverTtitleFixed = serverTitle.padEnd(SERVER_TITLE_WIDTH);
 
     const serverLink = serverIsFull
-      ? `[URL=steam://connect/${server.ip}:${server.port}]Connectlink[/URL]  [s][color=#ff4444]Match läuft bereits![s]`
+      ? `[URL=steam://connect/${server.ip}:${server.port}]Connectlink[/URL]  [s][color=#ff4444]Match läuft![s]`
       : `[URL]steam://connect/${server.ip}:${server.port}[/URL]`;
 
     channelDescription += "[tr]";
