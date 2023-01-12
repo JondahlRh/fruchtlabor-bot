@@ -5,9 +5,6 @@ const pathReducer = require("../utility/pathReducer");
 const readMaplist = require("../utility/readMaplist");
 const readJsonFile = require("../utility/readJsonFile");
 
-const SERVER_TITLE_WIDTH = 30;
-const PLAYERS_SERVER_USED = 5;
-
 const widthDefiner = `[tr][td]                                                                                                                                                             [/td][/tr]`;
 
 const horizontalLine = `[table]
@@ -77,18 +74,26 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
     const serverData = await getServerData(server.ip, server.port);
 
     // server full handler
-    const serverIsFull = serverData?.players > PLAYERS_SERVER_USED;
+    let serverTitlePrefix = "";
+    let serverTitleSuffix = "";
+    let serverLink = `[URL]steam://connect/${server.ip}:${server.port}[/URL]`;
 
-    const serverTitlePrefix = serverIsFull ? "[s][color=#ff4444]" : "";
-    const serverTitle = serverTitlePrefix + server.title + ":";
-    const serverTtitleFixed = serverTitle.padEnd(SERVER_TITLE_WIDTH);
+    if (serverData?.players >= server.maxPlayers) {
+      // server is full
+      serverTitlePrefix = "[s][color=#ff4444]";
+      serverTitleSuffix = "[/s]";
+      serverLink = `[color=#ff4444]Match läuft![/color] [URL=steam://connect/${server.ip}:${server.port}](${server.ip}:${server.port})[/URL]`;
+    } else if (serverData?.players > 0) {
+      // server is used
+      serverTitlePrefix = "[color=#ffff44]";
+      serverLink = `[color=#ffff44]Server benutzt![/color] [URL=steam://connect/${server.ip}:${server.port}](${server.ip}:${server.port})[/URL]`;
+    }
 
-    const serverLink = serverIsFull
-      ? `[URL=steam://connect/${server.ip}:${server.port}]Connectlink[/URL]  [s][color=#ff4444]Match läuft![s]`
-      : `[URL]steam://connect/${server.ip}:${server.port}[/URL]`;
+    const serverTitleEnd = `${server.title}:${serverTitleSuffix}`;
+    const fullServerTitle = serverTitlePrefix + serverTitleEnd.padEnd(25);
 
     channelDescription += "[tr]";
-    channelDescription += `[th][left][size=10]${serverTtitleFixed}[/th]`;
+    channelDescription += `[th][left][size=10]${fullServerTitle}[/th]`;
     channelDescription += `[th][left][size=9]${serverLink}[/size][/th]`;
     channelDescription += "[/tr]";
   }
