@@ -6,18 +6,21 @@
       {
         "name": "noAwp",
         "title": "Retake NoAWP",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27003
       },
       {
         "name": "default",
         "title": "Retake Standard",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27011
       },
       {
         "name": "community",
         "title": "Retake Communitymaps",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27004
       }
@@ -30,12 +33,14 @@
       {
         "name": "amateur",
         "title": "Surf 1-2",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27007
       },
       {
         "name": "expert",
         "title": "Surf 3-6",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27008
       }
@@ -48,12 +53,14 @@
       {
         "name": "amateur",
         "title": "KZ 1-2",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27005
       },
       {
         "name": "expert",
         "title": "KZ 3-7",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27006
       }
@@ -66,12 +73,14 @@
       {
         "name": "64tick",
         "title": "Training 64-Tick",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27001
       },
       {
         "name": "128tick",
         "title": "Training 128-Tick",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27002
       }
@@ -84,18 +93,21 @@
       {
         "name": "duels",
         "title": "Duels (1v1)",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 25005
       },
       {
         "name": "multi",
         "title": "Multi 1v1",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27012
       },
       {
         "name": "default",
         "title": "1v1 / 2v2",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27009
       }
@@ -108,6 +120,7 @@
       {
         "name": "ffa",
         "title": "FFA",
+        "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27010
       }
@@ -120,30 +133,35 @@
       {
         "name": "pug1",
         "title": "Competetivemaps (Pug1)",
+        "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 27013
       },
       {
         "name": "pug2",
         "title": "Competetivemaps (Pug2)",
+        "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 27014
       },
       {
         "name": "pug3",
         "title": "Communitymaps (Pug3)",
+        "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 25000
       },
       {
         "name": "pug4",
         "title": "Communitymaps (Pug4)",
+        "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 25001
       },
       {
         "name": "pug5",
         "title": "Testpug (TestPug5)",
+        "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 25006
       }
