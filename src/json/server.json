@@ -132,38 +132,45 @@
     "servers": [
       {
         "name": "pug1",
-        "title": "Competetivemaps (Pug1)",
+        "title": "Pug 1 (Competetivemaps)",
         "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 27013
       },
       {
         "name": "pug2",
-        "title": "Competetivemaps (Pug2)",
+        "title": "Pug 2 (Competetivemaps)",
         "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 27014
       },
       {
         "name": "pug3",
-        "title": "Communitymaps (Pug3)",
+        "title": "Pug 3 (Communitymaps)",
         "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 25000
       },
       {
         "name": "pug4",
-        "title": "Communitymaps (Pug4)",
+        "title": "Pug 4 (Communitymaps)",
         "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 25001
       },
       {
         "name": "pug5",
-        "title": "Testpug (TestPug5)",
+        "title": "Pug 5 (Beides)",
         "maxPlayers": 10,
         "ip": "162.55.2.85",
         "port": 25006
+      },
+      {
+        "name": "pug6",
+        "title": "Pug 6 (Beides)",
+        "maxPlayers": 10,
+        "ip": "162.55.2.85",
+        "port": 25008
       }
     ]
   }
