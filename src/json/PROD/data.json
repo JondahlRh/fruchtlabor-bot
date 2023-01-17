@@ -343,15 +343,21 @@
       ],
       "intern": {
         "channel": ["search", "intern"],
-        "title": "Claninterne Matches",
-        "subTitle": "Zur Suche von internen Clanmatches",
         "description": [
           "Die Demos findest du hier:",
           "[url]https://demos.fruchtlabor.net/clanintern/[/url]\n",
           "Alternativ könnt ihr auch unsere FaceIt Hub benutzen:",
-          "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]\n"
+          "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]\n",
+          "Bitte klärt vorher, wie seriös ihr spielen wollt!"
         ],
-        "footer": [
+        "rules": [
+          "Sich anstrengen ist erlaubt, sich entspannen und etwas spass haben auch.",
+          "Denkt dabei aber immer ans Team in dem ihr spielt.",
+          "Es soll niemand benachteiligt oder wegen seiner Spielweise verurteilt werden.",
+          "Einigt euch im Vornherein auf eine Spielweise und haltet euch daran.",
+          "Absichtliches Griefing innerhalb des Teams ist verboten, ausser alle Teammitglieder sind damit einverstanden."
+        ],
+        "mapFooter": [
           "Communitymap Vorschläge könnt ihr hier einbringen:",
           "[url=https://docs.google.com/forms/d/e/1FAIpQLSdIrtQ5vKiL_1doCF0pzO1UPGd1MRi7hRZtmFEBveC_vaACpA/viewform]Google Form[/url]"
         ]

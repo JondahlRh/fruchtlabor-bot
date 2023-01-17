@@ -4,8 +4,7 @@ const errorMessage = require("../utility/errorMessage");
 const pathReducer = require("../utility/pathReducer");
 const readJsonFile = require("../utility/readJsonFile");
 
-const SERVER_TITLE_WIDTH = 25;
-const PLAYERCOUNT_WIDTH = 15;
+const PLAYERCOUNT_WIDTH = 14;
 
 const widthDefiner = `[tr][td]                                                                                                                                                             [/td][/tr]`;
 
@@ -71,12 +70,16 @@ ${widthDefiner}
     channelDescription += "[/table]";
 
     // single server ips
+    const maxTitleLength = serverCategorie.servers
+      .map((c) => c.title.length)
+      .reduce((prev, curr) => (curr > prev ? curr : prev), 10);
+
     channelDescription += "[table]";
     for (const server of serverCategorie.servers) {
       const serverData = await getServerData(server.ip, server.port);
 
       // format title and add player count
-      const fullServerTitle = `${server.title}:`.padEnd(SERVER_TITLE_WIDTH);
+      const fullServerTitle = `${server.title}:`.padEnd(maxTitleLength + 4);
       const playerCount = `(Spieler: ${serverData?.players || 0})`.padStart(
         PLAYERCOUNT_WIDTH
       );

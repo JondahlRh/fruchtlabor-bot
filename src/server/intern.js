@@ -33,7 +33,12 @@ const intern = async (props) => {
   const fsMaplist = readMaplist("intern server @ fsMaplist");
 
   const pugServer = fsServers.find((s) => s.name === "pug");
-  const { channel, title, subTitle, description, footer } =
+
+  const maxTitleLength = pugServer.servers
+    .map((c) => c.title.length)
+    .reduce((prev, curr) => (curr > prev ? curr : prev), 10);
+
+  const { channel, description, rules, mapFooter } =
     fsData.functions.server.intern;
   const channelId = pathReducer(channel, fsData.channel);
 
@@ -47,11 +52,11 @@ const intern = async (props) => {
 [tr][/tr]
 
 [tr]
-[th][center][size=16] ${title} [/size][/th]
+[th][center][size=16] Claninterne Matches [/size][/th]
 [/tr]
 
 [tr]
-[td][center][size=12] ${subTitle} [/td]
+[td][center][size=12] Zur Suche von internen Clanmatches [/td]
 [/tr]
 
 ${widthDefiner}
@@ -59,6 +64,20 @@ ${widthDefiner}
 ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
 
 [/table]`;
+
+  channelDescription += horizontalLine;
+
+  // add rules part
+  channelDescription += "[table]";
+  channelDescription +=
+    "[tr][th][center][size=12]Regeln / Fairplay[/size][/th][/tr]";
+  channelDescription += widthDefiner;
+  channelDescription += "[/table]";
+  channelDescription += "[table]";
+  for (const ruleLine of rules) {
+    channelDescription += `[tr][td][center][size=9]${ruleLine}[/size][/td][/tr]`;
+  }
+  channelDescription += "[/table]";
 
   channelDescription += horizontalLine;
 
@@ -90,7 +109,8 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
     }
 
     const serverTitleEnd = `${server.title}:${serverTitleSuffix}`;
-    const fullServerTitle = serverTitlePrefix + serverTitleEnd.padEnd(25);
+    const fullServerTitle =
+      serverTitlePrefix + serverTitleEnd.padEnd(maxTitleLength + 4);
 
     channelDescription += "[tr]";
     channelDescription += `[th][left][size=10]${fullServerTitle}[/th]`;
@@ -110,13 +130,13 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
 
   channelDescription += "[table]";
   for (const map of fsMaplist) {
-    channelDescription += `[tr][td][left][size=9]- ${map}[/size][/td][/tr]`;
+    channelDescription += `[tr][td][size=9]- ${map}[/size][/td][/tr]`;
   }
   channelDescription += "[/table]";
 
   channelDescription += "[table]";
   channelDescription += "[tr][/tr]";
-  channelDescription += footer
+  channelDescription += mapFooter
     .map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`)
     .join("");
   channelDescription += "[/table]";
