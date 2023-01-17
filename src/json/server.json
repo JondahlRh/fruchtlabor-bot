@@ -132,6 +132,7 @@
     "servers": [
       {
         "name": "pug1",
+        "title": "Pug 1 (Competetivemaps)",
         "title": "Pugserver 1",
         "maxPlayers": 10,
         "ip": "162.55.2.85",
