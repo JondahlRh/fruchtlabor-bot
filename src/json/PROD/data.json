@@ -347,15 +347,18 @@
           "Die Demos findest du hier:",
           "[url]https://demos.fruchtlabor.net/clanintern/[/url]\n",
           "Alternativ könnt ihr auch unsere FaceIt Hub benutzen:",
-          "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]\n",
-          "Bitte klärt vorher, wie seriös ihr spielen wollt!"
+          "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]"
         ],
         "rules": [
-          "Sich anstrengen ist erlaubt, sich entspannen und etwas spass haben auch.",
-          "Denkt dabei aber immer ans Team in dem ihr spielt.",
-          "Es soll niemand benachteiligt oder wegen seiner Spielweise verurteilt werden.",
-          "Einigt euch im Vornherein auf eine Spielweise und haltet euch daran.",
-          "Absichtliches Griefing innerhalb des Teams ist verboten, ausser alle Teammitglieder sind damit einverstanden."
+          "Sich anstrengen ist erlaubt, sich entspannen",
+          "und etwas Spass haben auch.\n",
+          "Denkt dabei aber immer ans Team in dem ihr spielt.\n",
+          "Es soll niemand benachteiligt oder wegen seiner",
+          "Spielweise verurteilt werden.\n",
+          "Einigt euch im Vornherein auf eine",
+          "Spielweise und haltet euch daran.\n",
+          "Absichtliches Griefing innerhalb des Teams ist verboten, ",
+          "ausser alle Teammitglieder sind damit einverstanden."
         ],
         "mapFooter": [
           "Communitymap Vorschläge könnt ihr hier einbringen:",
