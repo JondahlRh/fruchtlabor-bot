@@ -101,16 +101,17 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
       // server is full
       serverTitlePrefix = "[s][color=#ff4444]";
       serverTitleSuffix = "[/s]";
-      serverLink = `[color=#ff4444]Match läuft![/color] [URL=steam://connect/${server.ip}:${server.port}](${server.ip}:${server.port})[/URL]`;
+      const serverLinkText = `${server.ip}:${server.port + 10000}`;
+      serverLink = `[color=#ff4444]Match läuft![/color] (GOTV: [URL=steam://connect/${server.ip}:${server.port}]${serverLinkText}[/URL])`;
     } else if (serverData?.players > 0) {
       // server is used
-      serverTitlePrefix = "[color=#ffff44]";
-      serverLink = `[color=#ffff44]Server benutzt![/color] [URL=steam://connect/${server.ip}:${server.port}](${server.ip}:${server.port})[/URL]`;
+      serverTitlePrefix = "[color=#44ff44]";
+      serverLink = `[color=#44ff44]Server benutzt![/color] [URL=steam://connect/${server.ip}:${server.port}](${server.ip}:${server.port})[/URL]`;
     }
 
     const serverTitleEnd = `${server.title}:${serverTitleSuffix}`;
     const fullServerTitle =
-      serverTitlePrefix + serverTitleEnd.padEnd(maxTitleLength + 4);
+      serverTitlePrefix + serverTitleEnd.padEnd(maxTitleLength + 8);
 
     channelDescription += "[tr]";
     channelDescription += `[th][left][size=10]${fullServerTitle}[/th]`;
