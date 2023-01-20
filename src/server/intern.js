@@ -70,7 +70,7 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
   // add rules part
   channelDescription += "[table]";
   channelDescription +=
-    "[tr][th][center][size=12]Regeln / Fairplay[/size][/th][/tr]";
+    "[tr][th][center][size=12] Fairplayregeln [/size][/th][/tr]";
   channelDescription += widthDefiner;
   channelDescription += "[/table]";
   channelDescription += "[table]";
