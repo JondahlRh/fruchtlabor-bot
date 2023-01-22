@@ -106,7 +106,7 @@
       },
       {
         "name": "default",
-        "title": "1v1 / 2v2",
+        "title": "Aim Maps",
         "maxPlayers": 99,
         "ip": "162.55.2.85",
         "port": 27009

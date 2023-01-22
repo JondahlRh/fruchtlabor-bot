@@ -2,11 +2,12 @@
   { "id": 85, "name": "Admin", "categorie": ["admin", "support", "teamAfk"] },
   { "id": 2487, "name": "Supervisor", "categorie": ["admin", "teamAfk"] },
   { "id": 2486, "name": "FL Netzwerk", "categorie": ["admin", "teamAfk"] },
-  { "id": 2571, "name": "Turnierleitung", "categorie": ["admin", "teamAfk"] },
+  { "id": 2571, "name": "Turnierleitung", "categorie": ["teamAfk"] },
 
-  { "id": 81, "name": "Head Developer", "categorie": ["head", "teamAfk"] },
+  { "id": 81, "name": "Head IT", "categorie": ["head", "teamAfk"] },
   { "id": 77, "name": "Head Mod", "categorie": ["head", "support", "teamAfk"] },
-  { "id": 2537, "name": "Head Designer", "categorie": ["head", "teamAfk"] },
+  { "id": 2537, "name": "Head Designer", "categorie": ["teamAfk"] },
+  { "id": 2637, "name": "Head Event", "categorie": ["head", "teamAfk"] },
   { "id": 95, "name": "Head Coach", "categorie": ["head", "teamAfk"] },
 
   { "id": 326, "name": "Developer", "categorie": ["team", "teamAfk"] },
@@ -22,14 +23,34 @@
   { "id": 94, "name": "Event", "categorie": ["team", "teamAfk"] },
   { "id": 82, "name": "Caster", "categorie": ["team", "teamAfk"] },
   { "id": 73, "name": "Coach", "categorie": ["team", "teamAfk"] },
-  { "id": 2635, "name": "Supporter", "categorie": ["team", "support", "teamAfk"] },
+  {
+    "id": 2635,
+    "name": "Supporter",
+    "categorie": ["team", "support", "teamAfk"]
+  },
 
-  { "id": 2538, "name": "Trial Developer", "categorie": ["trialTeam", "teamAfk"] },
-  { "id": 96, "name": "Trial Mod", "categorie": ["trialTeam", "support", "teamAfk"] },
-  { "id": 2539, "name": "Trial Recruiter", "categorie": ["trialTeam", "teamAfk"] },
+  {
+    "id": 2538,
+    "name": "Trial Developer",
+    "categorie": ["trialTeam", "teamAfk"]
+  },
+  {
+    "id": 96,
+    "name": "Trial Mod",
+    "categorie": ["trialTeam", "support", "teamAfk"]
+  },
+  {
+    "id": 2539,
+    "name": "Trial Recruiter",
+    "categorie": ["trialTeam", "teamAfk"]
+  },
   { "id": 230, "name": "Trial Coach", "categorie": ["trialTeam", "teamAfk"] },
   { "id": 2569, "name": "Trial Caster", "categorie": ["trialTeam", "teamAfk"] },
-  { "id": 2636, "name": "Trial Supporter", "categorie": ["trialTeam", "support", "teamAfk"] },
+  {
+    "id": 2636,
+    "name": "Trial Supporter",
+    "categorie": ["trialTeam", "support", "teamAfk"]
+  },
 
   { "id": 231, "name": "Berater", "categorie": ["staff", "teamAfk"] },
   { "id": 320, "name": "Skin Berater", "categorie": ["staff", "teamAfk"] },
