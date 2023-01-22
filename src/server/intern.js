@@ -101,8 +101,8 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
       // server is full
       serverTitlePrefix = "[s][color=#ff4444]";
       serverTitleSuffix = "[/s]";
-      const serverLinkText = `${server.ip}:${server.port + 10000}`;
-      serverLink = `[color=#ff4444]Match läuft![/color] (GOTV: [URL=steam://connect/${server.ip}:${server.port}]${serverLinkText}[/URL])`;
+      const serverIpPort = `${server.ip}:${server.port + 10000}`;
+      serverLink = `[color=#ff4444]Match läuft![/color] (GOTV: [URL=steam://connect/${serverIpPort}]${serverIpPort}[/URL])`;
     } else if (serverData?.players > 0) {
       // server is used
       serverTitlePrefix = "[color=#44ff44]";
