@@ -8,6 +8,7 @@ const pathReducer = require("./src/utility/pathReducer");
 const readJsonFile = require("./src/utility/readJsonFile");
 
 const channel = require("./src/channel");
+const group = require("./src/group");
 const message = require("./src/message");
 const move = require("./src/move");
 const server = require("./src/server");
@@ -53,6 +54,7 @@ const app = async () => {
 
     channel.custom({ fsData, teamspeak, event, self });
     channel.lobby({ fsData, teamspeak });
+    group.live({ fsData, teamspeak, event });
     message.join({ fsData, event });
     message.support({ fsData, teamspeak, event });
   });
@@ -65,6 +67,7 @@ const app = async () => {
 
     channel.custom({ fsData, teamspeak, event, self });
     channel.lobby({ fsData, teamspeak });
+    group.live({ fsData, teamspeak, event });
     message.support({ fsData, teamspeak, event });
   });
 
