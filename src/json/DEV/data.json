@@ -191,7 +191,7 @@
     "group": {
       "live": {
         "channel": ["supportWaiting", "getLive"],
-        "servergroup": ["live"],
+        "servergroup": ["ignoreSupport", "live"],
         "message": "Du hast die Servergruppe \"LIVE\" bekommen. Die Gruppe wird beim Verlassen des Servers automatisch entfernt!"
       }
     },
