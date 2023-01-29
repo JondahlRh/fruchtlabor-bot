@@ -16,6 +16,7 @@
       "general": 2554,
       "application": 2556,
       "moderation": 2559,
+      "complains": 2641,
       "coaching": 2558,
       "skinCouncil": 2574,
       "workCouncil": 2576,
@@ -203,12 +204,12 @@
           "exceptions": [
             {
               "servergroup": ["reportTo", "moderation"],
-              "contact": ["moderation"],
+              "contact": ["moderation", "complains"],
               "extraSupporterMessage": "Support Gespräch"
             },
             {
               "servergroup": ["reportTo", "moderationDirectly"],
-              "contact": ["moderation"],
+              "contact": ["moderation", "complains"],
               "extraSupporterMessage": "Support Gespräch"
             },
             {

@@ -16,6 +16,7 @@
       "general": 2627,
       "application": 2628,
       "moderation": 2629,
+      "complains": 2640,
       "coaching": 2630,
       "skinCouncil": 2631,
       "workCouncil": 2632,
@@ -173,7 +174,7 @@
         {
           "channel": ["afk", "team", "availableTeam"],
           "title": "Teammitglieder",
-          "categories": ["team", "trialTeam"]
+          "categories": ["team"]
         },
         {
           "channel": ["afk", "team", "availableStaff"],
@@ -203,12 +204,12 @@
           "exceptions": [
             {
               "servergroup": ["reportTo", "moderation"],
-              "contact": ["moderation"],
+              "contact": ["moderation", "complains"],
               "extraSupporterMessage": "Support Gespräch"
             },
             {
               "servergroup": ["reportTo", "moderationDirectly"],
-              "contact": ["moderation"],
+              "contact": ["moderation", "complains"],
               "extraSupporterMessage": "Support Gespräch"
             },
             {
@@ -289,16 +290,16 @@
           "channelParents": [["spacer", "music"]]
         },
         "general": {
-          "def": 5000,
-          "micMuted": false,
-          "sndMuted": false
+          "def": false,
+          "micMuted": 3600000,
+          "sndMuted": 1800000
         },
         "moveTypes": [
           {
             "channels": [["default"]],
             "channelParents": [],
             "conditions": {
-              "def": false,
+              "def": 300000,
               "micMuted": false,
               "sndMuted": false
             }
@@ -317,7 +318,7 @@
             "conditions": {
               "def": false,
               "micMuted": false,
-              "sndMuted": false
+              "sndMuted": 1200000
             }
           }
         ]
@@ -359,13 +360,12 @@
           "Die Demos findest du hier:",
           "[url]https://demos.fruchtlabor.net/clanintern/[/url]\n",
           "Alternativ könnt ihr auch unsere FaceIt Hub benutzen:",
-          "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]\n",
-          "Bitte klärt vorher, wie seriös ihr spielen wollt!"
+          "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]"
         ],
         "rules": [
           "Sich anstrengen ist erlaubt, sich entspannen",
           "und etwas Spass haben auch.\n",
-          "Denkt dabei aber immer ans Team in dem ihr spielt.",
+          "Denkt dabei aber immer ans Team in dem ihr spielt.\n",
           "Es soll niemand benachteiligt oder wegen seiner",
           "Spielweise verurteilt werden.\n",
           "Einigt euch im Vornherein auf eine",
