@@ -6,27 +6,41 @@ const MAX_IDLE_TIME = 900000;
 
 // function returning status
 const insertStatus = (client, channel, fsData) => {
+  // offline
   if (!client) return "[color=#ff4444]offline[/color]";
 
+  // channel, groups, idleTime
   const { cid, clientServergroups, clientIdleTime } = client.propcache;
+  // parent channel
   const { pid } = channel.propcache;
-
-  const { live, doNotDisturb, noSupport } = fsData.servergroup;
+  // doNotDisturb, live, noSupport, noApplication groups
+  const { doNotDisturb, live, noSupport, noApplication } =
+    fsData.servergroup.ignoreSupport;
+  // afk, meeting, match, spacer channels
   const { afk, meeting, match, spacer } = fsData.channel;
 
+  // team afk channel
   if (afk.team.away === +cid) return "AFK";
-  if (meeting.team === +cid) return "Besprechung";
+  // meeting channel
+  if (Object.values(meeting).includes(+cid)) return "Besprechung";
+  // support channels
   if (spacer.support === +pid) return "Support";
+  // match channels
   if (Object.values(match).includes(+pid)) return "ingame";
+  // no support
   if (clientServergroups.some((sg) => +sg === noSupport)) return "No Support";
-
+  // no application group
+  if (clientServergroups.some((sg) => +sg === noApplication)) {
+    return "Nur allg Support";
+  }
+  // doNotDisturb or live group or csgo team channels
   if (
     clientServergroups.some((sg) => +sg === live || +sg === doNotDisturb) ||
     spacer.csgoTeam === +pid
   ) {
     return "Do Not Disturb";
   }
-
+  // idle and not in afk available
   if (
     clientIdleTime > MAX_IDLE_TIME &&
     !(afk.team.availableTeam === +cid || afk.team.availableStaff === +cid)
@@ -34,6 +48,7 @@ const insertStatus = (client, channel, fsData) => {
     return "abwesend";
   }
 
+  // online
   return "[color=#44ff44]online[/color]";
 };
 

@@ -71,28 +71,38 @@ const support = async (props) => {
   // get support clients
   const supportClients = [];
   clients.forEach((client) => {
-    const { clientServergroups, cid } = client.propcache;
-    const clientChannel = channels.find((c) => c.propcache.cid === cid);
+    // groups and channel
+    const { clientServergroups: supServergroups, cid: supCid } =
+      client.propcache;
+    // parent channel
+    const clientChannel = channels.find((c) => c.propcache.cid === supCid);
     const { pid } = clientChannel.propcache;
+    // doNotDisturb, live, noSupport, noApplication groups
+    const { doNotDisturb, live, noSupport, noApplication } =
+      fsData.servergroup.ignoreSupport;
 
     // check if client is supporter
-    if (!clientServergroups.some((g) => supportGroups.includes(+g))) return;
+    if (!supServergroups.some((g) => supportGroups.includes(+g))) return;
 
-    // checks if supporter should be ignored
-    const ingame = Object.entries(fsData.channel.match).find(
-      (m) => m[1] === +pid
-    );
-    const away = fsData.channel.afk.team.away === +cid;
-    const meeting = fsData.channel.meeting.team === +cid;
-    const noSupport = clientServergroups.some(
-      (sg) => +sg === fsData.servergroup.noSupport
-    );
-    const doNotDisturb = clientServergroups.some(
-      (sg) =>
-        +sg === fsData.servergroup.live ||
-        +sg === fsData.servergroup.doNotDisturb
-    );
-    if (ingame || away || meeting || noSupport || doNotDisturb) return;
+    // ignore if match channel
+    if (Object.values(fsData.channel.match).includes(+pid)) return;
+    // ignore if team afk channel
+    if (fsData.channel.afk.team.away === +supCid) return;
+    // ignore if meeting channel
+    if (Object.values(fsData.channel.meeting).includes(+supCid)) return;
+    // ignore if noSupport group
+    if (supServergroups.some((sg) => +sg === noSupport)) return;
+    // ignore if noApplication group and user in supportWaiting application channel
+    if (
+      supServergroups.some((sg) => +sg === noApplication) &&
+      +cid === fsData.channel.supportWaiting.application
+    ) {
+      return;
+    }
+    // ignore if doNotDisturb group
+    if (supServergroups.some((sg) => +sg === doNotDisturb)) return;
+    // ignore if live group
+    if (supServergroups.some((sg) => +sg === live)) return;
 
     supportClients.push(client);
   });

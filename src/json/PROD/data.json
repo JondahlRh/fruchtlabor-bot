@@ -6,9 +6,12 @@
       "teamModeration": 2568
     },
     "guest": 9,
-    "noSupport": 59,
-    "doNotDisturb": 2482,
-    "live": 2541,
+    "ignoreSupport": {
+      "doNotDisturb": 2482,
+      "live": 2541,
+      "noSupport": 59,
+      "noApplication": 2638
+    },
     "support": {
       "general": 2554,
       "application": 2556,
@@ -25,7 +28,8 @@
   "channel": {
     "default": 30,
     "meeting": {
-      "team": 8
+      "team": 8,
+      "event": 141875
     },
     "spacer": {
       "teamtalk": 4,
