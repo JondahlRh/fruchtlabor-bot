@@ -86,6 +86,8 @@ const support = async (props) => {
 
     // ignore if match channel
     if (Object.values(fsData.channel.match).includes(+pid)) return;
+    // ignore if csgo team channel
+    if (fsData.channel.spacer.csgoTeam === +pid) return;
     // ignore if team afk channel
     if (fsData.channel.afk.team.away === +supCid) return;
     // ignore if meeting channel
