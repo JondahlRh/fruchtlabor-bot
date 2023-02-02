@@ -93,20 +93,20 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
     const serverData = await getServerData(server.ip, server.port);
 
     // server full handler
+    const serverIpPort = `${server.ip}:${server.port}`;
     let serverTitlePrefix = "";
     let serverTitleSuffix = "";
-    let serverLink = `[URL]steam://connect/${server.ip}:${server.port}[/URL]`;
+    let serverLink = `[URL]steam://connect/${serverIpPort}[/URL]`;
 
     if (serverData?.players >= server.maxPlayers) {
       // server is full
       serverTitlePrefix = "[s][color=#ff4444]";
       serverTitleSuffix = "[/s]";
-      const serverIpPort = `${server.ip}:${server.port + 10000}`;
-      serverLink = `[color=#ff4444]Match läuft![/color] (GOTV: [URL=steam://connect/${serverIpPort}]${serverIpPort}[/URL])`;
+      serverLink = `[color=#ff4444]Match läuft![/color] [URL=steam://connect/${serverIpPort}](${serverIpPort})[/URL]`;
     } else if (serverData?.players > 0) {
       // server is used
       serverTitlePrefix = "[color=#44ff44]";
-      serverLink = `[color=#44ff44]Server benutzt![/color] [URL=steam://connect/${server.ip}:${server.port}](${server.ip}:${server.port})[/URL]`;
+      serverLink = `[color=#44ff44]Server benutzt![/color] [URL=steam://connect/${serverIpPort}](${serverIpPort})[/URL]`;
     }
 
     const serverTitleEnd = `${server.title}:${serverTitleSuffix}`;
