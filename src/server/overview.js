@@ -80,13 +80,18 @@ ${widthDefiner}
 
       // format title and add player count
       const fullServerTitle = `${server.title}:`.padEnd(maxTitleLength + 4);
-      const playerCount = `(Spieler: ${serverData?.players || 0})`.padStart(
+      let serverLink = `[URL]steam://connect/${server.ip}:${server.port}[/URL]`;
+      let playerCount = `(Spieler: ${serverData?.players || 0})`.padStart(
         PLAYERCOUNT_WIDTH
       );
+      if (!serverData) {
+        serverLink = "[color=#ff4444]Server Offline!";
+        playerCount = "";
+      }
 
       channelDescription += "[tr]";
       channelDescription += `[th][left][size=10]${fullServerTitle}[/th]`;
-      channelDescription += `[th][size=9][URL]steam://connect/${server.ip}:${server.port}[/URL][/size][/th]`;
+      channelDescription += `[th][size=9]${serverLink}[/size][/th]`;
       channelDescription += `[th][size=9]${playerCount}[/size][/th]`;
       channelDescription += "[/tr]";
     }

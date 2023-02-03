@@ -108,6 +108,9 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
       serverTitlePrefix = "[color=#44ff44]";
       serverLink = `[color=#44ff44]Server benutzt![/color] [URL=steam://connect/${serverIpPort}](${serverIpPort})[/URL]`;
     }
+    if (!serverData) {
+      serverLink = "[color=#ff4444]Server Offline!";
+    }
 
     const serverTitleEnd = `${server.title}:${serverTitleSuffix}`;
     const fullServerTitle =
