@@ -28,6 +28,7 @@
   },
   "channel": {
     "default": 30,
+    "tmp": 145835,
     "meeting": {
       "team": 8,
       "event": 141875
@@ -163,6 +164,14 @@
           "minimum": 2,
           "clientLimit": 5,
           "permissions": {}
+        },
+        {
+          "channelParent": ["tmp"],
+          "categorie": "tmp",
+          "prefix": "Eventmatchchannel",
+          "minimum": 2,
+          "clientLimit": 2,
+          "permissions": {"i_channel_needed_join_power": 20}
         }
       ],
       "online": [
@@ -328,7 +337,7 @@
       "overview": {
         "channel": ["server", "overview"],
         "title": "Claninterne Server",
-        "subTitle": "Instaconnect Links",
+        "subTitle": "[b][color=#aa1111]Manche Server funktionieren aktuell nicht!\nWeitere Infos im schwarzen Brett oder im Support!",
         "description": "Tutorial für die Trainingsserver: [b][url=https://github.com/splewis/csgo-practice-mode#commands]*klick*[/url][/b]",
         "serverTypes": ["retake", "surf", "kz", "training", "fight", "dm"]
       },
@@ -357,6 +366,8 @@
       "intern": {
         "channel": ["search", "intern"],
         "description": [
+          "[b][size=12][color=#aa1111]Manche Server funktionieren aktuell nicht!",
+          "[b][size=12][color=#aa1111]Weitere Infos im schwarzen Brett oder im Support!\n",
           "Die Demos findest du hier:",
           "[url]https://demos.fruchtlabor.net/clanintern/[/url]\n",
           "Alternativ könnt ihr auch unsere FaceIt Hub benutzen:",
