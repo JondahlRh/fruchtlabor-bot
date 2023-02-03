@@ -1,7 +1,7 @@
 [
   { "id": 85, "name": "Admin", "categorie": ["admin", "support", "teamAfk"] },
   { "id": 2487, "name": "Supervisor", "categorie": ["admin", "teamAfk"] },
-  { "id": 2486, "name": "FL Netzwerk", "categorie": ["admin", "teamAfk"] },
+  { "id": 2486, "name": "FL Netzwerk", "categorie": ["teamAfk"] },
   { "id": 2571, "name": "Turnierleitung", "categorie": ["teamAfk"] },
 
   { "id": 81, "name": "Head IT", "categorie": ["head", "teamAfk"] },
