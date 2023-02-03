@@ -28,7 +28,6 @@
   },
   "channel": {
     "default": 30,
-    "tmp": 145835,
     "meeting": {
       "team": 8,
       "event": 141875
@@ -164,14 +163,6 @@
           "minimum": 2,
           "clientLimit": 5,
           "permissions": {}
-        },
-        {
-          "channelParent": ["tmp"],
-          "categorie": "tmp",
-          "prefix": "Eventmatchchannel",
-          "minimum": 2,
-          "clientLimit": 2,
-          "permissions": {"i_channel_needed_join_power": 20}
         }
       ],
       "online": [
