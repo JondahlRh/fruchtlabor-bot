@@ -148,7 +148,7 @@ const lobby = async (props) => {
 
     // check if empty channel is on top
     if (
-      channelChildren[0].propcache.totalClients > 0 &&
+      channelChildren[0]?.propcache.totalClients > 0 &&
       channelChildrenEmpty.length > 0
     ) {
       await moveChannel(
