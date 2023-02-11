@@ -328,7 +328,7 @@
       "overview": {
         "channel": ["server", "overview"],
         "title": "Claninterne Server",
-        "subTitle": "",
+        "subTitle": "Instaconnect Links",
         "description": "Tutorial für die Trainingsserver: [b][url=https://github.com/splewis/csgo-practice-mode#commands]*klick*[/url][/b]",
         "serverTypes": ["retake", "surf", "kz", "training", "fight", "dm"]
       },
