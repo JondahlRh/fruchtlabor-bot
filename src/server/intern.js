@@ -160,16 +160,18 @@ ${header.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
     // check for changes
     try {
       const channel = await teamspeak.channelInfo(channelId);
-      if (channel.channelDescription === channelDescription) return;
+      if (channel.channelDescription === channelDescription) continue;
     } catch (error) {
-      return errorMessage("intern server @ channelInfo", error);
+      errorMessage("intern server @ channelInfo", error);
+      continue;
     }
 
     // edit description
     try {
       await teamspeak.channelEdit(channelId, { channelDescription });
     } catch (error) {
-      return errorMessage("intern server @ channelEdit", error);
+      errorMessage("intern server @ channelEdit", error);
+      continue;
     }
   }
 };
