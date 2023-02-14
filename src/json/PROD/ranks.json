@@ -53,7 +53,7 @@
   },
 
   { "id": 231, "name": "Berater", "categorie": ["staff", "teamAfk"] },
-  { "id": 320, "name": "Skin Berater", "categorie": ["staff", "teamAfk"] },
+  { "id": 2574, "name": "Skin Berater", "categorie": ["staff", "teamAfk"] },
   { "id": 2576, "name": "Kummerkasten", "categorie": ["staff", "teamAfk"] },
 
   { "id": 2567, "name": "Ehrenmember", "categorie": ["member"] },

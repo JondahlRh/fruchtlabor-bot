@@ -30,7 +30,7 @@ const playercount = async (props) => {
     }
 
     // format channel name and description^
-    let channelName = `● ${server.prefix} | ${querry?.players || 0}`;
+    let channelName = `● ${server.prefix} | Online: ${querry?.players || 0}`;
     let channelDescription = `[center]Instaconnect:\n[URL]steam://connect/${serverData.ip}:${serverData.port}[/URL]`;
     if (!querry) {
       channelName = `● ${server.prefix} | Offline`;
