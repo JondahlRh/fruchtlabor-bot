@@ -97,7 +97,6 @@ const app = async () => {
 
     server.playercount({ fsData, teamspeak });
     server.overview({ fsData, teamspeak });
-    server.intern({ fsData, teamspeak });
   }, 100000);
 
   // error - event listener

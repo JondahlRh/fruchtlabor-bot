@@ -333,28 +333,6 @@
         "description": "Tutorial für die Trainingsserver: [b][url=https://github.com/splewis/csgo-practice-mode#commands]*klick*[/url][/b]",
         "serverTypes": ["retake", "surf", "kz", "training", "fight", "dm"]
       },
-      "playercount": [
-        {
-          "channel": ["server", "playercount", "duels"],
-          "prefix": "Duels (1v1)",
-          "server": ["fight", "duels"]
-        },
-        {
-          "channel": ["server", "playercount", "noAwp"],
-          "prefix": "NoAWP",
-          "server": ["retake", "noAwp"]
-        },
-        {
-          "channel": ["server", "playercount", "default"],
-          "prefix": "Standard",
-          "server": ["retake", "default"]
-        },
-        {
-          "channel": ["server", "playercount", "community"],
-          "prefix": "Communitymaps",
-          "server": ["retake", "community"]
-        }
-      ],
       "intern": {
         "header": [
           "Die Demos findest du hier:",
