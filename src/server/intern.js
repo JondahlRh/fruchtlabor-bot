@@ -94,6 +94,7 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
 
     // server full handler
     const serverIpPort = `${server.ip}:${server.port}`;
+    const gotvIpPort = `${server.ip}:${server.port + 10000}`;
     let serverTitlePrefix = "";
     let serverTitleSuffix = "";
     let serverLink = `[URL]steam://connect/${serverIpPort}[/URL]`;
@@ -102,7 +103,7 @@ ${description.map((d) => `[tr][td][center][size=10]${d}[/td][/tr]`).join("")}
       // server is full
       serverTitlePrefix = "[s][color=#ff4444]";
       serverTitleSuffix = "[/s]";
-      serverLink = `[color=#ff4444]Match läuft![/color] [URL=steam://connect/${serverIpPort}](${serverIpPort})[/URL]`;
+      serverLink = `[color=#ff4444]Match läuft![/color] ([URL=steam://connect/${gotvIpPort}]GOTV[/URL] - [URL=steam://connect/${serverIpPort}]Instant Connect[/URL])`;
     } else if (serverData?.players > 0) {
       // server is used
       serverTitlePrefix = "[color=#44ff44]";
