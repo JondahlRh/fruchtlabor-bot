@@ -152,5 +152,32 @@
         "port": 25000
       }
     ]
+  },
+  {
+    "name": "wingmanPug",
+    "title": "Wingman Pug",
+    "servers": [
+      {
+        "name": "pug1",
+        "title": "Pugserver 1",
+        "maxPlayers": 4,
+        "ip": "162.55.2.85",
+        "port": 25001
+      },
+      {
+        "name": "pug2",
+        "title": "Pugserver 2",
+        "maxPlayers": 4,
+        "ip": "162.55.2.85",
+        "port": 25002
+      },
+      {
+        "name": "pug3",
+        "title": "Pugserver 3",
+        "maxPlayers": 4,
+        "ip": "162.55.2.85",
+        "port": 25003
+      }
+    ]
   }
 ]

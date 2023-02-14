@@ -41,7 +41,8 @@
       "music": 34
     },
     "search": {
-      "intern": 2864
+      "intern5v5": 2864,
+      "intern2v2": 145964
     },
     "talk": { "default": 40 },
     "match": {
@@ -355,14 +356,13 @@
         }
       ],
       "intern": {
-        "channel": ["search", "intern"],
-        "description": [
+        "header": [
           "Die Demos findest du hier:",
           "[url]https://demos.fruchtlabor.net/clanintern/[/url]\n",
           "Alternativ könnt ihr auch unsere FaceIt Hub benutzen:",
           "[url]https://www.faceit.com/de/inv/pKX9Ixd/[/url]"
         ],
-        "rules": [
+        "section1": [
           "Sich anstrengen ist erlaubt, sich entspannen",
           "und etwas Spass haben auch.\n",
           "Denkt dabei aber immer ans Team in dem ihr spielt.\n",
@@ -373,9 +373,22 @@
           "Absichtliches Griefing innerhalb des Teams ist verboten, ",
           "ausser alle Teammitglieder sind damit einverstanden."
         ],
-        "mapFooter": [
+        "section2": [],
+        "section3": [
           "Communitymap Vorschläge könnt ihr hier einbringen:",
           "[url=https://docs.google.com/forms/d/e/1FAIpQLSdIrtQ5vKiL_1doCF0pzO1UPGd1MRi7hRZtmFEBveC_vaACpA/viewform]Google Form[/url]"
+        ],
+        "serverTypes": [
+          {
+            "channel": ["search", "intern5v5"],
+            "server": ["pug"],
+            "mapListFile": "fl-intern-communitymaplist.txt"
+          },
+          {
+            "channel": ["search", "intern2v2"],
+            "server": ["wingmanPug"],
+            "mapListFile": "fl-wingman-communitymaplist.txt"
+          }
         ]
       }
     }
