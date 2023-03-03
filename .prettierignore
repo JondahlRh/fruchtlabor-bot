@@ -1,4 +1,4 @@
-/node_modules
-/logs
-/files
+node_modules
+logs
+files
 .creds

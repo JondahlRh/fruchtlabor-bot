@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "prettierC": "prettier --check .",
+    "prettierW": "prettier --write ."
   },
   "author": "Jondahl \"Gamix\" Rhenius",
   "license": "ISC",
@@ -17,6 +19,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.19",
-    "prettier": "2.8.1"
+    "prettier": "^2.8.4"
   }
 }
