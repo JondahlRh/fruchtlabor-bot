@@ -1,14 +1,13 @@
-# ################# #
-# todo's for setup: #
-# ################# #
+# todo's for setup:
 
-# ".creds" javascript file with these atributes:
-#   "SERVER_IP" 
-#   "SERVER_PORT"
-#   "QUERY_USERNAME"
-#   "QUERY_PASSWORD"
-#   "TS_ID"
+".creds" javascript file with these atributes:
 
-# "files" folder
+- SERVER_IP
+- SERVER_PORT
+- QUERY_USERNAME
+- QUERY_PASSWORD
+- TS_ID
 
-# "logs" folder
+"files" folder
+
+"logs" folder
