@@ -19,7 +19,6 @@
       "complains": 2641,
       "coaching": 2558,
       "skinCouncil": 2574,
-      "workCouncil": 2576,
       "teamModeration": 2591
     }
   },
@@ -72,7 +71,6 @@
       "application": 27,
       "skinCouncil": 22621,
       "coaching": 61154,
-      "workCouncil": 68837,
       "getLive": 144166
     },
     "server": {
@@ -242,12 +240,6 @@
           "channel": ["supportWaiting", "coaching"],
           "contact": ["coaching"],
           "extraUserMessage": "Du kannst gerne auch einen Coach direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ",
-          "exceptions": []
-        },
-        {
-          "channel": ["supportWaiting", "workCouncil"],
-          "contact": ["workCouncil"],
-          "extraUserMessage": "Du kannst uns gerne auch direkt anschreiben. Alle Kontaktmöglichkeiten sind in der Beschreibung dieses Channels verlinkt! ",
           "exceptions": []
         }
       ],
