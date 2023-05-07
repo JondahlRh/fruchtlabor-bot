@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { TeamSpeak } = require("ts3-nodejs-library");
+const cron = require("node-cron");
 
 const CREDS = require("./.creds");
 
@@ -82,22 +83,22 @@ const app = async () => {
 
   // interval: read data.json + execute functions
   // interval 30s
-  setInterval(() => {
+  cron.schedule("*/30 * * * * *", () => {
     const fsData = getDefinitionData();
     if (!fsData) return;
 
     channel.online({ fsData, teamspeak });
     move.afk({ fsData, teamspeak });
-  }, 30000);
+  });
 
-  // interval 100s
-  setInterval(() => {
+  // interval 120s
+  cron.schedule("*/2 * * * *", () => {
     const fsData = getDefinitionData();
     if (!fsData) return;
 
     server.overview({ fsData, teamspeak });
     server.intern({ fsData, teamspeak });
-  }, 100000);
+  });
 
   // error - event listener
   teamspeak.on("error", (error) => {

@@ -14,6 +14,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "fs": "^0.0.1-security",
+    "node-cron": "^3.0.2",
     "source-server-query": "^3.0.3",
     "ts3-nodejs-library": "^3.4.1"
   },
