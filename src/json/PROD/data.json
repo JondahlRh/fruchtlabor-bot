@@ -184,6 +184,11 @@
           "channel": ["spacer", "support"],
           "title": "Supporter",
           "categories": ["support"]
+        },
+        {
+          "channel": ["afk", "team", "away"],
+          "title": "Trial Teammitglieder",
+          "categories": ["trialTeam"]
         }
       ]
     },
