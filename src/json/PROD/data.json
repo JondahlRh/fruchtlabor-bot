@@ -232,7 +232,7 @@
         {
           "channel": ["supportWaiting", "application"],
           "contact": ["application", "moderation"],
-          "extraUserMessage": "Du kannst gerne die Steamprofil-Links von allen Accounts bereithalten. Das Gespräch dauert ca. 20 Minuten. ",
+          "extraUserMessage": "Du kannst gerne die Steamprofil-Links von allen Accounts bereithalten. Das Gespräch dauert ca. 20 Minuten. Falls niemand da ist, kannst du gerne folgendes [url=https://forms.gle/dej3AvkpBS56QkLR7]Formular[/url] ausfüllen.",
           "exceptions": []
         },
         {
