@@ -218,7 +218,7 @@
             },
             {
               "servergroup": ["reportTo", "teamModeration"],
-              "contact": ["teamModeration", "moderation"],
+              "contact": ["teamModeration", "general", "moderation"],
               "extraSupporterMessage": "Teambetreuer Gespräch"
             }
           ]
@@ -266,7 +266,7 @@
         {
           "servergroup": ["reportTo", "teamModeration"],
           "message": [
-            "Bitte melde dich in dem Channel 'Support | Wartezimmer' bei einem Teambetreuer."
+            "Bitte melde dich in dem Channel 'Support | Wartezimmer' wegen deiner Teamsuche."
           ]
         },
         {
