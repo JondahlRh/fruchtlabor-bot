@@ -2,10 +2,11 @@
   "name": "fruchtlaborbot",
   "version": "2.0.0",
   "description": "teamspeak bot for the fruchtlabor cs community",
-  "main": "app.js",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "prettierC": "prettier --check .",
     "prettierW": "prettier --write ."
   },
