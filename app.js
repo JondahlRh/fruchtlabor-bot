@@ -88,6 +88,7 @@ const app = async () => {
     if (!fsData) return;
 
     channel.online({ fsData, teamspeak });
+    server.retake({ fsData, teamspeak });
     move.afk({ fsData, teamspeak });
   });
 

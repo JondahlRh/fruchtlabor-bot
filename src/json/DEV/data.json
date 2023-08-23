@@ -78,10 +78,9 @@
     "server": {
       "overview": 138301,
       "playercount": {
-        "duels": 138302,
-        "noAwp": 138303,
-        "default": 138304,
-        "community": 138305
+        "noAwp": 186503,
+        "default": 186493,
+        "community": 186504
       }
     }
   },
@@ -368,7 +367,24 @@
             "mapListFile": "fl-wingman-communitymaplist.txt"
           }
         ]
-      }
+      },
+      "retake": [
+        {
+          "channel": ["server", "playercount", "noAwp"],
+          "name": "NoAWP",
+          "server": ["retake", "noAwp"]
+        },
+        {
+          "channel": ["server", "playercount", "default"],
+          "name": "Standard",
+          "server": ["retake", "default"]
+        },
+        {
+          "channel": ["server", "playercount", "community"],
+          "name": "Communitymaps",
+          "server": ["retake", "community"]
+        }
+      ]
     }
   }
 }
