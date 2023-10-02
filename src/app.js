@@ -1,25 +1,43 @@
 import mongoose from "mongoose";
+import cron from "node-cron";
 import { TeamSpeak } from "ts3-nodejs-library";
-import trycatchHandler from "./utility/trycatchHandler.js";
+
+import channelController from "./controllers/channel/index.js";
+import messageController from "./controllers/message/index.js";
+
+import eHandler from "./utility/asyncErrorHandler.js";
+import botDefaultChannelMove from "./utility/botDefaultChannelMove.js";
 
 export default async () => {
-  const m = await trycatchHandler(
-    mongoose.connect(process.env.MONGO_DB, { dbName: "DEV" })
-  );
-  if (m === undefined) return;
+  await mongoose.connect(process.env.MONGODB_CONNECT, {
+    dbName: process.env.MONGODB_DBNAME,
+  });
   console.log("connected to MongoDB");
 
-  const t = await trycatchHandler(
-    TeamSpeak.connect({
-      host: process.env.TEAMSPEAK_IP,
-      serverport: process.env.TEAMSPEAK_PORT,
-      username: process.env.TEAMSPEAKQUERY_USERNAME,
-      password: process.env.TEAMSPEAKQUERY_PASSWORD,
-      nickname: "Fruchtlabor Bot",
-    })
-  );
-  if (t === undefined) return;
-  console.log("connected to TeamSpeak");
+  const teamspeak = await TeamSpeak.connect({
+    host: process.env.TEAMSPEAK_IP,
+    serverport: process.env.TEAMSPEAK_PORT,
+    username: process.env.TEAMSPEAKQUERY_USERNAME,
+    password: process.env.TEAMSPEAKQUERY_PASSWORD,
+    nickname: "Fruchtlabor Test Bot",
+  });
+  console.log("connected to Teamspeak");
 
-  
+  eHandler(botDefaultChannelMove)(teamspeak);
+
+  teamspeak.on("clientconnect", (event) => {
+    eHandler(messageController.join)(teamspeak, event.client);
+  });
+  teamspeak.on("clientdisconnect", (event) => {});
+
+  teamspeak.on("clientmoved", (event) => {
+    eHandler(channelController.custom)(teamspeak, event.client);
+    eHandler(channelController.lobby)(teamspeak);
+    eHandler(messageController.support)(teamspeak, event.client);
+    eHandler(channelController.addgroup)(event.client);
+  });
+
+  cron.schedule("*/30 * * * * *", () => {
+    eHandler(channelController.online)(teamspeak);
+  });
 };
