@@ -7,8 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "prettierC": "prettier --check .",
-    "prettierW": "prettier --write ."
+    "prettier": "prettier --write ."
   },
   "author": "Jondahl \"Gamix\" Rhenius",
   "license": "ISC",
@@ -20,6 +19,7 @@
     "ts3-nodejs-library": "^3.5.0"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.1"
   }

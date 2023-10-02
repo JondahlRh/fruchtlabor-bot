@@ -16,5 +16,14 @@
   "htmlWhitespaceSensitivity": "css",
   "endOfLine": "lf",
   "embeddedLanguageFormatting": "auto",
-  "singleAttributePerLine": false
+  "singleAttributePerLine": false,
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^[./]*/models/*",
+    "^[./]*/controllers/*",
+    "^[./]*/utility/*",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }
