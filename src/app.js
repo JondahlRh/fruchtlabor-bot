@@ -37,7 +37,8 @@ export default async () => {
     eHandler(channelController.addgroup)(event.client);
   });
 
-  cron.schedule("*/30 * * * * *", () => {
+  cron.schedule("*/1 * * * * *", () => {
     eHandler(channelController.online)(teamspeak);
+    eHandler(channelController.afk)(teamspeak);
   });
 };
