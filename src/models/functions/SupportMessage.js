@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import IngoreSupport from "../general/IngoreSupport.js";
+import IgnorePack from "../general/IgnorePack.js";
 import TsChannel from "../teamspeak/TsChannel.js";
 import TsServergroup from "../teamspeak/TsServergroup.js";
 
@@ -9,7 +9,7 @@ const SupportMessageSchema = new mongoose.Schema({
   channel: { type: ObjectId, ref: TsChannel, require: true },
   contactServergroups: [{ type: ObjectId, ref: TsServergroup, require: true }],
   messageBody: { type: String, default: "" },
-  ignore: { type: ObjectId, ref: IngoreSupport, require: true },
+  ignore: { type: ObjectId, ref: IgnorePack, require: true },
   specials: [
     {
       servergroup: { type: ObjectId, ref: TsServergroup, require: true },
