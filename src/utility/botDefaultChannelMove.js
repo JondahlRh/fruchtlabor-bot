@@ -1,16 +1,16 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-// TODO: remove hard coded bot default channel ID
-const BOT_CHANNEL = 163666;
+import BotDefaultChannel from "../models/functions/BotDefaultChannel.js";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
 const botDefaultChannelMove = async (teamspeak) => {
   const self = await teamspeak.self();
+  const botChannel = await BotDefaultChannel.findOne().populate("channel");
 
-  if (+self.cid !== BOT_CHANNEL) {
-    await teamspeak.clientMove(self, BOT_CHANNEL);
+  if (+self.cid !== botChannel.channel.channelId) {
+    await teamspeak.clientMove(self, botChannel.channel.channelId);
   }
 };
 
