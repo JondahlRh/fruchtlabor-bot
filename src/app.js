@@ -19,7 +19,7 @@ export default async () => {
     serverport: process.env.TEAMSPEAK_PORT,
     username: process.env.TEAMSPEAKQUERY_USERNAME,
     password: process.env.TEAMSPEAKQUERY_PASSWORD,
-    nickname: "Fruchtlabor Test Bot",
+    nickname: process.env.TEAMSPEAK_NICKNAME,
   });
   console.log("connected to Teamspeak");
 
