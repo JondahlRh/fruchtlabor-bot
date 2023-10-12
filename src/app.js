@@ -31,6 +31,7 @@ export default async () => {
     eHandler(messageController.support)(teamspeak, event.client);
     eHandler(channelController.addgroup)(event.client);
   });
+
   teamspeak.on("clientdisconnect", (event) => {
     eHandler(channelController.lobby)(teamspeak);
   });
