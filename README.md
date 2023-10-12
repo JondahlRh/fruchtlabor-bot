@@ -3,7 +3,7 @@
 ## installation
 
 ```
-npm i
+npm install
 ```
 
 ## required files
@@ -11,16 +11,21 @@ npm i
 ### .env
 
 ```
-NODE_ENV="development"
+NODE_ENV=""
+
+TEAMSPEAK_IP=""
+TEAMSPEAK_PORT=0
+TEAMSPEAKQUERY_USERNAME=""
+TEAMSPEAKQUERY_PASSWORD=""
+TEAMSPEAK_NICKNAME=""
+
+MONGODB_CONNECT=""
+MONGODB_DBNAME=""
 ```
 
-oder
+### optinal .env stage file
 
-```
-NODE_ENV="production"
-```
-
-### .env.dev / .env.prod
+<sub>Optinal, for having different login data for different stages. Filename has to start with ".env." and the value provided in "NODE_ENV"!</sub>
 
 ```
 TEAMSPEAK_IP=""
