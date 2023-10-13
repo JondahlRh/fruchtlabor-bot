@@ -2,8 +2,9 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import CustomChannel from "../../models/functions/CustomChannel.js";
 
-import botDefaultChannelMove from "../../utility/botDefaultChannelMove.js";
 import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper.js";
+
+import botMove from "./botMove.js";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
@@ -49,7 +50,7 @@ const channelCustom = async (teamspeak, client) => {
 
   await teamspeak.clientMove(client, tsCustomChannel.cid);
 
-  await botDefaultChannelMove(teamspeak);
+  await botMove(teamspeak);
 };
 
 export default channelCustom;

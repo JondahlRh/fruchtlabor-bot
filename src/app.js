@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import cron from "node-cron";
 import { TeamSpeak } from "ts3-nodejs-library";
 
+import botMove from "./controllers/channel/botMove.js";
 import channelController from "./controllers/channel/index.js";
 import messageController from "./controllers/message/index.js";
 
 import eHandler from "./utility/asyncErrorHandler.js";
-import botDefaultChannelMove from "./utility/botDefaultChannelMove.js";
 
 export default async () => {
   await mongoose.connect(process.env.MONGODB_CONNECT, {
@@ -23,7 +23,7 @@ export default async () => {
   });
   console.log("connected to Teamspeak");
 
-  eHandler(botDefaultChannelMove)(teamspeak);
+  eHandler(botMove)(teamspeak);
 
   teamspeak.on("clientconnect", (event) => {
     eHandler(messageController.join)(teamspeak, event.client);
