@@ -25,7 +25,10 @@ const addgroup = async (client) => {
     await client.delGroups(channelAddgroup.servergroup.servergroupId);
   } else {
     await client.addGroups(channelAddgroup.servergroup.servergroupId);
-    await client.message(channelAddgroup.message);
+
+    if (channelAddgroup.message.length > 0) {
+      await client.message(channelAddgroup.message);
+    }
   }
 };
 

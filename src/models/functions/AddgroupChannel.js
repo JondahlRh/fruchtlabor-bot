@@ -8,7 +8,7 @@ const AddgroupChannelSchema = new mongoose.Schema({
   channel: { type: ObjectId, ref: TsChannel, require: true },
   moveChannel: { type: ObjectId, ref: TsChannel, require: true },
   servergroup: { type: ObjectId, ref: TsServergroup, require: true },
-  message: { type: String, require: true },
+  message: { type: String, default: "" },
 });
 
 export default mongoose.model("AddgroupChannel", AddgroupChannelSchema);
