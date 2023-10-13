@@ -1,7 +1,6 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import BotDefaultChannel from "../models/functions/BotDefaultChannel.js";
-import TsChannel from "../models/teamspeak/TsChannel.js";
+import TsChannel from "../../models/teamspeak/TsChannel.js";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
