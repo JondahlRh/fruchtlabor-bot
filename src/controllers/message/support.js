@@ -1,7 +1,6 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import SupportMessage from "../../models/functions/SupportMessage.js";
-import IgnorePack from "../../models/general/IgnorePack.js";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
@@ -13,23 +12,25 @@ const messageSupport = async (teamspeak, client) => {
   const supportMessages = await SupportMessage.find()
     .populate("channel")
     .populate("contactServergroups")
-    .populate("ignore")
+    .populate({
+      path: "ignore",
+      populate: [
+        { path: "channels" },
+        { path: "channelParents" },
+        { path: "servergroups" },
+      ],
+    })
     .populate("specials.servergroup")
     .populate("specials.contactServergroups");
-
   const supportMessage = supportMessages.find(
     (x) => x.channel.channelId === +client.cid
   );
   if (supportMessage == undefined) return;
 
-  const ignore = await IgnorePack.findById(supportMessage.ignore)
-    .populate("channels")
-    .populate("channelParents")
-    .populate("servergroups");
-
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
 
+  const { ignore } = supportMessage;
   const ignoreChannels = ignore.channels.map((c) => c.channelId);
   const ignoreChannelParents = ignore.channelParents.map((c) => c.channelId);
   const ignoreServergroups = ignore.servergroups.map((sg) => sg.servergroupId);
