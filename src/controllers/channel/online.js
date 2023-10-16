@@ -5,20 +5,15 @@ import {
 } from "ts3-nodejs-library";
 
 import OnlineChannel from "../../models/functions/OnlineChannel.js";
-import Status from "../../models/general/Status.js";
 
 /**
  * @param {TeamSpeakClient} client
  * @param {TeamSpeakChannel} channel
+ * @param {any} statusList
  * @return {Promise<string>}
  */
-const getStatus = async (client, channel) => {
+const getStatus = (client, channel, statusList) => {
   if (!client) return "[color=#ee2222]offline[/color]";
-
-  const statusList = await Status.find()
-    .populate("channels")
-    .populate("channelParents")
-    .populate("servergroups");
 
   for (const status of statusList) {
     if (status.channels.some((x) => x.channelId === +channel.cid))
@@ -104,7 +99,15 @@ ${descGroups.join("")}`;
 const channelOnline = async (teamspeak) => {
   const onlineChannels = await OnlineChannel.find()
     .populate("channel")
-    .populate("servergroups");
+    .populate("servergroups")
+    .populate({
+      path: "collections",
+      populate: [
+        { path: "channels" },
+        { path: "channelParents" },
+        { path: "servergroups" },
+      ],
+    });
 
   for (const onlineChannel of onlineChannels) {
     const descGroups = [];
@@ -121,7 +124,7 @@ const channelOnline = async (teamspeak) => {
 
         const channel = await teamspeak.getChannelById(client?.cid);
 
-        const status = await getStatus(client, channel);
+        const status = getStatus(client, channel, onlineChannel.collections);
 
         descClients.push(
           getDescClient(
