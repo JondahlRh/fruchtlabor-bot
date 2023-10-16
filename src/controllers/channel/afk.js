@@ -1,34 +1,12 @@
-import {
-  TeamSpeak,
-  TeamSpeakChannel,
-  TeamSpeakClient,
-} from "ts3-nodejs-library";
+import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import AfkChannel from "../../models/functions/AfkChannel.js";
-import IgnorePack from "../../models/general/IgnorePack.js";
 
 /**
  * @param {TeamSpeakClient} client
- * @param {TeamSpeakChannel} channel
  * @param {{ general: number, micMuted: number, sndMuted: number }} conditions
- * @param {string} ignoreId
  */
-const checkMove = async (client, channel, conditions, ignoreId) => {
-  const ignore = await IgnorePack.findById(ignoreId)
-    .populate("channels")
-    .populate("channelParents")
-    .populate("servergroups");
-
-  if (
-    ignore.servergroups.some((x) =>
-      client.servergroups.includes(x.servergroupId.toString())
-    ) ||
-    ignore.channels.some((x) => x.channelId === +client.cid) ||
-    ignore.channelParents.some((x) => x.channelId === +channel.pid)
-  ) {
-    return -1;
-  }
-
+const checkMove = (client, conditions) => {
   const { general, micMuted, sndMuted } = conditions;
 
   if (general !== -1 && client.idleTime > general) return general;
@@ -40,6 +18,20 @@ const checkMove = async (client, channel, conditions, ignoreId) => {
   return -1;
 };
 
+const checkCollection = (afkChannels, part, client) => {
+  const checkChannel = (x) => x.channelId === client.channel;
+  const checkChannelParent = (x) => x.channelId === client.channelParent;
+  const checkServergroup = (x) =>
+    client.servergroups.includes(x.servergroupId.toString());
+
+  return afkChannels.find(
+    (afkChannel) =>
+      afkChannel[part].channels.some(checkChannel) ||
+      afkChannel[part].channelParents.some(checkChannelParent) ||
+      afkChannel[part].servergroups.some(checkServergroup)
+  );
+};
+
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
@@ -49,10 +41,23 @@ const channelAfk = async (teamspeak) => {
     .populate("moveChannel");
 
   const afkChannels = await AfkChannel.find({ isDefault: false })
-    .populate("ignore")
     .populate("moveChannel")
-    .populate("channels")
-    .populate("channelParents");
+    .populate({
+      path: "ignore",
+      populate: [
+        { path: "channels" },
+        { path: "channelParents" },
+        { path: "servergroups" },
+      ],
+    })
+    .populate({
+      path: "apply",
+      populate: [
+        { path: "channels" },
+        { path: "channelParents" },
+        { path: "servergroups" },
+      ],
+    });
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
@@ -62,30 +67,27 @@ const channelAfk = async (teamspeak) => {
 
     const channel = channelList.find((c) => c.cid === listClient.cid);
 
-    const afkChannel =
-      afkChannels.find(
-        (afkChannel) =>
-          afkChannel.channels.some((x) => x.channelId === +channel.cid) ||
-          afkChannel.channelParents.some((x) => x.channelId === +channel.pid)
-      ) || defaultMove;
+    const clientData = {
+      channel: +channel.cid,
+      channelParent: +channel.pid,
+      servergroups: listClient.servergroups,
+    };
 
-    const maxIdleTime = await checkMove(
-      listClient,
-      channel,
-      afkChannel.conditions,
-      afkChannel.ignore.id
-    );
+    const ignore = checkCollection(afkChannels, "ignore", clientData);
+    if (ignore != undefined) continue;
+
+    const apply = checkCollection(afkChannels, "apply", clientData);
+    const afkChannel = apply != undefined ? apply : defaultMove;
+
+    const maxIdleTime = checkMove(listClient, afkChannel.conditions);
     const maxIdleTimeMinutes = Math.floor(maxIdleTime / 1000 / 60);
+    if (maxIdleTime === -1) continue;
+    if (+listClient.cid === afkChannel.moveChannel.channelId) continue;
 
-    if (
-      maxIdleTime !== -1 &&
-      +listClient.cid !== afkChannel.moveChannel.channelId
-    ) {
-      await listClient.move(afkChannel.moveChannel.channelId);
-      await listClient.message(
-        `Du warst über ${maxIdleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`
-      );
-    }
+    await listClient.move(afkChannel.moveChannel.channelId);
+    await listClient.message(
+      `Du warst über ${maxIdleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`
+    );
   }
 };
 
