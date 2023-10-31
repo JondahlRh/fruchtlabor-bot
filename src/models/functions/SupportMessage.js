@@ -10,6 +10,7 @@ const SupportMessageSchema = new mongoose.Schema({
   contactServergroups: [{ type: ObjectId, ref: TsServergroup, require: true }],
   messageBody: { type: String, default: "" },
   ignore: { type: ObjectId, ref: TsCollection, require: true },
+  doNotDisturb: { type: ObjectId, ref: TsCollection, require: true },
   specials: [
     {
       servergroup: { type: ObjectId, ref: TsServergroup, require: true },

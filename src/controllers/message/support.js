@@ -20,8 +20,17 @@ const messageSupport = async (teamspeak, client) => {
         { path: "servergroups" },
       ],
     })
+    .populate({
+      path: "doNotDisturb",
+      populate: [
+        { path: "channels" },
+        { path: "channelParents" },
+        { path: "servergroups" },
+      ],
+    })
     .populate("specials.servergroup")
     .populate("specials.contactServergroups");
+
   const supportMessage = supportMessages.find(
     (x) => x.channel.channelId === +client.cid
   );
@@ -30,11 +39,6 @@ const messageSupport = async (teamspeak, client) => {
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
 
-  const { ignore } = supportMessage;
-  const ignoreChannels = ignore.channels.map((c) => c.channelId);
-  const ignoreChannelParents = ignore.channelParents.map((c) => c.channelId);
-  const ignoreServergroups = ignore.servergroups.map((sg) => sg.servergroupId);
-
   const specialContact = supportMessage.specials.find((x) =>
     client.servergroups.includes(x.servergroup.servergroupId.toString())
   );
@@ -42,22 +46,31 @@ const messageSupport = async (teamspeak, client) => {
     ? specialContact.contactServergroups
     : supportMessage.contactServergroups;
 
-  const supportClients = clientList.filter((listClient) => {
-    const hasServergroup = listClient.servergroups.some((x) =>
+  const filterListClient = (listClient, collection) => {
+    const { channels, channelParents, servergroups } = collection;
+
+    const isSupporter = listClient.servergroups.some((x) =>
       contactServergroups.some((y) => y.servergroupId === +x)
     );
-    const hasIgnoresupport = listClient.servergroups.some((x) =>
-      ignoreServergroups.some((y) => y === +x)
-    );
-    const channel = channelList.find((c) => c.cid === listClient.cid);
 
+    const channel = channelList.find((c) => c.cid === listClient.cid);
     return (
-      hasServergroup &&
-      !ignoreChannels.includes(+listClient.cid) &&
-      !ignoreChannelParents.includes(+channel.pid) &&
-      !hasIgnoresupport
+      isSupporter &&
+      !channels.some((x) => x.channelId === +listClient.cid) &&
+      !channelParents.some((x) => x.channelId === +channel.pid) &&
+      !servergroups.some((x) =>
+        listClient.servergroups.some((y) => x.servergroupId === +y)
+      )
     );
-  });
+  };
+
+  const supportClientsContact = clientList.filter((listClient) =>
+    filterListClient(listClient, supportMessage.ignore)
+  );
+
+  const supportClientsListed = clientList.filter((listClient) =>
+    filterListClient(listClient, supportMessage.doNotDisturb)
+  );
 
   /**
    * @param {string} uid
@@ -73,16 +86,16 @@ const messageSupport = async (teamspeak, client) => {
     : "";
   const messageBody = `${messagePrefix} Der User ${clientName} wartet in dem Channel "${clientChannel}" `;
 
-  for (const supportClient of supportClients) {
-    const otherSupporterString = supportClients
+  for (const supportClient of supportClientsListed) {
+    const otherSupporterString = supportClientsListed
       .filter((cl) => cl !== supportClient)
       .map((cl) => clientString(cl.uniqueIdentifier, cl.nickname))
       .join(", ");
 
     let messageSuffix;
-    if (supportClients.length === 1) {
+    if (supportClientsListed.length === 1) {
       messageSuffix = "(Keine weiteren Supporter kontaktiert)";
-    } else if (supportClients.length === 2) {
+    } else if (supportClientsListed.length === 2) {
       messageSuffix = `(Dieser weitere Supporter wurde kontaktiert: ${otherSupporterString})`;
     } else {
       messageSuffix = `(Diese weiteren Supporter wurden kontaktiert: ${otherSupporterString})`;
@@ -91,15 +104,31 @@ const messageSupport = async (teamspeak, client) => {
     supportClient.message(messageBody + messageSuffix);
   }
 
-  const supporterString = supportClients
+  const supporterString = supportClientsListed
     .map((cl) => clientString(cl.uniqueIdentifier, cl.nickname))
     .join(", ");
 
+  for (const supportClient of supportClientsContact) {
+    let messageSuffix;
+    if (supporterString.length === 0) {
+      messageSuffix = "(Kein Supporter wurde kontaktiert)";
+    } else if (supportClientsListed.length === 1) {
+      messageSuffix = `(Dieser Supporter wurde kontaktiert: ${supporterString})`;
+    } else {
+      messageSuffix = `(Diese Supporter wurden kontaktiert: ${supporterString})`;
+    }
+
+    supportClient.message(
+      `[color=#111111][b]Der User weiß nichts von dir:[/b][/color] ${messageBody}${messageSuffix}`
+    );
+  }
+
   let message = `Hallo ${client.nickname}, `;
-  if (supportClients.length === 0) {
+  if (supportClientsListed.length === 0) {
     message += `es ist zur Zeit leider kein Supporter erreichbar. Komm gerne später noch einmal. ${supportMessage.messageBody}`;
   } else {
-    const followUpStr = supportClients.length === 1 ? "Folgender" : "Folgende";
+    const followUpStr =
+      supportClientsListed.length === 1 ? "Folgender" : "Folgende";
     message += `bitte warte kurz, wir helfen dir gleich. ${supportMessage.messageBody} ${followUpStr} Supporter wurden kontaktiert: ${supporterString}`;
   }
 
