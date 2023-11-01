@@ -8,7 +8,7 @@ const AfkChannelSchema = new mongoose.Schema({
   isDefault: { type: Boolean, default: false },
   moveChannel: { type: ObjectId, ref: TsChannel, require: true },
   apply: { type: ObjectId, ref: TsCollection },
-  ignore: { type: ObjectId, ref: TsCollection },
+  ignore: { type: ObjectId, ref: TsCollection, require: true },
   conditions: {
     general: { type: Number, default: -1 },
     micMuted: { type: Number, default: -1 },

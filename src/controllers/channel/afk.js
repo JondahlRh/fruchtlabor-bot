@@ -36,11 +36,7 @@ const checkCollection = (afkChannels, part, client) => {
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
 const channelAfk = async (teamspeak) => {
-  const defaultMove = await AfkChannel.findOne({ isDefault: true })
-    .populate("ignore")
-    .populate("moveChannel");
-
-  const afkChannels = await AfkChannel.find({ isDefault: false })
+  const afkChannels = await AfkChannel.find()
     .populate("moveChannel")
     .populate({
       path: "ignore",
@@ -59,6 +55,9 @@ const channelAfk = async (teamspeak) => {
       ],
     });
 
+  const defaultMove = afkChannels.find((x) => x.isDefault);
+  const allButDefaultMove = afkChannels.filter((x) => !x.isDefault);
+
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
 
@@ -76,7 +75,7 @@ const channelAfk = async (teamspeak) => {
     const ignore = checkCollection(afkChannels, "ignore", clientData);
     if (ignore != undefined) continue;
 
-    const apply = checkCollection(afkChannels, "apply", clientData);
+    const apply = checkCollection(allButDefaultMove, "apply", clientData);
     const afkChannel = apply != undefined ? apply : defaultMove;
 
     const maxIdleTime = checkMove(listClient, afkChannel.conditions);
