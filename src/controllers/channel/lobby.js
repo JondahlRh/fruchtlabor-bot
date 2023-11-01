@@ -62,6 +62,12 @@ const lobby = async () => {
       lobbyChannel.minimum - channelChildren.length,
       1 - channelChildrenEmpty.length
     );
+
+    const extraChanelnames = channelsToBeCreated - unusedFruitList.length;
+    for (let i = 0; i < extraChanelnames; i++) {
+      unusedFruitList.push({ name: Date.now() + i });
+    }
+
     const channelSuffixes = unusedFruitList.slice(0, channelsToBeCreated);
     const channelProperties = {
       channelFlagPermanent: true,
