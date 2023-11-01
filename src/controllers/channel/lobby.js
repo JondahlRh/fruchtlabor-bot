@@ -66,6 +66,7 @@ const lobby = async () => {
     const channelProperties = {
       channelFlagPermanent: true,
       cpid: lobbyChannel.channelParent.channelId,
+      channelDescription: lobbyChannel.description.text,
       channelOrder: channelChildren[0]?.order,
       channelFlagMaxclientsUnlimited: lobbyChannel.clientLimit === -1,
       channelMaxclients: lobbyChannel.clientLimit,
