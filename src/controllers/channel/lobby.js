@@ -79,7 +79,11 @@ const lobby = async () => {
         channelProperties
       );
 
-      await tsChannelSetPermHelper(tsLobbyChannel, lobbyChannel.permissions);
+      await tsChannelSetPermHelper(
+        teamspeak,
+        tsLobbyChannel,
+        lobbyChannel.permissions
+      );
     }
 
     if (

@@ -39,7 +39,11 @@ const channelCustom = async (teamspeak, client) => {
       channelDeleteDelay: 5,
     });
 
-    await tsChannelSetPermHelper(tsCustomChannel, customChannel.permissions);
+    await tsChannelSetPermHelper(
+      teamspeak,
+      tsCustomChannel,
+      customChannel.permissions
+    );
 
     await teamspeak.setClientChannelGroup(
       customChannel.channelGroup.channelgroupId,
