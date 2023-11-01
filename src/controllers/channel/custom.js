@@ -26,9 +26,14 @@ const channelCustom = async (teamspeak, client) => {
 
   const channelGroupClientList = await teamspeak.channelGroupClientList();
 
+  const customChannelChannelGroup = customChannel.channelGroup.channelgroupId;
   let tsCustomChannel = channelList
     .filter((x) => +x.pid === +client.cid)
-    .find((x) => channelGroupClientList.some((y) => +y.cid === +x.cid));
+    .find((x) => {
+      return channelGroupClientList.some((y) => {
+        return +y.cid === +x.cid && customChannelChannelGroup === +y.cgid;
+      });
+    });
 
   if (tsCustomChannel == undefined) {
     const channelNamePrefix = customChannel.prefix && `${customChannel.prefix}`;
