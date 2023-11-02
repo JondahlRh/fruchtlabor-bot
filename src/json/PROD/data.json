@@ -3,7 +3,9 @@
     "reportTo": {
       "moderation": 318,
       "moderationDirectly": 2480,
-      "teamModeration": 2568
+      "teamModeration": 2568,
+      "toHmod": 2698,
+      "causeFaceit": 2699
     },
     "guest": 9,
     "ignoreSupport": {
@@ -19,7 +21,8 @@
       "complains": 2641,
       "coaching": 2558,
       "skinCouncil": 2574,
-      "teamModeration": 2591
+      "teamModeration": 2591,
+      "hmod": 77
     }
   },
   "channelgroup": {
@@ -29,13 +32,17 @@
     "default": 30,
     "meeting": {
       "team": 8,
+      "mod": 199821,
+      "teamtalk3": 11,
       "event": 141875
     },
     "spacer": {
       "teamtalk": 4,
       "support": 19,
       "playerSearch": 78,
+      "playerSearchCS2": 189822,
       "csgoTeam": 4278,
+      "teamSuche": 206837,
       "custom": 127,
       "music": 34
     },
@@ -45,7 +52,6 @@
     },
     "talk": { "default": 40 },
     "match": {
-      "esportal": 135266,
       "mmIntern": 4274,
       "mmPublic": 4275,
       "wingman": 4325,
@@ -93,7 +99,7 @@
           "permissions": { "i_channel_needed_join_power": 35 }
         },
         {
-          "channelParent": ["spacer", "playerSearch"],
+          "channelParent": ["spacer", "playerSearchCS2"],
           "channelgroup": ["channelManager"],
           "prefix": "Spielersuche",
           "permissions": { "i_channel_needed_join_power": 20 }
@@ -102,6 +108,12 @@
           "channelParent": ["spacer", "custom"],
           "channelgroup": ["channelManager"],
           "prefix": "Customchannel",
+          "permissions": {}
+        },
+        {
+          "channelParent": ["spacer", "teamSuche"],
+          "channelgroup": ["channelManager"],
+          "prefix": "Team sucht Spieler",
           "permissions": {}
         }
       ],
@@ -113,14 +125,6 @@
           "minimum": 2,
           "clientLimit": false,
           "permissions": { "i_channel_needed_join_power": 5 }
-        },
-        {
-          "channelParent": ["match", "esportal"],
-          "categorie": "match",
-          "prefix": "● Esportal",
-          "minimum": 2,
-          "clientLimit": 5,
-          "permissions": {}
         },
         {
           "channelParent": ["match", "mmIntern"],
@@ -219,6 +223,16 @@
               "servergroup": ["reportTo", "teamModeration"],
               "contact": ["teamModeration", "general", "moderation"],
               "extraSupporterMessage": "Teambetreuer Gespräch"
+            },
+            {
+              "servergroup": ["reportTo", "toHmod"],
+              "contact": ["hmod"],
+              "extraSupporterMessage": "H-Mod Gespräch"
+            },
+            {
+              "servergroup": ["reportTo", "causeFaceit"],
+              "contact": ["moderation", "complains"],
+              "extraSupporterMessage": "Faceit Gespräch"
             }
           ]
         },
@@ -231,7 +245,7 @@
         {
           "channel": ["supportWaiting", "application"],
           "contact": ["application", "moderation"],
-          "extraUserMessage": "Du kannst gerne die Steamprofil-Links von allen Accounts bereithalten. Das Gespräch dauert ca. 20 Minuten. Falls niemand da ist, kannst du gerne folgendes [url=https://forms.gle/dej3AvkpBS56QkLR7]Formular[/url] ausfüllen.",
+          "extraUserMessage": "Du kannst gerne die Steamprofil-Links von allen Accounts bereithalten. Das Gespräch dauert ca. 10 Minuten, wenn du dir vorher die Infovideos ([url=https://www.youtube.com/watch?v=Y3fLZIS04mE]Einführung[/url] & [url=https://www.youtube.com/watch?v=tFITl-5Nk3Q]TeamSpeak Tour[/url]) ansiehst. Falls niemand da ist, kannst du gerne folgendes [url=https://forms.gle/dej3AvkpBS56QkLR7]Formular[/url] ausfüllen. ",
           "exceptions": []
         },
         {
@@ -266,6 +280,20 @@
           "servergroup": ["reportTo", "teamModeration"],
           "message": [
             "Bitte melde dich in dem Channel 'Support | Wartezimmer' wegen deiner Teamsuche."
+          ]
+        },
+        {
+          "servergroup": ["reportTo", "toHmod"],
+          "message": [
+            "Bitte melde dich in dem Channel 'Support | Wartezimmer' oder direkt bei einen Head Mod."
+          ]
+        },
+        {
+          "servergroup": ["reportTo", "causeFaceit"],
+          "message": [
+            "",
+            "Bitte melde dich sofort in dem Channel 'Support | Wartezimmer' bei einem Moderator wegen deinem FaceIt Account!",
+            "Du kannst keinem anderem Channel beitreten!"
           ]
         },
         {
@@ -305,7 +333,6 @@
             "channels": [],
             "channelParents": [
               ["spacer", "playerSearch"],
-              ["match", "esportal"],
               ["match", "mmIntern"],
               ["match", "mmPublic"],
               ["match", "wingman"],
