@@ -49,28 +49,31 @@ const messageSupport = async (teamspeak, client) => {
   const filterListClient = (listClient, collection) => {
     const { channels, channelParents, servergroups } = collection;
 
-    const isSupporter = listClient.servergroups.some((x) =>
-      contactServergroups.some((y) => y.servergroupId === +x)
-    );
-
     const channel = channelList.find((c) => c.cid === listClient.cid);
     return (
-      isSupporter &&
-      !channels.some((x) => x.channelId === +listClient.cid) &&
-      !channelParents.some((x) => x.channelId === +channel.pid) &&
-      !servergroups.some((x) =>
+      channels.some((x) => x.channelId === +listClient.cid) ||
+      channelParents.some((x) => x.channelId === +channel.pid) ||
+      servergroups.some((x) =>
         listClient.servergroups.some((y) => x.servergroupId === +y)
       )
     );
   };
 
-  const supportClientsContact = clientList.filter((listClient) =>
-    filterListClient(listClient, supportMessage.ignore)
-  );
+  const supportClientsListed = [];
+  const supportClientsContact = [];
 
-  const supportClientsListed = clientList.filter((listClient) =>
-    filterListClient(listClient, supportMessage.doNotDisturb)
-  );
+  clientList.forEach((listClient) => {
+    const isSupporter = listClient.servergroups.some((x) =>
+      contactServergroups.some((y) => y.servergroupId === +x)
+    );
+    if (!isSupporter) return;
+
+    const isIgnore = filterListClient(listClient, supportMessage.ignore);
+    if (isIgnore) return supportClientsContact.push(listClient);
+
+    const isDND = filterListClient(listClient, supportMessage.doNotDisturb);
+    if (!isDND) supportClientsListed.push(listClient);
+  });
 
   /**
    * @param {string} uid
