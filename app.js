@@ -88,18 +88,18 @@ const app = async () => {
     if (!fsData) return;
 
     channel.online({ fsData, teamspeak });
-    server.retake({ fsData, teamspeak });
+    // server.retake({ fsData, teamspeak });
     move.afk({ fsData, teamspeak });
   });
 
   // interval 120s
-  cron.schedule("*/2 * * * *", () => {
-    const fsData = getDefinitionData();
-    if (!fsData) return;
+  // cron.schedule("*/2 * * * *", () => {
+  //   const fsData = getDefinitionData();
+  //   if (!fsData) return;
 
-    server.overview({ fsData, teamspeak });
-    server.intern({ fsData, teamspeak });
-  });
+  //   server.overview({ fsData, teamspeak });
+  //   server.intern({ fsData, teamspeak });
+  // });
 
   // error - event listener
   teamspeak.on("error", (error) => {
