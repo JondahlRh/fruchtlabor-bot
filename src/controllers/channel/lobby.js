@@ -79,7 +79,9 @@ const lobby = async () => {
     };
 
     for (const channelSuffix of channelSuffixes) {
-      const channelName = lobbyChannel.prefix.concat(" - ", channelSuffix.name);
+      const channelName = lobbyChannel.prefix
+        ? lobbyChannel.prefix.concat(" - ", channelSuffix.name)
+        : channelSuffix.name;
 
       const tsLobbyChannel = await teamspeak.channelCreate(
         channelName,
