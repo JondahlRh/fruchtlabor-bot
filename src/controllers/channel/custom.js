@@ -38,10 +38,12 @@ const channelCustom = async (teamspeak, client) => {
   } catch (error) {}
 
   if (tsCustomChannel == undefined) {
-    const channelNamePrefix = customChannel.prefix && `${customChannel.prefix}`;
-    const channelName = channelNamePrefix.concat(" ", client.nickname);
+    const channelName = customChannel.prefix
+      ? customChannel.prefix.concat(" - ", client.nickname)
+      : client.nickname;
+    const slicedChannelName = channelName.slice(-channelName.length, 40);
 
-    tsCustomChannel = await teamspeak.channelCreate(channelName, {
+    tsCustomChannel = await teamspeak.channelCreate(slicedChannelName, {
       cpid: client.cid,
       channelDeleteDelay: 5,
     });
