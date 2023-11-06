@@ -32,9 +32,12 @@ const channelCustom = async (teamspeak, client) => {
       client.databaseId
     );
 
-    tsCustomChannel = channelList.find((x) =>
-      channelGroupClientList.some((y) => y.cid === x.cid)
-    );
+    tsCustomChannel = channelList.find((x) => {
+      return (
+        x.pid === client.cid &&
+        channelGroupClientList.some((y) => y.cid === x.cid)
+      );
+    });
   } catch (error) {}
 
   if (tsCustomChannel == undefined) {
