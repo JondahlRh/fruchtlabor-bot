@@ -141,7 +141,7 @@ const channelOnline = async (teamspeak) => {
     const channelInfo = await teamspeak.channelInfo(
       onlineChannel.channel.channelId
     );
-    if (channelInfo.channelDescription === description) return;
+    if (channelInfo.channelDescription === description) continue;
 
     await teamspeak.channelEdit(onlineChannel.channel.channelId, {
       channelDescription: description,
