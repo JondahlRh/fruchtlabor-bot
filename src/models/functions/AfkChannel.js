@@ -6,7 +6,10 @@ import TsCollection from "../teamspeak/TsCollection.js";
 const { ObjectId } = mongoose.Schema.Types;
 const AfkChannelSchema = new mongoose.Schema({
   isDefault: { type: Boolean, default: false },
-  moveChannel: { type: ObjectId, ref: TsChannel, require: true },
+  moveChannel: {
+    member: { type: ObjectId, ref: TsChannel, require: true },
+    teammember: { type: ObjectId, ref: TsChannel, require: true },
+  },
   apply: { type: ObjectId, ref: TsCollection },
   ignore: { type: ObjectId, ref: TsCollection, require: true },
   conditions: {

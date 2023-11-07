@@ -1,6 +1,7 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import AfkChannel from "../../models/functions/AfkChannel.js";
+import TsServergroup from "../../models/teamspeak/TsServergroup.js";
 
 /**
  * @param {TeamSpeakClient} client
@@ -37,7 +38,10 @@ const checkCollection = (afkChannels, part, client) => {
  */
 const channelAfk = async (teamspeak) => {
   const afkChannels = await AfkChannel.find()
-    .populate("moveChannel")
+    .populate({
+      path: "moveChannel",
+      populate: [{ path: "member" }, { path: "teammember" }],
+    })
     .populate({
       path: "ignore",
       populate: [
@@ -60,6 +64,7 @@ const channelAfk = async (teamspeak) => {
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
+  const tsServergroups = await TsServergroup.find();
 
   for (const listClient of clientList) {
     if (listClient.type === 1) continue;
@@ -81,9 +86,21 @@ const channelAfk = async (teamspeak) => {
     const maxIdleTime = checkMove(listClient, afkChannel.conditions);
     const maxIdleTimeMinutes = Math.floor(maxIdleTime / 1000 / 60);
     if (maxIdleTime === -1) continue;
-    if (+listClient.cid === afkChannel.moveChannel.channelId) continue;
 
-    await listClient.move(afkChannel.moveChannel.channelId);
+    const tsServergroup = tsServergroups.find((tsSg) => {
+      return (
+        tsSg.isTeammember &&
+        listClient.servergroups.some((x) => tsSg.servergroupId === +x)
+      );
+    });
+
+    const moveChannel = tsServergroup?.isTeammember
+      ? afkChannel.moveChannel.teammember
+      : afkChannel.moveChannel.member;
+
+    if (+listClient.cid === moveChannel.channelId) continue;
+
+    await listClient.move(moveChannel.channelId);
     await listClient.message(
       `Du warst über ${maxIdleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`
     );
