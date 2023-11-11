@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import TsChannel from "./TsChannel.js";
-import TsServergroup from "./TsServergroup.js";
+import TsChannel from "./TsChannel";
+import TsServergroup from "./TsServergroup";
 
 const { ObjectId } = mongoose.Schema.Types;
 const TsCollectionSchema = new mongoose.Schema({

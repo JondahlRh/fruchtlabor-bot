@@ -1,6 +1,6 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import SupportMessage from "../../models/functions/SupportMessage.js";
+import SupportMessage from "../../models/functions/SupportMessage";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

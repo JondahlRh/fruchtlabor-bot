@@ -1,7 +1,7 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import AfkChannel from "../../models/functions/AfkChannel.js";
-import TsServergroup from "../../models/teamspeak/TsServergroup.js";
+import AfkChannel from "../../models/functions/AfkChannel";
+import TsServergroup from "../../models/teamspeak/TsServergroup";
 
 /**
  * @param {TeamSpeakClient} client

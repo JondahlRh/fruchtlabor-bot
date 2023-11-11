@@ -1,9 +1,9 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import LobbyChannel from "../../models/functions/LobbyChannel.js";
-import Fruit from "../../models/general/Fruit.js";
+import LobbyChannel from "../../models/functions/LobbyChannel";
+import Fruit from "../../models/general/Fruit";
 
-import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper.js";
+import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper";
 
 /**
  * @type {TeamSpeak[]}

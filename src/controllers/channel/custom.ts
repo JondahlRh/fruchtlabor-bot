@@ -1,10 +1,10 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import CustomChannel from "../../models/functions/CustomChannel.js";
+import CustomChannel from "../../models/functions/CustomChannel";
 
-import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper.js";
+import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper";
 
-import botMove from "./botMove.js";
+import botMove from "./botMove";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

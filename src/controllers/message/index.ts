@@ -1,4 +1,4 @@
-import join from "./join.js";
-import support from "./support.js";
+import join from "./join";
+import support from "./support";
 
 export default { support, join };

@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import cron from "node-cron";
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import botMove from "./controllers/channel/botMove.js";
-import channelController from "./controllers/channel/index.js";
-import messageController from "./controllers/message/index.js";
+import botMove from "./controllers/channel/botMove";
+import channelController from "./controllers/channel";
+import messageController from "./controllers/message";
 
-import eHandler from "./utility/asyncErrorHandler.js";
+import eHandler from "./utility/asyncErrorHandler";
 
 export default async () => {
   await mongoose.connect(process.env.MONGODB_CONNECT, {

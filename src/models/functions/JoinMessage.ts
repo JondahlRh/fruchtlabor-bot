@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import TsServergroup from "../teamspeak/TsServergroup.js";
+import TsServergroup from "../teamspeak/TsServergroup";
 
 const { ObjectId } = mongoose.Schema.Types;
 const JoinMessageSchema = new mongoose.Schema({

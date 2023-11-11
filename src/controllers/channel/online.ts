@@ -4,7 +4,7 @@ import {
   TeamSpeakClient,
 } from "ts3-nodejs-library";
 
-import OnlineChannel from "../../models/functions/OnlineChannel.js";
+import OnlineChannel from "../../models/functions/OnlineChannel";
 
 /**
  * @param {TeamSpeakClient} client

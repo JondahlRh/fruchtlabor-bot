@@ -1,6 +1,6 @@
 import { TeamSpeakClient } from "ts3-nodejs-library";
 
-import AddgroupChannel from "../../models/functions/AddgroupChannel.js";
+import AddgroupChannel from "../../models/functions/AddgroupChannel";
 
 /**
  * @param {TeamSpeakClient} client Client from the Event
