@@ -5,3 +5,6 @@
 
 # dependenice files
 node_modules
+
+# build
+build
