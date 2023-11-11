@@ -1,4 +1,7 @@
-/node_modules
-/logs
-/files
-.creds
+# env files
+.env
+.env.dev
+.env.prod
+
+# dependenice files
+node_modules

@@ -1,35 +1,39 @@
 # Sourcecode of the Official FruchtLabor TeamSpeak Bot
 
-## Todo's for Setup:
-
-### .creds file
-
-<sub>js file with the credentials for the teamspeak server (query user)</sub>
+## installation
 
 ```
-const PROD = {
-  SERVER_IP: string,
-  SERVER_PORT: number,
-  QUERY_USERNAME: string,
-  QUERY_PASSWORD: string,
-  TS_ID: string,
-};
-
-module.exports = { PROD };
+npm install
 ```
 
-### .env file
+## required files
 
-<sub>envirement file with the current version (defined in the .creds file before)</sub>
+### .env
 
 ```
-VERSION="PROD"
+NODE_ENV=""
+
+TEAMSPEAK_IP=""
+TEAMSPEAK_PORT=0
+TEAMSPEAKQUERY_USERNAME=""
+TEAMSPEAKQUERY_PASSWORD=""
+TEAMSPEAK_NICKNAME=""
+
+MONGODB_CONNECT=""
+MONGODB_DBNAME=""
 ```
 
-### "files" file
+### optinal .env stage file
 
-<sub>folder for external files that needs to be loaded</sub>
+<sub>Optinal, for having different login data for different stages. Filename has to start with ".env." and the value provided in "NODE_ENV"!</sub>
 
-### "logs" file
+```
+TEAMSPEAK_IP=""
+TEAMSPEAK_PORT=0
+TEAMSPEAKQUERY_USERNAME=""
+TEAMSPEAKQUERY_PASSWORD=""
+TEAMSPEAK_NICKNAME=""
 
-<sub>folder for error logs</sub>
+MONGODB_CONNECT=""
+MONGODB_DBNAME=""
+```

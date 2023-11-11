@@ -1,25 +1,26 @@
 {
   "name": "fruchtlaborbot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "version": "2.0.0",
+  "description": "teamspeak bot for the fruchtlabor cs community",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "prettierC": "prettier --check .",
-    "prettierW": "prettier --write ."
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "prettier": "prettier --write ."
   },
   "author": "Jondahl \"Gamix\" Rhenius",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "fs": "^0.0.1-security",
+    "dotenv": "^16.3.1",
+    "mongoose": "^7.4.1",
     "node-cron": "^3.0.2",
     "source-server-query": "^3.0.3",
-    "ts3-nodejs-library": "^3.4.1"
+    "ts3-nodejs-library": "^3.5.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19",
-    "prettier": "^2.8.4"
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.1"
   }
 }
