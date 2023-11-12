@@ -74,15 +74,15 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
       servergroups: listClient.servergroups,
     };
 
-    const ignore = afkChannels.some((afkChannel) =>
+    const ignore = allButDefaultMove.some((afkChannel) =>
       afkChannel.ignore.some((x) => clientMatchesCollection(clientData, x))
     );
     if (ignore) continue;
 
-    const apply = afkChannels.find((afkChannel) =>
+    const apply = allButDefaultMove.find((afkChannel) =>
       afkChannel.apply.some((x) => clientMatchesCollection(clientData, x))
     );
-    const afkChannel = apply != undefined ? apply : defaultMove;
+    const afkChannel = apply ?? defaultMove;
 
     const maxIdleTime = checkMove(listClient, afkChannel.conditions);
     const maxIdleTimeMinutes = Math.floor(maxIdleTime / 1000 / 60);
