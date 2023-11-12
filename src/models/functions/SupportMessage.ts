@@ -9,8 +9,8 @@ const SupportMessageSchema = new mongoose.Schema({
   channel: { type: ObjectId, ref: TsChannel, require: true },
   contactServergroups: [{ type: ObjectId, ref: TsServergroup, require: true }],
   messageBody: { type: String, default: "" },
-  ignore: { type: ObjectId, ref: TsCollection, require: true },
-  doNotDisturb: { type: ObjectId, ref: TsCollection, require: true },
+  ignore: [{ type: ObjectId, ref: TsCollection }],
+  doNotDisturb: [{ type: ObjectId, ref: TsCollection }],
   specials: [
     {
       servergroup: { type: ObjectId, ref: TsServergroup, require: true },

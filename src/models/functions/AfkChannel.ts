@@ -10,8 +10,8 @@ const AfkChannelSchema = new mongoose.Schema({
     member: { type: ObjectId, ref: TsChannel, require: true },
     teammember: { type: ObjectId, ref: TsChannel, require: true },
   },
-  apply: { type: ObjectId, ref: TsCollection },
-  ignore: { type: ObjectId, ref: TsCollection, require: true },
+  apply: [{ type: ObjectId, ref: TsCollection }],
+  ignore: [{ type: ObjectId, ref: TsCollection }],
   conditions: {
     general: { type: Number, default: -1 },
     micMuted: { type: Number, default: -1 },

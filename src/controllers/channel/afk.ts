@@ -2,10 +2,12 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import { ClientData } from "src/types/general";
 import { AfkChannelType } from "src/types/mongoose/functions";
-import { TsChannelType, TsServergroupType } from "src/types/mongoose/teamspeak";
+import { TsServergroupType } from "src/types/mongoose/teamspeak";
 
 import AfkChannel from "src/models/functions/AfkChannel";
 import TsServergroup from "src/models/teamspeak/TsServergroup";
+
+import { clientMatchesCollection } from "src/utility/tsCollectionHelper";
 
 /**
  * @param {TeamSpeakClient} client
@@ -24,26 +26,6 @@ const checkMove = (
     return sndMuted;
 
   return -1;
-};
-
-const checkCollection = (
-  afkChannels: AfkChannelType[],
-  part: "apply" | "ignore",
-  client: ClientData
-) => {
-  const checkChannel = (x: TsChannelType) =>
-    String(x.channelId) === client?.channel;
-  const checkChannelParent = (x: TsChannelType) =>
-    String(x.channelId) === client?.channelParent;
-  const checkServergroup = (x: TsServergroupType) =>
-    client.servergroups.includes(x.servergroupId.toString());
-
-  return afkChannels.find(
-    (afkChannel) =>
-      afkChannel[part].channels.some(checkChannel) ||
-      afkChannel[part].channelParents.some(checkChannelParent) ||
-      afkChannel[part].servergroups.some(checkServergroup)
-  );
 };
 
 /**
@@ -92,10 +74,14 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
       servergroups: listClient.servergroups,
     };
 
-    const ignore = checkCollection(afkChannels, "ignore", clientData);
-    if (ignore != undefined) continue;
+    const ignore = afkChannels.some((afkChannel) =>
+      afkChannel.ignore.some((x) => clientMatchesCollection(clientData, x))
+    );
+    if (ignore) continue;
 
-    const apply = checkCollection(allButDefaultMove, "apply", clientData);
+    const apply = afkChannels.find((afkChannel) =>
+      afkChannel.apply.some((x) => clientMatchesCollection(clientData, x))
+    );
     const afkChannel = apply != undefined ? apply : defaultMove;
 
     const maxIdleTime = checkMove(listClient, afkChannel.conditions);

@@ -20,8 +20,8 @@ export type AfkChannelType = {
     member: TsChannelType;
     teammember: TsChannelType;
   };
-  apply: TsCollectionType;
-  ignore: TsCollectionType;
+  apply: TsCollectionType[];
+  ignore: TsCollectionType[];
   conditions: {
     general: number;
     micMuted: number;
@@ -62,7 +62,7 @@ export type SupportMessageType = {
   channel: TsChannelType;
   contactServergroups: TsServergroupType[];
   messageBody: string;
-  ignore: TsCollectionType;
-  doNotDisturb: TsCollectionType;
+  ignore: TsCollectionType[];
+  doNotDisturb: TsCollectionType[];
   specials: SupportSpecialType[];
 };

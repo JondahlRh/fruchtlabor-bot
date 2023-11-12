@@ -1,34 +1,24 @@
-import {
-  TeamSpeak,
-  TeamSpeakChannel,
-  TeamSpeakClient,
-} from "ts3-nodejs-library";
+import { TeamSpeak } from "ts3-nodejs-library";
 
+import { ClientData } from "src/types/general";
 import { OnlineChannelType } from "src/types/mongoose/functions";
 import { TsCollectionType } from "src/types/mongoose/teamspeak";
 
 import OnlineChannel from "src/models/functions/OnlineChannel";
 
-const getStatus = (
-  client: TeamSpeakClient | undefined,
-  channel: TeamSpeakChannel | undefined,
-  statusList: TsCollectionType[]
-) => {
-  if (!client || !channel) return "[color=#ee2222]offline[/color]";
+import { clientMatchesCollectionsSorted } from "src/utility/tsCollectionHelper";
 
-  for (const status of statusList) {
-    if (status.channels.some((x) => x.channelId === +channel.cid))
-      return status.label;
+const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
+  if (!clientData.channel || !clientData.channelParent) {
+    return "[color=#ee2222]offline[/color]";
   }
-  for (const status of statusList) {
-    if (status.channelParents.some((x) => x.channelId === +channel.pid))
-      return status.label;
-  }
-  for (const status of statusList) {
-    const servergroupmatches = status.servergroups.some((x) =>
-      client.servergroups.some((clsg) => +clsg === x.servergroupId)
-    );
-    if (servergroupmatches) return status.label;
+
+  const matchedCollection = clientMatchesCollectionsSorted(
+    clientData,
+    statusList
+  );
+  if (matchedCollection) {
+    return matchedCollection?.label;
   }
 
   return "[color=#44dd44]online[/color]";
@@ -116,7 +106,13 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
 
         const channel = await teamspeak.getChannelById(client?.cid ?? "");
 
-        const status = getStatus(client, channel, onlineChannel.collections);
+        const clientData: ClientData = {
+          channel: channel?.cid,
+          channelParent: channel?.pid,
+          servergroups: client?.servergroups ?? [],
+        };
+
+        const status = getStatus(clientData, onlineChannel.collections);
 
         descClients.push(
           getDescClient(

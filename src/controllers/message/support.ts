@@ -1,9 +1,11 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
+import { ClientData } from "src/types/general";
 import { SupportMessageType } from "src/types/mongoose/functions";
-import { TsCollectionType } from "src/types/mongoose/teamspeak";
 
 import SupportMessage from "src/models/functions/SupportMessage";
+
+import { clientMatchesCollection } from "src/utility/tsCollectionHelper";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
@@ -52,22 +54,6 @@ const messageSupport = async (
     ? specialContact.contactServergroups
     : supportMessage.contactServergroups;
 
-  const filterListClient = (
-    listClient: TeamSpeakClient,
-    collection: TsCollectionType
-  ) => {
-    const { channels, channelParents, servergroups } = collection;
-
-    const channel = channelList.find((c) => c.cid === listClient.cid);
-    return (
-      channels.some((x) => x.channelId === +listClient.cid) ||
-      channelParents.some((x) => x.channelId === Number(channel?.pid)) ||
-      servergroups.some((x) =>
-        listClient.servergroups.some((y) => x.servergroupId === +y)
-      )
-    );
-  };
-
   const supportClientsListed: TeamSpeakClient[] = [];
   const supportClientsContact: TeamSpeakClient[] = [];
 
@@ -77,10 +63,21 @@ const messageSupport = async (
     );
     if (!isSupporter) return;
 
-    const isIgnore = filterListClient(listClient, supportMessage.ignore);
+    const channel = channelList.find((c) => c.cid === listClient.cid);
+    const clientData: ClientData = {
+      channel: channel?.cid,
+      channelParent: channel?.pid,
+      servergroups: listClient.servergroups,
+    };
+
+    const isIgnore = supportMessage.ignore.some((x) =>
+      clientMatchesCollection(clientData, x)
+    );
     if (isIgnore) return supportClientsContact.push(listClient);
 
-    const isDND = filterListClient(listClient, supportMessage.doNotDisturb);
+    const isDND = supportMessage.doNotDisturb.some((x) =>
+      clientMatchesCollection(clientData, x)
+    );
     if (!isDND) supportClientsListed.push(listClient);
   });
 
