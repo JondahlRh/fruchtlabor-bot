@@ -3,7 +3,6 @@ import { schedule } from "node-cron";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import channelController from "./controllers/channel";
-import botMove from "./controllers/channel/botMove";
 import messageController from "./controllers/message";
 import eHandler from "./utility/asyncErrorHandler";
 
@@ -22,7 +21,7 @@ export default async () => {
   });
   console.log("connected to Teamspeak");
 
-  eHandler(botMove)(teamspeak);
+  eHandler(channelController.botMove)(teamspeak);
 
   teamspeak.on("clientconnect", (event) => {
     eHandler(messageController.join)(teamspeak, event.client);
