@@ -31,9 +31,10 @@ const checkCollection = (
   part: "apply" | "ignore",
   client: ClientData
 ) => {
-  const checkChannel = (x: TsChannelType) => x.channelId === +client.channel;
+  const checkChannel = (x: TsChannelType) =>
+    String(x.channelId) === client?.channel;
   const checkChannelParent = (x: TsChannelType) =>
-    x.channelId === +client.channelParent;
+    String(x.channelId) === client?.channelParent;
   const checkServergroup = (x: TsServergroupType) =>
     client.servergroups.includes(x.servergroupId.toString());
 
@@ -86,8 +87,8 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
     const channel = channelList.find((c) => c.cid === listClient.cid);
 
     const clientData: ClientData = {
-      channel: channel?.cid ?? "",
-      channelParent: channel?.pid ?? "",
+      channel: channel?.cid,
+      channelParent: channel?.pid,
       servergroups: listClient.servergroups,
     };
 
