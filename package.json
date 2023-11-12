@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node build",
-    "dev": "nodemon --exec ts-node src",
-    "build": "tsc",
+    "dev": "nodemon",
+    "build": "tsc && tsconfig-paths compile",
     "prettier": "prettier --write ."
   },
   "author": "Jondahl \"Gamix\" Rhenius",
@@ -24,6 +24,7 @@
     "nodemon": "^3.0.1",
     "prettier": "^3.0.1",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   }
 }

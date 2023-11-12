@@ -9,6 +9,6 @@
       "src/*": ["src/*"]
     }
   },
-  "files": [".env"],
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
 }
