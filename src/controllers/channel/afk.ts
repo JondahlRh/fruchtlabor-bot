@@ -1,5 +1,6 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
+import { ClientData } from "src/types/general";
 import { AfkChannelType } from "src/types/mongoose/functions";
 import { TsChannelType, TsServergroupType } from "src/types/mongoose/teamspeak";
 
@@ -28,7 +29,7 @@ const checkMove = (
 const checkCollection = (
   afkChannels: AfkChannelType[],
   part: "apply" | "ignore",
-  client: { channel: number; channelParent: number; servergroups: string[] }
+  client: ClientData
 ) => {
   const checkChannel = (x: TsChannelType) => x.channelId === client.channel;
   const checkChannelParent = (x: TsChannelType) =>
