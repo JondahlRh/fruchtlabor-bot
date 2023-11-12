@@ -1,5 +1,5 @@
 export type ClientData = {
-  channel: number;
-  channelParent: number;
+  channel: string;
+  channelParent: string;
   servergroups: string[];
 };
