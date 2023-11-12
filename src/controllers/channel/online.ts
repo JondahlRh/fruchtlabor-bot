@@ -91,6 +91,9 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
       ],
     });
 
+  const clientList = await teamspeak.clientList();
+  const channelList = await teamspeak.channelList();
+
   for (const onlineChannel of onlineChannels) {
     const descGroups = [];
     for (const servergroup of onlineChannel.servergroups) {
@@ -100,11 +103,10 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
 
       const descClients = [];
       for (const serverGroupClient of serverGroupClientList) {
-        const client = await teamspeak.getClientByUid(
-          serverGroupClient.clientUniqueIdentifier
+        const client = clientList.find(
+          (x) => x.uniqueIdentifier === serverGroupClient.clientUniqueIdentifier
         );
-
-        const channel = await teamspeak.getChannelById(client?.cid ?? "");
+        const channel = channelList.find((x) => x.cid === client?.cid);
 
         const clientData: ClientData = {
           channel: channel?.cid,
