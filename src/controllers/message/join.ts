@@ -1,8 +1,8 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import JoinMessage from "../../models/functions/JoinMessage";
+import { JoinMessageType } from "src/types/mongoose/functions";
 
-import { JoinMessageType } from "../../types/mongoose/functions";
+import JoinMessage from "src/models/functions/JoinMessage";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

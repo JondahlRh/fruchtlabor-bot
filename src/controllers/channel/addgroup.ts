@@ -1,8 +1,8 @@
 import { TeamSpeakClient } from "ts3-nodejs-library";
 
-import AddgroupChannel from "../../models/functions/AddgroupChannel";
+import { AddgroupChannelType } from "src/types/mongoose/functions";
 
-import { AddgroupChannelType } from "../../types/mongoose/functions";
+import AddgroupChannel from "src/models/functions/AddgroupChannel";
 
 /**
  * @param {TeamSpeakClient} client Client from the Event

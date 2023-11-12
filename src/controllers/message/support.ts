@@ -1,9 +1,9 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import SupportMessage from "../../models/functions/SupportMessage";
+import { SupportMessageType } from "src/types/mongoose/functions";
+import { TsCollectionType } from "src/types/mongoose/teamspeak";
 
-import { SupportMessageType } from "../../types/mongoose/functions";
-import { TsCollectionType } from "../../types/mongoose/teamspeak";
+import SupportMessage from "src/models/functions/SupportMessage";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

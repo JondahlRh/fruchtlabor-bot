@@ -1,10 +1,11 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import CustomChannel from "../../models/functions/CustomChannel";
+import { CustomChannelType } from "src/types/mongoose/functions";
 
-import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper";
+import CustomChannel from "src/models/functions/CustomChannel";
 
-import { CustomChannelType } from "../../types/mongoose/functions";
+import tsChannelSetPermHelper from "src/utility/tsChannelSetPermHelper";
+
 import botMove from "./botMove";
 
 /**

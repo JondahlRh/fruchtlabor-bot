@@ -1,12 +1,12 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import LobbyChannel from "../../models/functions/LobbyChannel";
-import Fruit from "../../models/general/Fruit";
+import { LobbyChannelType } from "src/types/mongoose/functions";
+import { FruitType } from "src/types/mongoose/general";
 
-import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper";
+import LobbyChannel from "src/models/functions/LobbyChannel";
+import Fruit from "src/models/general/Fruit";
 
-import { LobbyChannelType } from "../../types/mongoose/functions";
-import { FruitType } from "../../types/mongoose/general";
+import tsChannelSetPermHelper from "src/utility/tsChannelSetPermHelper";
 
 /**
  * @type {TeamSpeak[]}

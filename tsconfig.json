@@ -3,7 +3,11 @@
     "outDir": "./build",
     "allowJs": true,
     "target": "ES5",
-    "strict": true
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["src/*"]
+    }
   },
   "files": [".env"],
   "include": ["./src/**/*"]

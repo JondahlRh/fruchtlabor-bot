@@ -4,10 +4,10 @@ import {
   TeamSpeakClient,
 } from "ts3-nodejs-library";
 
-import OnlineChannel from "../../models/functions/OnlineChannel";
+import { OnlineChannelType } from "src/types/mongoose/functions";
+import { TsCollectionType } from "src/types/mongoose/teamspeak";
 
-import { OnlineChannelType } from "../../types/mongoose/functions";
-import { TsCollectionType } from "../../types/mongoose/teamspeak";
+import OnlineChannel from "src/models/functions/OnlineChannel";
 
 const getStatus = (
   client: TeamSpeakClient | undefined,

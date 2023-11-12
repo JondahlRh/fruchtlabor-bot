@@ -1,8 +1,8 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import TsChannel from "../../models/teamspeak/TsChannel";
+import { TsChannelType } from "src/types/mongoose/teamspeak";
 
-import { TsChannelType } from "../../types/mongoose/teamspeak";
+import TsChannel from "src/models/teamspeak/TsChannel";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

@@ -1,13 +1,10 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import AfkChannel from "../../models/functions/AfkChannel";
-import TsServergroup from "../../models/teamspeak/TsServergroup";
+import { AfkChannelType } from "src/types/mongoose/functions";
+import { TsChannelType, TsServergroupType } from "src/types/mongoose/teamspeak";
 
-import { AfkChannelType } from "../../types/mongoose/functions";
-import {
-  TsChannelType,
-  TsServergroupType,
-} from "../../types/mongoose/teamspeak";
+import AfkChannel from "src/models/functions/AfkChannel";
+import TsServergroup from "src/models/teamspeak/TsServergroup";
 
 /**
  * @param {TeamSpeakClient} client
