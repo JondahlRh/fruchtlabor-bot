@@ -1,8 +1,4 @@
-/**
- * @param {Error} error
- * @param {String} functionname
- */
-const catcher = async (error, functionname) => {
+const catcher = async (error: Error, functionname: string) => {
   console.table([
     {
       title: "An Error ocurred!",
@@ -12,9 +8,8 @@ const catcher = async (error, functionname) => {
   ]);
 };
 
-/**
- * @param {Function} fn Function that should be wrapped in an error handler
- */
-export default (fn) =>
-  (...args) =>
-    Promise.resolve(fn(...args).catch((error) => catcher(error, fn.name)));
+export default (fn: Function) =>
+  (...args: any) =>
+    Promise.resolve(
+      fn(...args).catch((error: Error) => catcher(error, fn.name))
+    );

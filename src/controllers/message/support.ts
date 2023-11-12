@@ -2,14 +2,20 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import SupportMessage from "../../models/functions/SupportMessage";
 
+import { SupportMessageType } from "../../types/mongoose/functions";
+import { TsCollectionType } from "../../types/mongoose/teamspeak";
+
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  * @param {TeamSpeakClient} client Client from the Event
  */
-const messageSupport = async (teamspeak, client) => {
+const messageSupport = async (
+  teamspeak: TeamSpeak,
+  client: TeamSpeakClient
+) => {
   if (client.type === 1) return;
 
-  const supportMessages = await SupportMessage.find()
+  const supportMessages: SupportMessageType[] = await SupportMessage.find()
     .populate("channel")
     .populate("contactServergroups")
     .populate({
@@ -46,21 +52,24 @@ const messageSupport = async (teamspeak, client) => {
     ? specialContact.contactServergroups
     : supportMessage.contactServergroups;
 
-  const filterListClient = (listClient, collection) => {
+  const filterListClient = (
+    listClient: TeamSpeakClient,
+    collection: TsCollectionType
+  ) => {
     const { channels, channelParents, servergroups } = collection;
 
     const channel = channelList.find((c) => c.cid === listClient.cid);
     return (
       channels.some((x) => x.channelId === +listClient.cid) ||
-      channelParents.some((x) => x.channelId === +channel.pid) ||
+      channelParents.some((x) => x.channelId === Number(channel?.pid)) ||
       servergroups.some((x) =>
         listClient.servergroups.some((y) => x.servergroupId === +y)
       )
     );
   };
 
-  const supportClientsListed = [];
-  const supportClientsContact = [];
+  const supportClientsListed: TeamSpeakClient[] = [];
+  const supportClientsContact: TeamSpeakClient[] = [];
 
   clientList.forEach((listClient) => {
     const isSupporter = listClient.servergroups.some((x) =>
@@ -75,13 +84,10 @@ const messageSupport = async (teamspeak, client) => {
     if (!isDND) supportClientsListed.push(listClient);
   });
 
-  /**
-   * @param {string} uid
-   * @param {string} name
-   */
-  const clientString = (uid, name) => `[URL=client:///${uid}]${name}[/URL]`;
+  const clientString = (uid: string, name: string) =>
+    `[URL=client:///${uid}]${name}[/URL]`;
 
-  const clientChannel = channelList.find((c) => c.cid === client.cid).name;
+  const clientChannel = channelList.find((c) => c.cid === client.cid)?.name;
   const clientName = clientString(client.uniqueIdentifier, client.nickname);
 
   const messagePrefix = specialContact

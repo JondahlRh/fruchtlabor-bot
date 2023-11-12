@@ -4,16 +4,17 @@ import CustomChannel from "../../models/functions/CustomChannel";
 
 import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper";
 
+import { CustomChannelType } from "../../types/mongoose/functions";
 import botMove from "./botMove";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  * @param {TeamSpeakClient} client Client from the Event
  */
-const channelCustom = async (teamspeak, client) => {
+const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   if (client.type === 1) return;
 
-  const customChannels = await CustomChannel.find()
+  const customChannels: CustomChannelType[] = await CustomChannel.find()
     .populate("channelParent")
     .populate("channelGroup");
 
@@ -27,8 +28,8 @@ const channelCustom = async (teamspeak, client) => {
   let tsCustomChannel;
   try {
     const channelGroupClientList = await teamspeak.channelGroupClientList(
-      customChannel.channelGroup.channelgroupId,
-      null,
+      String(customChannel.channelGroup.channelgroupId),
+      undefined,
       client.databaseId
     );
 
@@ -58,7 +59,7 @@ const channelCustom = async (teamspeak, client) => {
     );
 
     await teamspeak.setClientChannelGroup(
-      customChannel.channelGroup.channelgroupId,
+      String(customChannel.channelGroup.channelgroupId),
       tsCustomChannel.cid,
       client.databaseId
     );

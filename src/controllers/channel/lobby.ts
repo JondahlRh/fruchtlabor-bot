@@ -5,10 +5,13 @@ import Fruit from "../../models/general/Fruit";
 
 import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper";
 
+import { LobbyChannelType } from "../../types/mongoose/functions";
+import { FruitType } from "../../types/mongoose/general";
+
 /**
  * @type {TeamSpeak[]}
  */
-const eventQueue = [];
+const eventQueue: TeamSpeak[] = [];
 let isProcessing = false;
 
 const lobby = async () => {
@@ -16,11 +19,13 @@ const lobby = async () => {
   if (eventQueue.length === 0) return;
 
   isProcessing = true;
+
   const teamspeak = eventQueue.shift();
+  if (!teamspeak) return;
 
-  const fruitList = await Fruit.find();
+  const fruitList: FruitType[] = await Fruit.find();
 
-  const lobbyChannels = await LobbyChannel.find()
+  const lobbyChannels: LobbyChannelType[] = await LobbyChannel.find()
     .populate("channelParent")
     .populate("channelParentSiblings")
     .populate("description");
@@ -65,13 +70,13 @@ const lobby = async () => {
 
     const extraChanelnames = channelsToBeCreated - unusedFruitList.length;
     for (let i = 0; i < extraChanelnames; i++) {
-      unusedFruitList.push({ name: Date.now() + i });
+      unusedFruitList.push({ name: String(Date.now() + i) });
     }
 
     const channelSuffixes = unusedFruitList.slice(0, channelsToBeCreated);
     const channelProperties = {
       channelFlagPermanent: true,
-      cpid: lobbyChannel.channelParent.channelId,
+      cpid: String(lobbyChannel.channelParent.channelId),
       channelDescription: lobbyChannel.description.text,
       channelOrder: channelChildren[0]?.order,
       channelFlagMaxclientsUnlimited: lobbyChannel.clientLimit === -1,
@@ -112,7 +117,7 @@ const lobby = async () => {
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
-const channelLobby = async (teamspeak) => {
+const channelLobby = async (teamspeak: TeamSpeak) => {
   eventQueue.push(teamspeak);
   lobby();
 };

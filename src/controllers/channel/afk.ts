@@ -3,11 +3,20 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 import AfkChannel from "../../models/functions/AfkChannel";
 import TsServergroup from "../../models/teamspeak/TsServergroup";
 
+import { AfkChannelType } from "../../types/mongoose/functions";
+import {
+  TsChannelType,
+  TsServergroupType,
+} from "../../types/mongoose/teamspeak";
+
 /**
  * @param {TeamSpeakClient} client
  * @param {{ general: number, micMuted: number, sndMuted: number }} conditions
  */
-const checkMove = (client, conditions) => {
+const checkMove = (
+  client: TeamSpeakClient,
+  conditions: { general: number; micMuted: number; sndMuted: number }
+) => {
   const { general, micMuted, sndMuted } = conditions;
 
   if (general !== -1 && client.idleTime > general) return general;
@@ -19,10 +28,15 @@ const checkMove = (client, conditions) => {
   return -1;
 };
 
-const checkCollection = (afkChannels, part, client) => {
-  const checkChannel = (x) => x.channelId === client.channel;
-  const checkChannelParent = (x) => x.channelId === client.channelParent;
-  const checkServergroup = (x) =>
+const checkCollection = (
+  afkChannels: AfkChannelType[],
+  part: "apply" | "ignore",
+  client: { channel: number; channelParent: number; servergroups: string[] }
+) => {
+  const checkChannel = (x: TsChannelType) => x.channelId === client.channel;
+  const checkChannelParent = (x: TsChannelType) =>
+    x.channelId === client.channelParent;
+  const checkServergroup = (x: TsServergroupType) =>
     client.servergroups.includes(x.servergroupId.toString());
 
   return afkChannels.find(
@@ -36,8 +50,8 @@ const checkCollection = (afkChannels, part, client) => {
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
-const channelAfk = async (teamspeak) => {
-  const afkChannels = await AfkChannel.find()
+const channelAfk = async (teamspeak: TeamSpeak) => {
+  const afkChannels: AfkChannelType[] = await AfkChannel.find()
     .populate({
       path: "moveChannel",
       populate: [{ path: "member" }, { path: "teammember" }],
@@ -60,11 +74,13 @@ const channelAfk = async (teamspeak) => {
     });
 
   const defaultMove = afkChannels.find((x) => x.isDefault);
+  if (!defaultMove) throw new Error("Afk Channel default is not definded!");
+
   const allButDefaultMove = afkChannels.filter((x) => !x.isDefault);
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
-  const tsServergroups = await TsServergroup.find();
+  const tsServergroups: TsServergroupType[] = await TsServergroup.find();
 
   for (const listClient of clientList) {
     if (listClient.type === 1) continue;
@@ -72,8 +88,8 @@ const channelAfk = async (teamspeak) => {
     const channel = channelList.find((c) => c.cid === listClient.cid);
 
     const clientData = {
-      channel: +channel.cid,
-      channelParent: +channel.pid,
+      channel: Number(channel?.cid),
+      channelParent: Number(channel?.pid),
       servergroups: listClient.servergroups,
     };
 
@@ -100,7 +116,7 @@ const channelAfk = async (teamspeak) => {
 
     if (+listClient.cid === moveChannel.channelId) continue;
 
-    await listClient.move(moveChannel.channelId);
+    await listClient.move(String(moveChannel.channelId));
     await listClient.message(
       `Du warst über ${maxIdleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`
     );

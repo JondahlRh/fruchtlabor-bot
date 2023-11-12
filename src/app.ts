@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import cron from "node-cron";
+import { schedule } from "node-cron";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import botMove from "./controllers/channel/botMove";
@@ -9,14 +9,14 @@ import messageController from "./controllers/message";
 import eHandler from "./utility/asyncErrorHandler";
 
 export default async () => {
-  await mongoose.connect(process.env.MONGODB_CONNECT, {
+  await mongoose.connect(process.env.MONGODB_CONNECT ?? "", {
     dbName: process.env.MONGODB_DBNAME,
   });
   console.log("connected to MongoDB");
 
   const teamspeak = await TeamSpeak.connect({
     host: process.env.TEAMSPEAK_IP,
-    serverport: process.env.TEAMSPEAK_PORT,
+    serverport: Number(process.env.TEAMSPEAK_PORT),
     username: process.env.TEAMSPEAKQUERY_USERNAME,
     password: process.env.TEAMSPEAKQUERY_PASSWORD,
     nickname: process.env.TEAMSPEAK_NICKNAME,
@@ -43,7 +43,7 @@ export default async () => {
     eHandler(channelController.addgroup)(event.client);
   });
 
-  cron.schedule("*/30 * * * * *", () => {
+  schedule("*/30 * * * * *", () => {
     eHandler(channelController.online)(teamspeak);
     eHandler(channelController.afk)(teamspeak);
   });

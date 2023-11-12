@@ -6,14 +6,15 @@ import {
 
 import OnlineChannel from "../../models/functions/OnlineChannel";
 
-/**
- * @param {TeamSpeakClient} client
- * @param {TeamSpeakChannel} channel
- * @param {any} statusList
- * @return {Promise<string>}
- */
-const getStatus = (client, channel, statusList) => {
-  if (!client) return "[color=#ee2222]offline[/color]";
+import { OnlineChannelType } from "../../types/mongoose/functions";
+import { TsCollectionType } from "../../types/mongoose/teamspeak";
+
+const getStatus = (
+  client: TeamSpeakClient | undefined,
+  channel: TeamSpeakChannel | undefined,
+  statusList: TsCollectionType[]
+) => {
+  if (!client || !channel) return "[color=#ee2222]offline[/color]";
 
   for (const status of statusList) {
     if (status.channels.some((x) => x.channelId === +channel.cid))
@@ -33,20 +34,15 @@ const getStatus = (client, channel, statusList) => {
   return "[color=#44dd44]online[/color]";
 };
 
-/**
- * @param {string} clientName
- * @param {string} clientUId
- * @param {string} status
- */
-const getDescClient = (clientName, clientUId, status) => {
+const getDescClient = (
+  clientName: string,
+  clientUId: string,
+  status: string
+) => {
   return `[tr][td][URL=client:///${clientUId}]${clientName} [/URL][/td][td][center]${status}[/td][/tr]`;
 };
 
-/**
- * @param {string} title
- * @param {string[]} clients
- */
-const getDescGroup = (title, clients) => {
+const getDescGroup = (title: string, clients: string[]) => {
   const clientsString =
     clients.length === 0
       ? `\n[tr][td][center] - [/center][/td][td][center] none [/td][/tr]`
@@ -63,11 +59,7 @@ const getDescGroup = (title, clients) => {
 [tr][/tr]`;
 };
 
-/**
- * @param {string} title
- * @param {string[]} descGroups
- */
-const getDescription = (title, descGroups) => {
+const getDescription = (title: string, descGroups: string[]) => {
   return `[center][table]
 
 [tr]
@@ -96,8 +88,8 @@ ${descGroups.join("")}`;
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
-const channelOnline = async (teamspeak) => {
-  const onlineChannels = await OnlineChannel.find()
+const channelOnline = async (teamspeak: TeamSpeak) => {
+  const onlineChannels: OnlineChannelType[] = await OnlineChannel.find()
     .populate("channel")
     .populate("servergroups")
     .populate({
@@ -113,7 +105,7 @@ const channelOnline = async (teamspeak) => {
     const descGroups = [];
     for (const servergroup of onlineChannel.servergroups) {
       const serverGroupClientList = await teamspeak.serverGroupClientList(
-        servergroup.servergroupId
+        String(servergroup.servergroupId)
       );
 
       const descClients = [];
@@ -122,7 +114,7 @@ const channelOnline = async (teamspeak) => {
           serverGroupClient.clientUniqueIdentifier
         );
 
-        const channel = await teamspeak.getChannelById(client?.cid);
+        const channel = await teamspeak.getChannelById(client?.cid ?? "");
 
         const status = getStatus(client, channel, onlineChannel.collections);
 
@@ -139,11 +131,11 @@ const channelOnline = async (teamspeak) => {
     const description = getDescription(onlineChannel.title, descGroups);
 
     const channelInfo = await teamspeak.channelInfo(
-      onlineChannel.channel.channelId
+      String(onlineChannel.channel.channelId)
     );
     if (channelInfo.channelDescription === description) continue;
 
-    await teamspeak.channelEdit(onlineChannel.channel.channelId, {
+    await teamspeak.channelEdit(String(onlineChannel.channel.channelId), {
       channelDescription: description,
     });
   }
