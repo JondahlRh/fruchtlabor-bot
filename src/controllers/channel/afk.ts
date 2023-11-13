@@ -1,12 +1,8 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import { ClientData } from "src/types/general";
-import { AfkChannelType } from "src/types/mongoose/functions";
-import { TsServergroupType } from "src/types/mongoose/teamspeak";
 
-import AfkChannel from "src/models/functions/AfkChannel";
-import TsServergroup from "src/models/teamspeak/TsServergroup";
-
+import { getAfkChannels, getTsServergroups } from "src/utility/mongodb";
 import { clientMatchesCollection } from "src/utility/tsCollectionHelper";
 
 /**
@@ -32,27 +28,7 @@ const checkMove = (
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
 const channelAfk = async (teamspeak: TeamSpeak) => {
-  const afkChannels: AfkChannelType[] = await AfkChannel.find()
-    .populate({
-      path: "moveChannel",
-      populate: [{ path: "member" }, { path: "teammember" }],
-    })
-    .populate({
-      path: "ignore",
-      populate: [
-        { path: "channels" },
-        { path: "channelParents" },
-        { path: "servergroups" },
-      ],
-    })
-    .populate({
-      path: "apply",
-      populate: [
-        { path: "channels" },
-        { path: "channelParents" },
-        { path: "servergroups" },
-      ],
-    });
+  const afkChannels = await getAfkChannels();
 
   const defaultMove = afkChannels.find((x) => x.isDefault);
   if (!defaultMove) throw new Error("Afk Channel default is not definded!");
@@ -61,7 +37,7 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
-  const tsServergroups: TsServergroupType[] = await TsServergroup.find();
+  const tsServergroups = await getTsServergroups();
 
   for (const listClient of clientList) {
     if (listClient.type === 1) continue;

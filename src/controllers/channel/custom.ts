@@ -1,9 +1,6 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import { CustomChannelType } from "src/types/mongoose/functions";
-
-import CustomChannel from "src/models/functions/CustomChannel";
-
+import { getCustomChannels } from "src/utility/mongodb";
 import tsChannelSetPermHelper from "src/utility/tsChannelSetPermHelper";
 
 import botMove from "./botMove";
@@ -15,9 +12,7 @@ import botMove from "./botMove";
 const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   if (client.type === 1) return;
 
-  const customChannels: CustomChannelType[] = await CustomChannel.find()
-    .populate("channelParent")
-    .populate("channelGroup");
+  const customChannels = await getCustomChannels();
 
   const customChannel = customChannels.find(
     (x) => x.channelParent.channelId === +client.cid

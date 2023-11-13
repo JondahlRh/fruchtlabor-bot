@@ -1,16 +1,13 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import { JoinMessageType } from "src/types/mongoose/functions";
-
-import JoinMessage from "src/models/functions/JoinMessage";
+import { getJoinMessages } from "src/utility/mongodb";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  * @param {TeamSpeakClient} client Client from the Event
  */
 const messageJoin = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
-  const joinMessages: JoinMessageType[] =
-    await JoinMessage.find().populate("servergroup");
+  const joinMessages = await getJoinMessages();
 
   for (const joinMessage of joinMessages) {
     const includesServergroup = client.servergroups.includes(

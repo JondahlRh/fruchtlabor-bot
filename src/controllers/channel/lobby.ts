@@ -1,11 +1,6 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import { LobbyChannelType } from "src/types/mongoose/functions";
-import { FruitType } from "src/types/mongoose/general";
-
-import LobbyChannel from "src/models/functions/LobbyChannel";
-import Fruit from "src/models/general/Fruit";
-
+import { getFruits, getLobbyChannels } from "src/utility/mongodb";
 import tsChannelSetPermHelper from "src/utility/tsChannelSetPermHelper";
 
 /**
@@ -23,12 +18,9 @@ const lobby = async () => {
   const teamspeak = eventQueue.shift();
   if (!teamspeak) return;
 
-  const fruitList: FruitType[] = await Fruit.find();
+  const fruitList = await getFruits();
 
-  const lobbyChannels: LobbyChannelType[] = await LobbyChannel.find()
-    .populate("channelParent")
-    .populate("channelParentSiblings")
-    .populate("description");
+  const lobbyChannels = await getLobbyChannels();
 
   for (const lobbyChannel of lobbyChannels) {
     const channelList = await teamspeak.channelList();

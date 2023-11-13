@@ -1,17 +1,12 @@
 import { TeamSpeakClient } from "ts3-nodejs-library";
 
-import { AddgroupChannelType } from "src/types/mongoose/functions";
-
-import AddgroupChannel from "src/models/functions/AddgroupChannel";
+import { getAddgroupChannels } from "src/utility/mongodb";
 
 /**
  * @param {TeamSpeakClient} client Client from the Event
  */
 const addgroup = async (client: TeamSpeakClient) => {
-  const channelAddgroups: AddgroupChannelType[] = await AddgroupChannel.find()
-    .populate("channel")
-    .populate("moveChannel")
-    .populate("servergroup");
+  const channelAddgroups = await getAddgroupChannels();
 
   const channelAddgroup = channelAddgroups.find(
     (x) => x.channel.channelId === +client.cid

@@ -1,10 +1,8 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import { ClientData } from "src/types/general";
-import { SupportMessageType } from "src/types/mongoose/functions";
 
-import SupportMessage from "src/models/functions/SupportMessage";
-
+import { getSupportMessages } from "src/utility/mongodb";
 import { clientMatchesCollection } from "src/utility/tsCollectionHelper";
 
 /**
@@ -17,27 +15,7 @@ const messageSupport = async (
 ) => {
   if (client.type === 1) return;
 
-  const supportMessages: SupportMessageType[] = await SupportMessage.find()
-    .populate("channel")
-    .populate("contactServergroups")
-    .populate({
-      path: "ignore",
-      populate: [
-        { path: "channels" },
-        { path: "channelParents" },
-        { path: "servergroups" },
-      ],
-    })
-    .populate({
-      path: "doNotDisturb",
-      populate: [
-        { path: "channels" },
-        { path: "channelParents" },
-        { path: "servergroups" },
-      ],
-    })
-    .populate("specials.servergroup")
-    .populate("specials.contactServergroups");
+  const supportMessages = await getSupportMessages();
 
   const supportMessage = supportMessages.find(
     (x) => x.channel.channelId === +client.cid

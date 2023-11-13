@@ -1,11 +1,9 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import { ClientData } from "src/types/general";
-import { OnlineChannelType } from "src/types/mongoose/functions";
 import { TsCollectionType } from "src/types/mongoose/teamspeak";
 
-import OnlineChannel from "src/models/functions/OnlineChannel";
-
+import { getOnlineChannels } from "src/utility/mongodb";
 import { clientMatchesCollectionsSorted } from "src/utility/tsCollectionHelper";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
@@ -79,17 +77,7 @@ ${descGroups.join("")}`;
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
  */
 const channelOnline = async (teamspeak: TeamSpeak) => {
-  const onlineChannels: OnlineChannelType[] = await OnlineChannel.find()
-    .populate("channel")
-    .populate("servergroups")
-    .populate({
-      path: "collections",
-      populate: [
-        { path: "channels" },
-        { path: "channelParents" },
-        { path: "servergroups" },
-      ],
-    });
+  const onlineChannels = await getOnlineChannels();
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
