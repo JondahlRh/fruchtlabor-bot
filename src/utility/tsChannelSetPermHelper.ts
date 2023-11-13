@@ -1,6 +1,6 @@
 import { TeamSpeak, TeamSpeakChannel } from "ts3-nodejs-library";
 
-import { PermissionType } from "src/types/mongoose/general";
+import { PermissionType } from "../types/mongoose/general";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

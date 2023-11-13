@@ -6,20 +6,20 @@ import {
   LobbyChannelType,
   OnlineChannelType,
   SupportMessageType,
-} from "src/types/mongoose/functions";
-import { FruitType } from "src/types/mongoose/general";
-import { TsChannelType, TsServergroupType } from "src/types/mongoose/teamspeak";
+} from "../types/mongoose/functions";
+import { FruitType } from "../types/mongoose/general";
+import { TsChannelType, TsServergroupType } from "../types/mongoose/teamspeak";
 
-import AddgroupChannel from "src/models/functions/AddgroupChannel";
-import AfkChannel from "src/models/functions/AfkChannel";
-import CustomChannel from "src/models/functions/CustomChannel";
-import JoinMessage from "src/models/functions/JoinMessage";
-import LobbyChannel from "src/models/functions/LobbyChannel";
-import OnlineChannel from "src/models/functions/OnlineChannel";
-import SupportMessage from "src/models/functions/SupportMessage";
-import Fruit from "src/models/general/Fruit";
-import TsChannel from "src/models/teamspeak/TsChannel";
-import TsServergroup from "src/models/teamspeak/TsServergroup";
+import AddgroupChannel from "../models/functions/AddgroupChannel";
+import AfkChannel from "../models/functions/AfkChannel";
+import CustomChannel from "../models/functions/CustomChannel";
+import JoinMessage from "../models/functions/JoinMessage";
+import LobbyChannel from "../models/functions/LobbyChannel";
+import OnlineChannel from "../models/functions/OnlineChannel";
+import SupportMessage from "../models/functions/SupportMessage";
+import Fruit from "../models/general/Fruit";
+import TsChannel from "../models/teamspeak/TsChannel";
+import TsServergroup from "../models/teamspeak/TsServergroup";
 
 export const getAddgroupChannels = async (): Promise<AddgroupChannelType[]> => {
   return await AddgroupChannel.find()

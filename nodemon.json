@@ -1,5 +1,0 @@
-{
-  "watch": ["src"],
-  "ignore": ["node_modules"],
-  "exec": "ts-node -r tsconfig-paths/register src"
-}

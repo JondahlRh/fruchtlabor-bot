@@ -1,7 +1,7 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import { getFruits, getLobbyChannels } from "src/utility/mongodb";
-import tsChannelSetPermHelper from "src/utility/tsChannelSetPermHelper";
+import { getFruits, getLobbyChannels } from "../../utility/mongodb";
+import tsChannelSetPermHelper from "../../utility/tsChannelSetPermHelper";
 
 /**
  * @type {TeamSpeak[]}

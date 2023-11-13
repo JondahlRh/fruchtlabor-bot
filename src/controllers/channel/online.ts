@@ -1,10 +1,10 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import { ClientData } from "src/types/general";
-import { TsCollectionType } from "src/types/mongoose/teamspeak";
+import { ClientData } from "../../types/general";
+import { TsCollectionType } from "../../types/mongoose/teamspeak";
 
-import { getOnlineChannels } from "src/utility/mongodb";
-import { clientMatchesCollectionsSorted } from "src/utility/tsCollectionHelper";
+import { getOnlineChannels } from "../../utility/mongodb";
+import { clientMatchesCollectionsSorted } from "../../utility/tsCollectionHelper";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
   if (!clientData.channel || !clientData.channelParent) {
