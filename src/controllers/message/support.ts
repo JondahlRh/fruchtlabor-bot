@@ -47,15 +47,17 @@ const messageSupport = async (
       servergroups: listClient.servergroups,
     };
 
+    const isDND = supportMessage.doNotDisturb.some((x) =>
+      clientMatchesCollection(clientData, x)
+    );
+    if (isDND) return;
+
     const isIgnore = supportMessage.ignore.some((x) =>
       clientMatchesCollection(clientData, x)
     );
     if (isIgnore) return supportClientsContact.push(listClient);
 
-    const isDND = supportMessage.doNotDisturb.some((x) =>
-      clientMatchesCollection(clientData, x)
-    );
-    if (!isDND) supportClientsListed.push(listClient);
+    supportClientsListed.push(listClient);
   });
 
   const clientString = (uid: string, name: string) =>
