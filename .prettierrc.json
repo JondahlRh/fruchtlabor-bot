@@ -19,10 +19,10 @@
   "singleAttributePerLine": false,
   "importOrder": [
     "<THIRD_PARTY_MODULES>",
-    "^src/types/*",
-    "^src/models/*",
-    "^src/controllers/*",
-    "^src/utility/*",
+    "^[./]types/*",
+    "^[./]models/*",
+    "^[./]controllers/*",
+    "^[./]utility/*",
     "^[./]"
   ],
   "importOrderSeparation": true,

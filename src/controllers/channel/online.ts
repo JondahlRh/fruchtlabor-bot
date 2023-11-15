@@ -2,7 +2,6 @@ import { TeamSpeak } from "ts3-nodejs-library";
 
 import { ClientData } from "../../types/general";
 import { TsCollectionType } from "../../types/mongoose/teamspeak";
-
 import { getOnlineChannels } from "../../utility/mongodb";
 import { clientMatchesCollectionsSorted } from "../../utility/tsCollectionHelper";
 
