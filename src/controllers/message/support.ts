@@ -65,9 +65,9 @@ const messageSupport = async (
   const clientName = clientString(client.uniqueIdentifier, client.nickname);
 
   const messagePrefix = specialContact
-    ? `[color=#${specialContact.messagePrefix.color}][b]${specialContact.messagePrefix.text}:[/b][/color]`
+    ? `[color=#${specialContact.messagePrefix.color}][b]${specialContact.messagePrefix.text}:[/b][/color] `
     : "";
-  const messageBody = `${messagePrefix} Der User ${clientName} wartet in dem Channel "${clientChannel}" `;
+  const messageBody = `${messagePrefix}Der User ${clientName} wartet in dem Channel "${clientChannel}" `;
 
   for (const supportClient of supportClientsListed) {
     const otherSupporterString = supportClientsListed
@@ -102,7 +102,7 @@ const messageSupport = async (
     }
 
     supportClient.message(
-      `[color=#111111][b]Der User weiß nichts von dir:[/b][/color] ${messageBody}${messageSuffix}`
+      `[color=#888888][b]INFO[/b] - [/color]${messageBody}${messageSuffix}`
     );
   }
 
