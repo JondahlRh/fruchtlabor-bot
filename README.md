@@ -23,9 +23,9 @@ MONGODB_CONNECT=""
 MONGODB_DBNAME=""
 ```
 
-### optinal .env stage file
+### optional .env stage file
 
-<sub>Optinal, for having different login data for different stages. Filename has to start with ".env." and the value provided in "NODE_ENV"!</sub>
+<sub>Optional, for having different login data for different stages. Filename has to start with ".env." and the value provided in "NODE_ENV"!</sub>
 
 ```
 TEAMSPEAK_IP=""
