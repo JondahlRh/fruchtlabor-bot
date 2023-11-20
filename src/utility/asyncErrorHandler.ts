@@ -1,11 +1,19 @@
+import { saveErrorLog } from "./mongodb";
+
 const catcher = async (error: Error, functionname: string) => {
-  console.table([
-    {
-      title: "An Error ocurred!",
-      file: functionname,
-      message: error.message,
-    },
-  ]);
+  try {
+    await saveErrorLog(error, functionname);
+  } catch (err) {
+    console.table([
+      {
+        function: functionname,
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+        dbError: err,
+      },
+    ]);
+  }
 };
 
 export default (fn: Function) =>

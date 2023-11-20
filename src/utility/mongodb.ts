@@ -5,6 +5,7 @@ import JoinMessage from "../models/functions/JoinMessage";
 import LobbyChannel from "../models/functions/LobbyChannel";
 import OnlineChannel from "../models/functions/OnlineChannel";
 import SupportMessage from "../models/functions/SupportMessage";
+import AsyncError from "../models/general/AsyncError";
 import Fruit from "../models/general/Fruit";
 import TsChannel from "../models/teamspeak/TsChannel";
 import TsServergroup from "../models/teamspeak/TsServergroup";
@@ -116,4 +117,13 @@ export const getSupportMessages = async (): Promise<SupportMessageType[]> => {
     })
     .populate("specials.servergroup")
     .populate("specials.contactServergroups");
+};
+
+export const saveErrorLog = async (error: Error, fnName: string) => {
+  await new AsyncError({
+    function: fnName,
+    message: error.message,
+    name: error.name,
+    stack: error.stack,
+  }).save();
 };
