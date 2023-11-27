@@ -21,6 +21,8 @@ TEAMSPEAK_NICKNAME=""
 
 MONGODB_CONNECT=""
 MONGODB_DBNAME=""
+
+API_PORT=""
 ```
 
 ### optional .env stage file
@@ -36,4 +38,6 @@ TEAMSPEAK_NICKNAME=""
 
 MONGODB_CONNECT=""
 MONGODB_DBNAME=""
+
+API_PORT=""
 ```

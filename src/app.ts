@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { schedule } from "node-cron";
 import { TeamSpeak } from "ts3-nodejs-library";
 
+import api from "./api";
 import channelController from "./controllers/channel";
 import messageController from "./controllers/message";
 import eHandler from "./utility/asyncErrorHandler";
@@ -45,4 +46,6 @@ export default async () => {
     eHandler(channelController.online)(teamspeak);
     eHandler(channelController.afk)(teamspeak);
   });
+
+  api(teamspeak);
 };
