@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { Request, Response, NextFunction } from "express";
 import { TeamSpeak } from "ts3-nodejs-library";
 
+import servergroup from "./route/servergroup";
 import { HtmlError } from "./utility/HtmlError";
 
 export default (teamspeak: TeamSpeak) => {
@@ -10,6 +11,8 @@ export default (teamspeak: TeamSpeak) => {
 
   app.use(bodyParser.json());
   app.use(cors());
+
+  app.use("/servergroup", servergroup);
 
   app.use((req, res, next) => {
     next(new HtmlError("Route does not exist!", 404, "UNKOWN_ROUTE"));
