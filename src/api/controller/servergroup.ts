@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { TeamSpeak } from "ts3-nodejs-library";
+import { TeamSpeak, TeamSpeakServerGroup } from "ts3-nodejs-library";
+import {
+  ClientDBInfo,
+  ServerGroupClientEntry,
+} from "ts3-nodejs-library/lib/types/ResponseTypes";
 
 import clientMapper, { MappedClient } from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
@@ -11,7 +15,14 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res: Response,
     next: NextFunction
   ) => {
-    const servergroupList = await teamspeak.serverGroupList();
+    let servergroupList: TeamSpeakServerGroup[];
+    try {
+      servergroupList = await teamspeak.serverGroupList();
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
 
     const mappedServergroupList = servergroupList.map(servergroupMapper);
 
@@ -25,13 +36,21 @@ const servergroup = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const servergroup = await teamspeak.getServerGroupById(id);
+    let servergroup: TeamSpeakServerGroup | undefined;
+    try {
+      servergroup = await teamspeak.getServerGroupById(id);
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
+
     if (servergroup === undefined) {
       return next(
         new HtmlError(
           "Servergroup id does not exist!",
           400,
-          "SERVERGROUP_ID_UNKOWN"
+          "UNKOWN_SERVERGROUPID"
         )
       );
     }
@@ -48,23 +67,51 @@ const servergroup = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const servergroup = await teamspeak.getServerGroupById(id);
+    let servergroup: TeamSpeakServerGroup | undefined;
+    try {
+      servergroup = await teamspeak.getServerGroupById(id);
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
+
     if (servergroup === undefined) {
       return next(
         new HtmlError(
           "Servergroup id does not exist!",
           400,
-          "SERVERGROUP_ID_UNKOWN"
+          "UNKOWN_SERVERGROUPID"
         )
       );
     }
 
-    const servergroupClientList = await servergroup.clientList();
+    let servergroupClientList: ServerGroupClientEntry[];
+    try {
+      servergroupClientList = await servergroup.clientList();
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
 
     const mappedClients: MappedClient[] = [];
 
     for (const sgClient of servergroupClientList) {
-      const client = await teamspeak.clientDbInfo(sgClient.cldbid);
+      let client: ClientDBInfo[];
+
+      try {
+        client = await teamspeak.clientDbInfo(sgClient.cldbid);
+      } catch (error) {
+        return next(
+          new HtmlError(
+            "Unkown teamspeak error!",
+            500,
+            "UNKOWN_TEAMSPEAK_ERROR"
+          )
+        );
+      }
+
       if (client.length === 0) continue;
 
       mappedClients.push(clientMapper(client[0]));

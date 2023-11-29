@@ -13,7 +13,14 @@ const servergroup = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const client = await teamspeak.getClientByUid(id);
+    let client: TeamSpeakClient | undefined;
+    try {
+      client = await teamspeak.getClientByUid(id);
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
 
     if (client) {
       const mappedClient = clientMapper(client);
@@ -28,9 +35,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
     } catch (error) {
       return next(
         new HtmlError(
-          "Client with unqiue id does not exist!",
+          "Client unqiue id does not exist!",
           400,
-          "CLIENT_UUID_UNKOWN"
+          "UNKOWN_CLIENTUUID"
         )
       );
     }
@@ -47,7 +54,14 @@ const servergroup = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const client = await teamspeak.getClientByDbid(id);
+    let client: TeamSpeakClient | undefined;
+    try {
+      client = await teamspeak.getClientByDbid(id);
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
 
     if (client) {
       const mappedClient = clientMapper(client);
@@ -61,9 +75,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
     } catch (error) {
       return next(
         new HtmlError(
-          "Client with database id does not exist!",
+          "Client database id does not exist!",
           400,
-          "CLIENT_DBID_UNKOWN"
+          "UNKOWN_CLIENTDBID"
         )
       );
     }
@@ -78,9 +92,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res: Response,
     next: NextFunction
   ) => {
-    const clients = await teamspeak.clientList();
+    let clientList: TeamSpeakClient[];
+    try {
+      clientList = await teamspeak.clientList();
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
 
-    const mappedClients = clients.map(clientMapper);
+    const mappedClients = clientList.map(clientMapper);
 
     res.json(mappedClients);
   };

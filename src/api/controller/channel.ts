@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { TeamSpeak } from "ts3-nodejs-library";
+import {
+  TeamSpeak,
+  TeamSpeakChannel,
+  TeamSpeakClient,
+} from "ts3-nodejs-library";
 
 import channelMapper from "../mapper/channelMapper";
 import clientMapper from "../mapper/clientMapper";
@@ -11,7 +15,14 @@ const channel = (teamspeak: TeamSpeak) => {
     res: Response,
     next: NextFunction
   ) => {
-    const channelList = await teamspeak.channelList();
+    let channelList: TeamSpeakChannel[];
+    try {
+      channelList = await teamspeak.channelList();
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
 
     const mappedChannelList = channelList.map(channelMapper);
 
@@ -25,10 +36,18 @@ const channel = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const channel = await teamspeak.getChannelById(id);
+    let channel: TeamSpeakChannel | undefined;
+    try {
+      channel = await teamspeak.getChannelById(id);
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
+
     if (channel === undefined) {
       return next(
-        new HtmlError("Channel id does not exist!", 400, "CHANNEL_ID_UNKOWN")
+        new HtmlError("Channel id does not exist!", 400, "UNKOWN_CHANNELID")
       );
     }
 
@@ -44,14 +63,31 @@ const channel = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const channel = await teamspeak.getChannelById(id);
-    if (channel === undefined) {
+    let channel: TeamSpeakChannel | undefined;
+    try {
+      channel = await teamspeak.getChannelById(id);
+    } catch (error) {
       return next(
-        new HtmlError("Channel id does not exist!", 400, "CHANNEL_ID_UNKOWN")
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
       );
     }
 
-    const channelClients = await channel.getClients();
+    if (channel === undefined) {
+      return next(
+        new HtmlError("Channel id does not exist!", 400, "UNKOWN_CHANNELID")
+      );
+    }
+
+    let channelClients: TeamSpeakClient[];
+
+    try {
+      channelClients = await channel.getClients();
+    } catch (error) {
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
+
     const mappedClients = channelClients.map(clientMapper);
 
     res.json(mappedClients);
