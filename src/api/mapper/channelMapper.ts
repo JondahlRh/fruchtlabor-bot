@@ -1,6 +1,6 @@
 import { TeamSpeakChannel } from "ts3-nodejs-library";
 
-type MappedChannel = {
+export type MappedChannel = {
   name: string;
   id: number;
 };

@@ -1,6 +1,6 @@
 import { TeamSpeakClient } from "ts3-nodejs-library";
 
-type MappedClient = {
+export type MappedClient = {
   name: string;
   uuid: number;
   dbid: number;

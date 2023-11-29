@@ -1,6 +1,6 @@
 import { TeamSpeakServerGroup } from "ts3-nodejs-library";
 
-type MappedServerGroup = {
+export type MappedServerGroup = {
   name: string;
   id: number;
 };
