@@ -12,7 +12,7 @@ export default (teamspeak: TeamSpeak) => {
   app.use(bodyParser.json());
   app.use(cors());
 
-  app.use("/servergroup", servergroup);
+  app.use("/servergroup", servergroup(teamspeak));
 
   app.use((req, res, next) => {
     next(new HtmlError("Route does not exist!", 404, "UNKOWN_ROUTE"));
