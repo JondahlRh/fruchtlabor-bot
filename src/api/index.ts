@@ -4,6 +4,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import channel from "./route/channel";
+import client from "./route/client";
 import servergroup from "./route/servergroup";
 import { HtmlError } from "./utility/HtmlError";
 
@@ -15,6 +16,7 @@ export default (teamspeak: TeamSpeak) => {
 
   app.use("/servergroup", servergroup(teamspeak));
   app.use("/channel", channel(teamspeak));
+  app.use("/client", client(teamspeak));
 
   app.use((req, res, next) => {
     next(new HtmlError("Route does not exist!", 404, "UNKOWN_ROUTE"));
