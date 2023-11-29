@@ -8,5 +8,7 @@ export default (teamspeak: TeamSpeak) => {
 
   route.get("/", servergroup(teamspeak).getAllServergroups);
   route.get("/:id", servergroup(teamspeak).getSingleServergroup);
+  route.get("/:id/clients", servergroup(teamspeak).getClientsOfServergroup);
+
   return route;
 };
