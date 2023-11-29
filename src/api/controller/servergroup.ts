@@ -11,11 +11,11 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res: Response,
     next: NextFunction
   ) => {
-    const serverGroupList = await teamspeak.serverGroupList();
+    const servergroupList = await teamspeak.serverGroupList();
 
-    const mappedServerGroupList = serverGroupList.map(servergroupMapper);
+    const mappedServergroupList = servergroupList.map(servergroupMapper);
 
-    res.json(mappedServerGroupList);
+    res.json(mappedServergroupList);
   };
 
   const getSingleServergroup = async (
@@ -25,8 +25,8 @@ const servergroup = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const serverGroup = await teamspeak.getServerGroupById(id);
-    if (serverGroup === undefined) {
+    const servergroup = await teamspeak.getServerGroupById(id);
+    if (servergroup === undefined) {
       return next(
         new HtmlError(
           "Servergroup id does not exist!",
@@ -36,9 +36,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
       );
     }
 
-    const mappedServerGroup = servergroupMapper(serverGroup);
+    const mappedServergroup = servergroupMapper(servergroup);
 
-    res.json(mappedServerGroup);
+    res.json(mappedServergroup);
   };
 
   const getClientsOfServergroup = async (
@@ -48,8 +48,8 @@ const servergroup = (teamspeak: TeamSpeak) => {
   ) => {
     const id = req.params.id;
 
-    const serverGroup = await teamspeak.getServerGroupById(id);
-    if (serverGroup === undefined) {
+    const servergroup = await teamspeak.getServerGroupById(id);
+    if (servergroup === undefined) {
       return next(
         new HtmlError(
           "Servergroup id does not exist!",
@@ -59,11 +59,11 @@ const servergroup = (teamspeak: TeamSpeak) => {
       );
     }
 
-    const serverGroupClientList = await serverGroup.clientList();
+    const servergroupClientList = await servergroup.clientList();
 
     const mappedClients: MappedClient[] = [];
 
-    for (const sgClient of serverGroupClientList) {
+    for (const sgClient of servergroupClientList) {
       const client = await teamspeak.clientDbInfo(sgClient.cldbid);
       if (client.length === 0) continue;
 
