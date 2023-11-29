@@ -1,21 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { TeamSpeak, TeamSpeakServerGroup } from "ts3-nodejs-library";
+import { TeamSpeak } from "ts3-nodejs-library";
 
+import servergroupMapper from "../mapper/servergroupMapper";
 import { HtmlError } from "../utility/HtmlError";
-
-type MappedServerGroup = {
-  name: string;
-  id: number;
-};
-
-const servergroupMapper = (
-  servergroup: TeamSpeakServerGroup
-): MappedServerGroup => {
-  return {
-    name: servergroup.name,
-    id: Number(servergroup.sgid),
-  };
-};
 
 const servergroup = (teamspeak: TeamSpeak) => {
   const getAllServergroups = async (
