@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { RequestHandler } from "express";
 import {
   ResponseError,
   TeamSpeak,
@@ -14,11 +14,7 @@ import servergroupMapper from "../mapper/servergroupMapper";
 import { HtmlError } from "../utility/HtmlError";
 
 const servergroup = (teamspeak: TeamSpeak) => {
-  const getAllServergroups = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getAllServergroups: RequestHandler = async (req, res, next) => {
     let servergroupList: TeamSpeakServerGroup[];
     try {
       servergroupList = await teamspeak.serverGroupList();
@@ -33,11 +29,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res.json(mappedServergroupList);
   };
 
-  const getSingleServergroup = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getSingleServergroup: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
 
     let servergroup: TeamSpeakServerGroup | undefined;
@@ -64,11 +56,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res.json(mappedServergroup);
   };
 
-  const getClientsOfServergroup = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getClientsOfServergroup: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
 
     let servergroup: TeamSpeakServerGroup | undefined;
@@ -124,11 +112,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res.json(mappedClients);
   };
 
-  const postServergroup = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const postServergroup: RequestHandler = async (req, res, next) => {
     const { client, servergroupId } = req.body;
 
     if (typeof client !== "string" && typeof client !== "number") {
@@ -177,11 +161,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res.json({ message: "Servergroup asigend!" });
   };
 
-  const deleteServergroup = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const deleteServergroup: RequestHandler = async (req, res, next) => {
     const { client, servergroupId } = req.body;
 
     if (typeof client !== "string" && typeof client !== "number") {

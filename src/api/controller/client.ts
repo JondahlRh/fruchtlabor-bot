@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 import { ClientDBInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
@@ -6,11 +6,7 @@ import clientMapper from "../mapper/clientMapper";
 import { HtmlError } from "../utility/HtmlError";
 
 const servergroup = (teamspeak: TeamSpeak) => {
-  const getSingleClientByUuid = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getSingleClientByUuid: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
 
     let client: TeamSpeakClient | undefined;
@@ -47,11 +43,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     return res.json(mappedClient);
   };
 
-  const getSingleClientByDbid = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getSingleClientByDbid: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
 
     let client: TeamSpeakClient | undefined;
@@ -87,11 +79,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     return res.json(mappedClient);
   };
 
-  const getAllClientsOnline = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getAllClientsOnline: RequestHandler = async (req, res, next) => {
     let clientList: TeamSpeakClient[];
     try {
       clientList = await teamspeak.clientList();

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { RequestHandler } from "express";
 import {
   TeamSpeak,
   TeamSpeakChannel,
@@ -10,11 +10,7 @@ import clientMapper from "../mapper/clientMapper";
 import { HtmlError } from "../utility/HtmlError";
 
 const channel = (teamspeak: TeamSpeak) => {
-  const getAllChannels = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getAllChannels: RequestHandler = async (req, res, next) => {
     let channelList: TeamSpeakChannel[];
     try {
       channelList = await teamspeak.channelList();
@@ -29,11 +25,7 @@ const channel = (teamspeak: TeamSpeak) => {
     res.json(mappedChannelList);
   };
 
-  const getSingleChannel = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getSingleChannel: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
 
     let channel: TeamSpeakChannel | undefined;
@@ -56,11 +48,7 @@ const channel = (teamspeak: TeamSpeak) => {
     res.json(mappedChannel);
   };
 
-  const getClientsOfChannel = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  const getClientsOfChannel: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
 
     let channel: TeamSpeakChannel | undefined;
