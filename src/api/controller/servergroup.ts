@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { TeamSpeak, TeamSpeakServerGroup } from "ts3-nodejs-library";
+import {
+  ResponseError,
+  TeamSpeak,
+  TeamSpeakServerGroup,
+} from "ts3-nodejs-library";
 import {
   ClientDBInfo,
   ServerGroupClientEntry,
@@ -120,7 +124,65 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res.json(mappedClients);
   };
 
-  return { getAllServergroups, getSingleServergroup, getClientsOfServergroup };
+  const postServergroup = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { client, servergroupId } = req.body;
+
+    if (typeof client !== "string" && typeof client !== "number") {
+      return next(
+        new HtmlError(
+          "Client must be of type string or number",
+          400,
+          "WRONG_TYPE"
+        )
+      );
+    }
+
+    if (
+      typeof servergroupId !== "string" &&
+      typeof servergroupId !== "number"
+    ) {
+      return next(
+        new HtmlError(
+          "ServergroupId must be of type string or number",
+          400,
+          "WRONG_TYPE"
+        )
+      );
+    }
+
+    let dbId = String(client);
+    try {
+      const clientDbFind = await teamspeak.clientDbFind(String(client), true);
+      dbId = clientDbFind[0].cldbid;
+    } catch (error) {}
+
+    try {
+      await teamspeak.serverGroupAddClient(dbId, String(servergroupId));
+    } catch (error) {
+      if (error instanceof ResponseError && error.msg === "duplicate entry") {
+        return next(
+          new HtmlError("Servergroup already asigned", 400, "DUPLICATE_ENTRY")
+        );
+      }
+
+      return next(
+        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
+      );
+    }
+
+    res.json({ message: "Servergroup asigend!" });
+  };
+
+  return {
+    getAllServergroups,
+    getSingleServergroup,
+    getClientsOfServergroup,
+    postServergroup,
+  };
 };
 
 export default servergroup;
