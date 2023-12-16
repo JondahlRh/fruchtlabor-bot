@@ -11,6 +11,7 @@ export default (teamspeak: TeamSpeak) => {
   route.get("/:id/clients", servergroup(teamspeak).getClientsOfServergroup);
 
   route.post("/", servergroup(teamspeak).postServergroup);
+  route.delete("/", servergroup(teamspeak).deleteServergroup);
 
   return route;
 };
