@@ -113,52 +113,82 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   const postServergroup: RequestHandler = async (req, res, next) => {
-    const { client, servergroupId } = req.body;
+    const client: string = req.body.client;
+    const servergroups: string[] = req.body.servergroups;
 
-    if (typeof client !== "string" && typeof client !== "number") {
+    if (typeof client !== "string") {
       return next(
-        new HtmlError(
-          "Client must be of type string or number",
-          400,
-          "WRONG_TYPE"
-        )
+        new HtmlError("Client must be of type string!", 400, "TYPE_ERROR")
       );
     }
 
     if (
-      typeof servergroupId !== "string" &&
-      typeof servergroupId !== "number"
+      !Array.isArray(servergroups) ||
+      servergroups.some((x) => typeof x !== "string")
     ) {
       return next(
         new HtmlError(
-          "ServergroupId must be of type string or number",
+          "Servergroups must be an array of strings!",
           400,
-          "WRONG_TYPE"
+          "TYPE_ERROR"
         )
       );
     }
 
-    let dbId = String(client);
+    let dbId = client;
     try {
-      const clientDbFind = await teamspeak.clientDbFind(String(client), true);
+      const clientDbFind = await teamspeak.clientDbFind(client, true);
       dbId = clientDbFind[0].cldbid;
     } catch (error) {}
 
-    try {
-      await teamspeak.serverGroupAddClient(dbId, String(servergroupId));
-    } catch (error) {
-      if (error instanceof ResponseError && error.msg === "duplicate entry") {
-        return next(
-          new HtmlError("Servergroup already asigned", 400, "DUPLICATE_ENTRY")
-        );
-      }
+    let successes = 0;
+    const errors: string[] = [];
+    await Promise.all(
+      servergroups.map(async (servergroup) => {
+        try {
+          await teamspeak.clientAddServerGroup(dbId, servergroup);
+          successes++;
+        } catch (error) {
+          // TODO: Error Handling to seperate function
 
-      return next(
-        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
-      );
+          if (!(error instanceof ResponseError)) {
+            return errors.push("Unkown teamspeak error!");
+          }
+
+          switch (error.msg) {
+            case "invalid group ID":
+              errors.push(`Servergroup ${servergroup} doenst exist!`);
+              break;
+
+            case "duplicate entry":
+              errors.push(
+                `Servergroup ${servergroup} already present in client!`
+              );
+              break;
+
+            default:
+              errors.push("Unkown teamspeak error!");
+              break;
+          }
+        }
+      })
+    );
+
+    if (successes > 0 && errors.length > 0) {
+      return res.json({
+        message: "Partially added servergroups with following errors!",
+        errors,
+      });
     }
 
-    res.json({ message: "Servergroup asigend!" });
+    if (errors.length > 0) {
+      return res.json({
+        message: "Adding servergroups failed with following errors!",
+        errors,
+      });
+    }
+
+    res.json({ message: "Succesfull added servergroups!" });
   };
 
   const deleteServergroup: RequestHandler = async (req, res, next) => {
