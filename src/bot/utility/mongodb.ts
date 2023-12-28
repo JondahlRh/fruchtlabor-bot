@@ -110,6 +110,7 @@ export const getSupportMessages = async (): Promise<SupportMessageType[]> => {
 
 export const saveErrorLog = async (error: Error, fnName: string) => {
   await new AsyncError({
+    timestamp: new Date(),
     function: fnName,
     message: error.message,
     name: error.name,
