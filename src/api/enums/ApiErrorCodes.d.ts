@@ -1,4 +1,4 @@
-declare enum ApiErrorCodes {
+declare const enum ApiErrorCodes {
   UNKOWN_ERROR = "UNKOWN_ERROR",
   UNKOWN_ROUTE = "UNKOWN_ROUTE",
   UNKOWN_TEAMSPEAK_ERROR = "UNKOWN_TEAMSPEAK_ERROR",
