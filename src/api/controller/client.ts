@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
-
 import { ClientDBInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
+
 import clientMapper from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";
 
