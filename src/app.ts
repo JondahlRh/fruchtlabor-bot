@@ -8,10 +8,10 @@ import messageController from "./controllers/message";
 import eHandler from "./utility/asyncErrorHandler";
 
 export default async () => {
-  // await mongoose.connect(process.env.MONGODB_CONNECT ?? "", {
-  //   dbName: process.env.MONGODB_DBNAME,
-  // });
-  // console.log("connected to MongoDB");
+  await mongoose.connect(process.env.MONGODB_CONNECT ?? "", {
+    dbName: process.env.MONGODB_DBNAME,
+  });
+  console.log("connected to MongoDB");
 
   const teamspeak = await TeamSpeak.connect({
     host: process.env.TEAMSPEAK_IP,
@@ -22,30 +22,30 @@ export default async () => {
   });
   console.log("connected to Teamspeak");
 
-  // eHandler(channelController.botMove)(teamspeak);
+  eHandler(channelController.botMove)(teamspeak);
 
-  // teamspeak.on("clientconnect", (event) => {
-  //   eHandler(messageController.join)(teamspeak, event.client);
-  //   eHandler(channelController.custom)(teamspeak, event.client);
-  //   eHandler(messageController.support)(teamspeak, event.client);
-  //   eHandler(channelController.addgroup)(event.client);
-  // });
+  teamspeak.on("clientconnect", (event) => {
+    eHandler(messageController.join)(teamspeak, event.client);
+    eHandler(channelController.custom)(teamspeak, event.client);
+    eHandler(messageController.support)(teamspeak, event.client);
+    eHandler(channelController.addgroup)(event.client);
+  });
 
-  // teamspeak.on("clientdisconnect", (event) => {
-  //   eHandler(channelController.lobby)(teamspeak);
-  // });
+  teamspeak.on("clientdisconnect", (event) => {
+    eHandler(channelController.lobby)(teamspeak);
+  });
 
-  // teamspeak.on("clientmoved", (event) => {
-  //   eHandler(channelController.custom)(teamspeak, event.client);
-  //   eHandler(channelController.lobby)(teamspeak);
-  //   eHandler(messageController.support)(teamspeak, event.client);
-  //   eHandler(channelController.addgroup)(event.client);
-  // });
+  teamspeak.on("clientmoved", (event) => {
+    eHandler(channelController.custom)(teamspeak, event.client);
+    eHandler(channelController.lobby)(teamspeak);
+    eHandler(messageController.support)(teamspeak, event.client);
+    eHandler(channelController.addgroup)(event.client);
+  });
 
-  // schedule("*/30 * * * * *", () => {
-  //   eHandler(channelController.online)(teamspeak);
-  //   eHandler(channelController.afk)(teamspeak);
-  // });
+  schedule("*/30 * * * * *", () => {
+    eHandler(channelController.online)(teamspeak);
+    eHandler(channelController.afk)(teamspeak);
+  });
 
   api(teamspeak);
 };
