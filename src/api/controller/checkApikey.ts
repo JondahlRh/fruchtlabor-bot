@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 
 import restrictedNext from "../utility/restrictedNext";
 
-const checkApitoken: RequestHandler = (req, res, next) => {
+const checkApikey: RequestHandler = (req, res, next) => {
   const apikey = req.headers.authorization?.split(" ")[1];
 
   if (!apikey || apikey !== process.env.API_KEY) {
@@ -12,4 +12,4 @@ const checkApitoken: RequestHandler = (req, res, next) => {
   next();
 };
 
-export default checkApitoken;
+export default checkApikey;
