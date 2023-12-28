@@ -16,9 +16,9 @@ export default (teamspeak: TeamSpeak) => {
 
   app.use(checkApikey);
 
-  app.use("/servergroup", servergroup(teamspeak));
-  app.use("/channel", channel(teamspeak));
-  app.use("/client", client(teamspeak));
+  app.use("/v1/servergroup", servergroup(teamspeak));
+  app.use("/v1/channel", channel(teamspeak));
+  app.use("/v1/client", client(teamspeak));
 
   app.use(unkownRouteError);
   app.use(errorRoute);
