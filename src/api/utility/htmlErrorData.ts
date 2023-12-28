@@ -1,11 +1,3 @@
-import ApiErrorCodes from "../enums/ApiErrorCodes";
-import {
-  HtmlError,
-  HtmlErrorResponse,
-  SinglErrorResponse,
-  SingleError,
-} from "../types/errors";
-
 const getHtmlStatusCode = (errorCode: ApiErrorCodes) => {
   switch (errorCode) {
     case ApiErrorCodes.PARTIAL_ERROR:

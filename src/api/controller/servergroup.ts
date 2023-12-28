@@ -9,10 +9,8 @@ import {
   ServerGroupClientEntry,
 } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
-import ApiErrorCodes from "../enums/ApiErrorCodes";
-import clientMapper, { MappedClient } from "../mapper/clientMapper";
+import clientMapper from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
-import { SingleError } from "../types/errors";
 import restrictedNext from "../utility/restrictedNext";
 
 const servergroup = (teamspeak: TeamSpeak) => {

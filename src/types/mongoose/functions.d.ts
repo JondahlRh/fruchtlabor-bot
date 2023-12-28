@@ -1,20 +1,11 @@
-import { PermissionType, SupportSpecialType } from "./general";
-import {
-  TsChannelType,
-  TsChannelgroupType,
-  TsCollectionType,
-  TsDescriptionType,
-  TsServergroupType,
-} from "./teamspeak";
-
-export type AddgroupChannelType = {
+type AddgroupChannelType = {
   channel: TsChannelType;
   moveChannel: TsChannelType;
   servergroup: TsServergroupType;
   message: string;
 };
 
-export type AfkChannelType = {
+type AfkChannelType = {
   isDefault: boolean;
   moveChannel: {
     member: TsChannelType;
@@ -29,19 +20,19 @@ export type AfkChannelType = {
   };
 };
 
-export type CustomChannelType = {
+type CustomChannelType = {
   channelParent: TsChannelType;
   channelGroup: TsChannelgroupType;
   prefix: string;
   permissions: PermissionType[];
 };
 
-export type JoinMessageType = {
+type JoinMessageType = {
   servergroup: TsServergroupType;
   message: string;
 };
 
-export type LobbyChannelType = {
+type LobbyChannelType = {
   channelParent: TsChannelType;
   channelParentSiblings: TsChannelType[];
   description: TsDescriptionType;
@@ -51,14 +42,14 @@ export type LobbyChannelType = {
   permissions: PermissionType[];
 };
 
-export type OnlineChannelType = {
+type OnlineChannelType = {
   channel: TsChannelType;
   servergroups: TsServergroupType[];
   title: string;
   collections: TsCollectionType[];
 };
 
-export type SupportMessageType = {
+type SupportMessageType = {
   channel: TsChannelType;
   contactServergroups: TsServergroupType[];
   messageBody: string;

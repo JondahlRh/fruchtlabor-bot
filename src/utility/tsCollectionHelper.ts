@@ -1,6 +1,3 @@
-import { ClientData } from "../types/general";
-import { TsCollectionType } from "../types/mongoose/teamspeak";
-
 const checkChannel = (collection: TsCollectionType, clientData: ClientData) => {
   return collection.channels.some((x) => {
     return String(x.channelId) === clientData.channel;

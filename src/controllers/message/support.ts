@@ -1,6 +1,5 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import { ClientData } from "../../types/general";
 import { getSupportMessages } from "../../utility/mongodb";
 import { clientMatchesCollection } from "../../utility/tsCollectionHelper";
 

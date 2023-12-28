@@ -1,15 +1,13 @@
-import { TsServergroupType } from "./teamspeak";
-
-export type FruitType = {
+type FruitType = {
   name: string;
 };
 
-export type PermissionType = {
+type PermissionType = {
   key: string;
   value: string;
 };
 
-export type SupportSpecialType = {
+type SupportSpecialType = {
   servergroup: TsServergroupType;
   contactServergroups: TsServergroupType[];
   messagePrefix: {

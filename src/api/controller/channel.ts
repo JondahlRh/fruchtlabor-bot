@@ -5,7 +5,6 @@ import {
   TeamSpeakClient,
 } from "ts3-nodejs-library";
 
-import ApiErrorCodes from "../enums/ApiErrorCodes";
 import channelMapper from "../mapper/channelMapper";
 import clientMapper from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";

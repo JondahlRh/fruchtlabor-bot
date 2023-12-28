@@ -1,5 +1,3 @@
-import ApiErrorCodes from "../enums/ApiErrorCodes";
-
 type KeyValueDoesNotExistError = {
   errorCode:
     | ApiErrorCodes.CHANNEL_DOES_NOT_EXIST

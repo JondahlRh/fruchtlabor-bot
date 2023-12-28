@@ -9,17 +9,6 @@ import AsyncError from "../models/general/AsyncError";
 import Fruit from "../models/general/Fruit";
 import TsChannel from "../models/teamspeak/TsChannel";
 import TsServergroup from "../models/teamspeak/TsServergroup";
-import {
-  AddgroupChannelType,
-  AfkChannelType,
-  CustomChannelType,
-  JoinMessageType,
-  LobbyChannelType,
-  OnlineChannelType,
-  SupportMessageType,
-} from "../types/mongoose/functions";
-import { FruitType } from "../types/mongoose/general";
-import { TsChannelType, TsServergroupType } from "../types/mongoose/teamspeak";
 
 export const getAddgroupChannels = async (): Promise<AddgroupChannelType[]> => {
   return await AddgroupChannel.find()

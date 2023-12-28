@@ -1,4 +1,4 @@
-export type ClientData = {
+type ClientData = {
   channel?: string;
   channelParent?: string;
   servergroups: string[];

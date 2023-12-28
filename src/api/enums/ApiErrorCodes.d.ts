@@ -1,4 +1,4 @@
-enum ApiErrorCodes {
+declare enum ApiErrorCodes {
   UNKOWN_ERROR = "UNKOWN_ERROR",
   UNKOWN_ROUTE = "UNKOWN_ROUTE",
   UNKOWN_TEAMSPEAK_ERROR = "UNKOWN_TEAMSPEAK_ERROR",
@@ -10,5 +10,3 @@ enum ApiErrorCodes {
   WRONG_TYPE = "WRONG_TYPE",
   PARTIAL_ERROR = "PARTIAL_ERROR",
 }
-
-export default ApiErrorCodes;

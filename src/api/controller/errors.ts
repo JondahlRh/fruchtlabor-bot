@@ -1,7 +1,5 @@
 import { ErrorRequestHandler, RequestHandler } from "express";
 
-import ApiErrorCodes from "../enums/ApiErrorCodes";
-import { HtmlError, UnkownError } from "../types/errors";
 import { getHtmlResponse, getHtmlStatusCode } from "../utility/htmlErrorData";
 import restrictedNext from "../utility/restrictedNext";
 

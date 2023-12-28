@@ -1,17 +1,17 @@
-export type TsChannelType = {
+type TsChannelType = {
   channelId: number;
   name: string;
   description: string;
   isBotChannel: boolean;
 };
 
-export type TsChannelgroupType = {
+type TsChannelgroupType = {
   channelgroupId: number;
   name: string;
   description: string;
 };
 
-export type TsCollectionType = {
+type TsCollectionType = {
   name: string;
   label: string;
   channels: TsChannelType[];
@@ -19,11 +19,11 @@ export type TsCollectionType = {
   servergroups: TsServergroupType[];
 };
 
-export type TsDescriptionType = {
+type TsDescriptionType = {
   text: string;
 };
 
-export type TsServergroupType = {
+type TsServergroupType = {
   servergroupId: number;
   name: string;
   description: string;
