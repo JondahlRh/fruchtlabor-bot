@@ -23,6 +23,7 @@ MONGODB_CONNECT=""
 MONGODB_DBNAME=""
 
 API_PORT=""
+API_KEY=""
 ```
 
 ### optional .env stage file

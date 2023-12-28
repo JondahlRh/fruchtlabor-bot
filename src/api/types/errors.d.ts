@@ -1,3 +1,7 @@
+type AuthError = {
+  errorCode: ApiErrorCodes.AUTH_ERROR;
+};
+
 type KeyValueDoesNotExistError = {
   errorCode:
     | ApiErrorCodes.CHANNEL_DOES_NOT_EXIST
@@ -32,7 +36,8 @@ type SingleError =
   | KeyValueDoesNotExistError
   | WrongTypeError
   | DuplicateEntryError
-  | EmptyResultError;
+  | EmptyResultError
+  | AuthError;
 
 type PartialError = {
   errorCode: ApiErrorCodes.PARTIAL_ERROR;

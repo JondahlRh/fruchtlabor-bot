@@ -24,6 +24,12 @@ function getHtmlResponse(error: SingleError): SinglErrorResponse;
 
 function getHtmlResponse(error: HtmlError | SingleError) {
   switch (error.errorCode) {
+    case ApiErrorCodes.AUTH_ERROR:
+      return {
+        message: "Api key is not valid!",
+        errorCode: error.errorCode,
+      };
+
     case ApiErrorCodes.UNKOWN_ROUTE:
       return {
         message: "Route does not exist!",

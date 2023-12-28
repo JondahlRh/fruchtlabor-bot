@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { TeamSpeak } from "ts3-nodejs-library";
 
+import checkApitoken from "./controller/checkApitoken";
 import { errorRoute, unkownRouteError } from "./controller/errors";
 import channel from "./route/channel";
 import client from "./route/client";
@@ -13,6 +14,8 @@ export default (teamspeak: TeamSpeak) => {
 
   app.use(bodyParser.json());
   app.use(cors());
+
+  app.use(checkApitoken);
 
   app.use("/servergroup", servergroup(teamspeak));
   app.use("/channel", channel(teamspeak));
