@@ -2,8 +2,9 @@ import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 import { ClientDBInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
+import ApiErrorCodes from "../enums/ApiErrorCodes";
 import clientMapper from "../mapper/clientMapper";
-import { HtmlError } from "../utility/HtmlError";
+import restrictedNext from "../utility/restrictedNext";
 
 const servergroup = (teamspeak: TeamSpeak) => {
   const getSingleClientByUuid: RequestHandler = async (req, res, next) => {
@@ -13,9 +14,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       client = await teamspeak.getClientByUid(id);
     } catch (error) {
-      return next(
-        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
-      );
+      return restrictedNext(next, {
+        errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
+      });
     }
 
     if (client) {
@@ -29,13 +30,10 @@ const servergroup = (teamspeak: TeamSpeak) => {
       const dbClients = await teamspeak.clientDbInfo(dbidByUuid.cldbid);
       dbClient = dbClients[0];
     } catch (error) {
-      return next(
-        new HtmlError(
-          "Client unqiue id does not exist!",
-          400,
-          "UNKOWN_CLIENTUUID"
-        )
-      );
+      return restrictedNext(next, {
+        errorCode: ApiErrorCodes.CLIENT_DOES_NOT_EXIST,
+        field: { key: "id", value: id },
+      });
     }
 
     const mappedClient = clientMapper(dbClient);
@@ -50,9 +48,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       client = await teamspeak.getClientByDbid(id);
     } catch (error) {
-      return next(
-        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
-      );
+      return restrictedNext(next, {
+        errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
+      });
     }
 
     if (client) {
@@ -65,13 +63,10 @@ const servergroup = (teamspeak: TeamSpeak) => {
       const dbClients = await teamspeak.clientDbInfo(id);
       dbClient = dbClients[0];
     } catch (error) {
-      return next(
-        new HtmlError(
-          "Client database id does not exist!",
-          400,
-          "UNKOWN_CLIENTDBID"
-        )
-      );
+      return restrictedNext(next, {
+        errorCode: ApiErrorCodes.CLIENT_DOES_NOT_EXIST,
+        field: { key: "id", value: id },
+      });
     }
 
     const mappedClient = clientMapper(dbClient);
@@ -84,9 +79,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       clientList = await teamspeak.clientList();
     } catch (error) {
-      return next(
-        new HtmlError("Unkown teamspeak error!", 500, "UNKOWN_TEAMSPEAK_ERROR")
-      );
+      return restrictedNext(next, {
+        errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
+      });
     }
 
     const mappedClients = clientList.map(clientMapper);
