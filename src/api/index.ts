@@ -23,6 +23,6 @@ export default (teamspeak: TeamSpeak) => {
   app.use(unkownRouteError);
   app.use(errorRoute);
 
-  console.log(`Listening on http://localhost:${process.env.API_PORT}/`);
-  app.listen(Number(process.env.API_PORT));
+  console.log(`Listening on ${process.env.API_HOST}:${process.env.API_PORT}/`);
+  app.listen(Number(process.env.API_PORT), String(process.env.API_HOST));
 };
