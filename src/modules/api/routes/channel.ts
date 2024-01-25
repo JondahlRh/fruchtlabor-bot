@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import channel from "../controller/channel";
+import channel from "../controllers/channel";
 
 export default (teamspeak: TeamSpeak) => {
   const route = Router();

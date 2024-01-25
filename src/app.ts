@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import api from "./api";
-import bot, { moveDefaultChannel } from "./bot";
+import api from "./modules/api";
+import bot, { moveDefaultChannel } from "./modules/bot";
 
 export default async () => {
   await mongoose.connect(process.env.MONGODB_CONNECT ?? "", {

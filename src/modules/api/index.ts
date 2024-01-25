@@ -2,11 +2,11 @@ import cors from "cors";
 import express from "express";
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import checkApikey from "./controller/checkApikey";
-import { errorRoute, unkownRouteError } from "./controller/errors";
-import channel from "./route/channel";
-import client from "./route/client";
-import servergroup from "./route/servergroup";
+import checkApikey from "./controllers/checkApikey";
+import { errorRoute, unkownRouteError } from "./controllers/errors";
+import channel from "./routes/channel";
+import client from "./routes/client";
+import servergroup from "./routes/servergroup";
 
 export default (teamspeak: TeamSpeak) => {
   const app = express();
