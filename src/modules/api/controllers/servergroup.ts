@@ -9,6 +9,13 @@ import {
   ServerGroupClientEntry,
 } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
+import PartialError from "../../../classes/htmlErrors/PartialError";
+import ServergroupDoesNotExistError from "../../../classes/htmlErrors/ServergroupDoesNotExistError";
+import ServergroupDuplicateEntry from "../../../classes/htmlErrors/ServergroupDuplicateEntry";
+import ServergroupEmptyResult from "../../../classes/htmlErrors/ServergroupEmptyResult";
+import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
+import WrongTypeError from "../../../classes/htmlErrors/WrongTypeError";
+import { SingleError } from "../../../types/error";
 import clientMapper from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
 import restrictedNext from "../utility/restrictedNext";
@@ -19,9 +26,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       servergroupList = await teamspeak.serverGroupList();
     } catch (error) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
-      });
+      return restrictedNext(next, new UnkownTeamspeakError());
     }
 
     const mappedServergroupList = servergroupList.map(servergroupMapper);
@@ -36,16 +41,11 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       servergroup = await teamspeak.getServerGroupById(id);
     } catch (error) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
-      });
+      return restrictedNext(next, new UnkownTeamspeakError());
     }
 
     if (servergroup === undefined) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.SERVERGROUP_DOES_NOT_EXIST,
-        field: { key: "id", value: id },
-      });
+      return restrictedNext(next, new ServergroupDoesNotExistError("id", id));
     }
 
     const mappedServergroup = servergroupMapper(servergroup);
@@ -60,25 +60,18 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       servergroup = await teamspeak.getServerGroupById(id);
     } catch (error) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
-      });
+      return restrictedNext(next, new UnkownTeamspeakError());
     }
 
     if (servergroup === undefined) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.SERVERGROUP_DOES_NOT_EXIST,
-        field: { key: "id", value: id },
-      });
+      return restrictedNext(next, new ServergroupDoesNotExistError("id", id));
     }
 
     let servergroupClientList: ServerGroupClientEntry[];
     try {
       servergroupClientList = await servergroup.clientList();
     } catch (error) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
-      });
+      return restrictedNext(next, new UnkownTeamspeakError());
     }
 
     const mappedClients: MappedClient[] = [];
@@ -89,9 +82,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
       try {
         client = await teamspeak.clientDbInfo(sgClient.cldbid);
       } catch (error) {
-        return restrictedNext(next, {
-          errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
-        });
+        return restrictedNext(next, new UnkownTeamspeakError());
       }
 
       if (client.length === 0) continue;
@@ -107,24 +98,20 @@ const servergroup = (teamspeak: TeamSpeak) => {
     const servergroups: string[] = req.body.servergroups;
 
     if (typeof client !== "string") {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.WRONG_TYPE,
-        field: { key: "client", value: client, requiredType: "string" },
-      });
+      return restrictedNext(
+        next,
+        new WrongTypeError("client", client, "string")
+      );
     }
 
     if (
       !Array.isArray(servergroups) ||
       servergroups.some((x) => typeof x !== "string")
     ) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.WRONG_TYPE,
-        field: {
-          key: "servergroups",
-          value: servergroups,
-          requiredType: "string[]",
-        },
-      });
+      return restrictedNext(
+        next,
+        new WrongTypeError("servergroups", servergroups, "string[]")
+      );
     }
 
     let dbId = client;
@@ -140,28 +127,24 @@ const servergroup = (teamspeak: TeamSpeak) => {
           await teamspeak.clientAddServerGroup(dbId, servergroup);
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            return errors.push({
-              errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
-            });
+            return errors.push(new UnkownTeamspeakError());
           }
 
           switch (error.msg) {
             case "invalid group ID":
-              errors.push({
-                errorCode: ApiErrorCodes.SERVERGROUP_DOES_NOT_EXIST,
-                field: { key: "servergroup", value: servergroup },
-              });
+              errors.push(
+                new ServergroupDoesNotExistError("servergroup", servergroup)
+              );
               break;
 
             case "duplicate entry":
-              errors.push({
-                errorCode: ApiErrorCodes.SERVERGROUP_DUPLICATE_ENTRY,
-                field: { key: "servergroup", value: servergroup },
-              });
+              errors.push(
+                new ServergroupDuplicateEntry("servergroup", servergroup)
+              );
               break;
 
             default:
-              errors.push({ errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR });
+              errors.push(new UnkownTeamspeakError());
               break;
           }
         }
@@ -169,10 +152,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     );
 
     if (errors.length > 0) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.PARTIAL_ERROR,
-        errors,
-      });
+      return restrictedNext(next, new PartialError(errors));
     }
 
     res.json({ message: "Succesfull added servergroups!" });
@@ -183,24 +163,20 @@ const servergroup = (teamspeak: TeamSpeak) => {
     const servergroups: string[] = req.body.servergroups;
 
     if (typeof client !== "string") {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.WRONG_TYPE,
-        field: { key: "client", value: client, requiredType: "string" },
-      });
+      return restrictedNext(
+        next,
+        new WrongTypeError("client", client, "string")
+      );
     }
 
     if (
       !Array.isArray(servergroups) ||
       servergroups.some((x) => typeof x !== "string")
     ) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.WRONG_TYPE,
-        field: {
-          key: "servergroups",
-          value: servergroups,
-          requiredType: "string[]",
-        },
-      });
+      return restrictedNext(
+        next,
+        new WrongTypeError("servergroups", servergroups, "string[]")
+      );
     }
 
     let dbId = client;
@@ -216,28 +192,24 @@ const servergroup = (teamspeak: TeamSpeak) => {
           await teamspeak.clientDelServerGroup(dbId, servergroup);
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            return errors.push({
-              errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR,
-            });
+            return errors.push(new UnkownTeamspeakError());
           }
 
           switch (error.msg) {
             case "invalid group ID":
-              errors.push({
-                errorCode: ApiErrorCodes.SERVERGROUP_DOES_NOT_EXIST,
-                field: { key: "servergroup", value: servergroup },
-              });
+              errors.push(
+                new ServergroupDoesNotExistError("servergroup", servergroup)
+              );
               break;
 
             case "empty result set":
-              errors.push({
-                errorCode: ApiErrorCodes.SERVERGROUP_EMPTY_RESULT,
-                field: { key: "servergroup", value: servergroup },
-              });
+              errors.push(
+                new ServergroupEmptyResult("servergroup", servergroup)
+              );
               break;
 
             default:
-              errors.push({ errorCode: ApiErrorCodes.UNKOWN_TEAMSPEAK_ERROR });
+              errors.push(new UnkownTeamspeakError());
               break;
           }
         }
@@ -245,10 +217,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     );
 
     if (errors.length > 0) {
-      return restrictedNext(next, {
-        errorCode: ApiErrorCodes.PARTIAL_ERROR,
-        errors,
-      });
+      return restrictedNext(next, new PartialError(errors));
     }
 
     res.json({ message: "Succesfull removed servergroups!" });

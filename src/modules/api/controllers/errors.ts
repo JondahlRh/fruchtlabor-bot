@@ -1,21 +1,17 @@
 import { ErrorRequestHandler, RequestHandler } from "express";
 
-import { getHtmlResponse, getHtmlStatusCode } from "../utility/htmlErrorData";
+import HtmlError from "../../../classes/HtmlError";
+import UnkownRouteError from "../../../classes/htmlErrors/UnkownRouteError";
 import restrictedNext from "../utility/restrictedNext";
 
 const unkownRouteError: RequestHandler = (req, res, next) => {
-  const error: UnkownError = { errorCode: ApiErrorCodes.UNKOWN_ROUTE };
-  restrictedNext(next, error);
+  restrictedNext(next, new UnkownRouteError());
 };
 
 const errorRoute: ErrorRequestHandler = (error: HtmlError, req, res, next) => {
   if (res.headersSent) restrictedNext(next, error);
 
-  const statusCode = getHtmlStatusCode(error.errorCode);
-  res.status(statusCode);
-
-  const response = getHtmlResponse(error);
-  res.json(response);
+  res.status(error.statuscode).json(error);
 };
 
 export { unkownRouteError, errorRoute };
