@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon -L src/index.ts",
     "build": "tsc",
     "prettier": "prettier --write ."
   },
