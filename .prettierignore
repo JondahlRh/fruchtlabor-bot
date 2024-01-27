@@ -1,7 +1,5 @@
-# env files
-.env
-.env.dev
-.env.prod
+# docker-compose
+docker-compose*.yml
 
 # dependenice files
 node_modules
