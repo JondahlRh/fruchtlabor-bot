@@ -8,7 +8,7 @@ export default (teamspeak: TeamSpeak) => {
 
   route.get("/online", client(teamspeak).getAllClientsOnline);
   route.get("/online/:id", client(teamspeak).getSingleClientOnline);
-  route.get("/:id", client(teamspeak).getSingleClient);768
+  route.get("/:id", client(teamspeak).getSingleClient);
 
   route.post("/ban", client(teamspeak).postBanClient);
 
