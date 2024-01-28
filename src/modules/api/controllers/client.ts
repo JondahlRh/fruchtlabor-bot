@@ -48,9 +48,15 @@ const servergroup = (teamspeak: TeamSpeak) => {
   const getSingleClientOnline: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
 
+    let dbId = id;
+    if (Number.isNaN(Number(id))) {
+      const clientDbFind = await teamspeak.clientDbFind(id, true);
+      dbId = clientDbFind[0].cldbid;
+    }
+
     let client: TeamSpeakClient | undefined;
     try {
-      client = await teamspeak.getClientByUid(id);
+      client = await teamspeak.getClientByDbid(dbId);
     } catch (error) {
       return restrictedNext(next, new UnkownTeamspeakError());
     }
