@@ -8,7 +8,7 @@ import {
 import ChannelDoesNotExistError from "../../../classes/htmlErrors/ChannelDoesNotExistError";
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
 import channelMapper from "../mapper/channelMapper";
-import clientMapper from "../mapper/clientMapper";
+import { clientOnlineMapper } from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";
 
 const channel = (teamspeak: TeamSpeak) => {
@@ -66,7 +66,7 @@ const channel = (teamspeak: TeamSpeak) => {
       return restrictedNext(next, new UnkownTeamspeakError());
     }
 
-    const mappedClients = channelClients.map(clientMapper);
+    const mappedClients = channelClients.map(clientOnlineMapper);
 
     res.json(mappedClients);
   };

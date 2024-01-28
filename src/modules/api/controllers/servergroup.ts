@@ -16,7 +16,7 @@ import ServergroupEmptyResult from "../../../classes/htmlErrors/ServergroupEmpty
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
 import WrongTypeError from "../../../classes/htmlErrors/WrongTypeError";
 import { SingleError } from "../../../types/error";
-import clientMapper from "../mapper/clientMapper";
+import { clientMapper } from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
 import restrictedNext from "../utility/restrictedNext";
 

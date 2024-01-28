@@ -3,62 +3,28 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 import { ClientDBInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
 import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
+import ClientNotOnlineError from "../../../classes/htmlErrors/ClientNotOnlineError";
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
 import WrongTypeError from "../../../classes/htmlErrors/WrongTypeError";
-import clientMapper from "../mapper/clientMapper";
+import { clientMapper, clientOnlineMapper } from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";
 
 const servergroup = (teamspeak: TeamSpeak) => {
-  const getSingleClientByUuid: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+  const getSingleClient: RequestHandler = async (req, res, next) => {
+    const client = req.params.id;
 
-    let client: TeamSpeakClient | undefined;
-    try {
-      client = await teamspeak.getClientByUid(id);
-    } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
-    }
-
-    if (client) {
-      const mappedClient = clientMapper(client);
-      return res.json(mappedClient);
+    let dbId = client;
+    if (Number.isNaN(Number(client))) {
+      const clientDbFind = await teamspeak.clientDbFind(client, true);
+      dbId = clientDbFind[0].cldbid;
     }
 
     let dbClient: ClientDBInfo;
     try {
-      const dbidByUuid = await teamspeak.clientGetDbidFromUid(id);
-      const dbClients = await teamspeak.clientDbInfo(dbidByUuid.cldbid);
+      const dbClients = await teamspeak.clientDbInfo(dbId);
       dbClient = dbClients[0];
     } catch (error) {
-      return restrictedNext(next, new ClientDoesNotExistError("id", id));
-    }
-
-    const mappedClient = clientMapper(dbClient);
-
-    return res.json(mappedClient);
-  };
-
-  const getSingleClientByDbid: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
-
-    let client: TeamSpeakClient | undefined;
-    try {
-      client = await teamspeak.getClientByDbid(id);
-    } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
-    }
-
-    if (client) {
-      const mappedClient = clientMapper(client);
-      return res.json(mappedClient);
-    }
-
-    let dbClient: ClientDBInfo;
-    try {
-      const dbClients = await teamspeak.clientDbInfo(id);
-      dbClient = dbClients[0];
-    } catch (error) {
-      return restrictedNext(next, new ClientDoesNotExistError("id", id));
+      return restrictedNext(next, new ClientDoesNotExistError("dbId", dbId));
     }
 
     const mappedClient = clientMapper(dbClient);
@@ -74,9 +40,26 @@ const servergroup = (teamspeak: TeamSpeak) => {
       return restrictedNext(next, new UnkownTeamspeakError());
     }
 
-    const mappedClients = clientList.map(clientMapper);
+    const mappedClients = clientList.map(clientOnlineMapper);
 
     res.json(mappedClients);
+  };
+
+  const getSingleClientOnline: RequestHandler = async (req, res, next) => {
+    const id = req.params.id;
+
+    let client: TeamSpeakClient | undefined;
+    try {
+      client = await teamspeak.getClientByUid(id);
+    } catch (error) {
+      return restrictedNext(next, new UnkownTeamspeakError());
+    }
+
+    if (!client) {
+      return restrictedNext(next, new ClientNotOnlineError("id", id));
+    }
+
+    res.json(clientOnlineMapper(client));
   };
 
   const postBanClient: RequestHandler = async (req, res, next) => {
@@ -121,9 +104,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   return {
-    getSingleClientByUuid,
-    getSingleClientByDbid,
+    getSingleClient,
     getAllClientsOnline,
+    getSingleClientOnline,
     postBanClient,
   };
 };
