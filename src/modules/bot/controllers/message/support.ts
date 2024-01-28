@@ -16,7 +16,7 @@ const messageSupport = async (
   const supportMessages = await getSupportMessages();
 
   const supportMessage = supportMessages.find(
-    (x) => x.channel.channelId === +client.cid
+    (x) => x.channel.id === +client.cid
   );
   if (supportMessage == undefined) return;
 
@@ -24,7 +24,7 @@ const messageSupport = async (
   const channelList = await teamspeak.channelList();
 
   const specialContact = supportMessage.specials.find((x) =>
-    client.servergroups.includes(x.servergroup.servergroupId.toString())
+    client.servergroups.includes(x.servergroup.id.toString())
   );
   const contactServergroups = specialContact
     ? specialContact.contactServergroups
@@ -35,7 +35,7 @@ const messageSupport = async (
 
   clientList.forEach((listClient) => {
     const isSupporter = listClient.servergroups.some((x) =>
-      contactServergroups.some((y) => y.servergroupId === +x)
+      contactServergroups.some((y) => y.id === +x)
     );
     if (!isSupporter) return;
 

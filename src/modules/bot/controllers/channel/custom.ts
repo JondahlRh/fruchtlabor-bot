@@ -14,7 +14,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   const customChannels = await getCustomChannels();
 
   const customChannel = customChannels.find(
-    (x) => x.channelParent.channelId === +client.cid
+    (x) => x.channelParent.id === +client.cid
   );
   if (customChannel == undefined) return;
 
@@ -23,7 +23,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   let tsCustomChannel;
   try {
     const channelGroupClientList = await teamspeak.channelGroupClientList(
-      String(customChannel.channelGroup.channelgroupId),
+      String(customChannel.channelGroup.id),
       undefined,
       client.databaseId
     );
@@ -54,7 +54,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
     );
 
     await teamspeak.setClientChannelGroup(
-      String(customChannel.channelGroup.channelgroupId),
+      String(customChannel.channelGroup.id),
       tsCustomChannel.cid,
       client.databaseId
     );

@@ -9,19 +9,19 @@ const addgroup = async (client: TeamSpeakClient) => {
   const channelAddgroups = await getAddgroupChannels();
 
   const channelAddgroup = channelAddgroups.find(
-    (x) => x.channel.channelId === +client.cid
+    (x) => x.channel.id === +client.cid
   );
   if (channelAddgroup == undefined) return;
 
-  await client.move(String(channelAddgroup.moveChannel.channelId));
+  await client.move(String(channelAddgroup.moveChannel.id));
 
   const hasServergroup = client.servergroups.includes(
-    channelAddgroup.servergroup.servergroupId.toString()
+    channelAddgroup.servergroup.id.toString()
   );
   if (hasServergroup) {
-    await client.delGroups(String(channelAddgroup.servergroup.servergroupId));
+    await client.delGroups(String(channelAddgroup.servergroup.id));
   } else {
-    await client.addGroups(String(channelAddgroup.servergroup.servergroupId));
+    await client.addGroups(String(channelAddgroup.servergroup.id));
 
     if (channelAddgroup.message.length > 0) {
       await client.message(channelAddgroup.message);

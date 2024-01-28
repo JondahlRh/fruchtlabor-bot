@@ -64,8 +64,7 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
 
     const tsServergroup = tsServergroups.find((tsSg) => {
       return (
-        tsSg.isTeammember &&
-        listClient.servergroups.some((x) => tsSg.servergroupId === +x)
+        tsSg.isTeammember && listClient.servergroups.some((x) => tsSg.id === +x)
       );
     });
 
@@ -73,9 +72,9 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
       ? afkChannel.moveChannel.teammember
       : afkChannel.moveChannel.member;
 
-    if (+listClient.cid === moveChannel.channelId) continue;
+    if (+listClient.cid === moveChannel.id) continue;
 
-    await listClient.move(String(moveChannel.channelId));
+    await listClient.move(String(moveChannel.id));
     await listClient.message(
       `Du warst über ${maxIdleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`
     );

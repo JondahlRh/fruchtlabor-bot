@@ -26,14 +26,14 @@ const lobby = async () => {
     const channelList = await teamspeak.channelList();
 
     const channelChildren = channelList.filter(
-      (channel) => +channel.pid === lobbyChannel.channelParent.channelId
+      (channel) => +channel.pid === lobbyChannel.channelParent.id
     );
     const channelChildrenEmpty = channelChildren.filter(
       (channel) => channel.totalClients === 0
     );
     const channelSiblings = channelList.filter((channel) =>
       lobbyChannel.channelParentSiblings.some(
-        (sibChannel) => sibChannel.channelId === +channel.pid
+        (sibChannel) => sibChannel.id === +channel.pid
       )
     );
     const channelCategorie = [...channelChildren, ...channelSiblings];
@@ -68,7 +68,7 @@ const lobby = async () => {
     const channelSuffixes = unusedFruitList.slice(0, channelsToBeCreated);
     const channelProperties = {
       channelFlagPermanent: true,
-      cpid: String(lobbyChannel.channelParent.channelId),
+      cpid: String(lobbyChannel.channelParent.id),
       channelDescription: lobbyChannel.description.text,
       channelOrder: channelChildren[0]?.order,
       channelFlagMaxclientsUnlimited: lobbyChannel.clientLimit === -1,

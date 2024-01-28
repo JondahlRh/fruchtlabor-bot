@@ -1,12 +1,12 @@
 type TsChannelType = {
-  channelId: number;
+  id: number;
   name: string;
   description: string;
   isBotChannel: boolean;
 };
 
 type TsChannelgroupType = {
-  channelgroupId: number;
+  id: number;
   name: string;
   description: string;
 };
@@ -24,7 +24,7 @@ type TsDescriptionType = {
 };
 
 type TsServergroupType = {
-  servergroupId: number;
+  id: number;
   name: string;
   description: string;
   isTeammember: boolean;

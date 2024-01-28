@@ -11,8 +11,8 @@ const botMove = async (teamspeak: TeamSpeak) => {
 
   if (botChannel === null) throw new Error("Bot Channel is not definded");
 
-  if (+self.cid !== botChannel.channelId) {
-    await teamspeak.clientMove(self, String(botChannel.channelId));
+  if (+self.cid !== botChannel.id) {
+    await teamspeak.clientMove(self, String(botChannel.id));
   }
 };
 

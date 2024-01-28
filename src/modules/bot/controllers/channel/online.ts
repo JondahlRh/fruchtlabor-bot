@@ -83,7 +83,7 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
     const descGroups = [];
     for (const servergroup of onlineChannel.servergroups) {
       const serverGroupClientList = await teamspeak.serverGroupClientList(
-        String(servergroup.servergroupId)
+        String(servergroup.id)
       );
 
       const descClients = [];
@@ -114,11 +114,11 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
     const description = getDescription(onlineChannel.title, descGroups);
 
     const channelInfo = await teamspeak.channelInfo(
-      String(onlineChannel.channel.channelId)
+      String(onlineChannel.channel.id)
     );
     if (channelInfo.channelDescription === description) continue;
 
-    await teamspeak.channelEdit(String(onlineChannel.channel.channelId), {
+    await teamspeak.channelEdit(String(onlineChannel.channel.id), {
       channelDescription: description,
     });
   }

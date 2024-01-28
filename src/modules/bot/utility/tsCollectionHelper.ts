@@ -1,6 +1,6 @@
 const checkChannel = (collection: TsCollectionType, clientData: ClientData) => {
   return collection.channels.some((x) => {
-    return String(x.channelId) === clientData.channel;
+    return String(x.id) === clientData.channel;
   });
 };
 
@@ -9,7 +9,7 @@ const checkChannelParent = (
   clientData: ClientData
 ) => {
   return collection.channelParents.some((x) => {
-    return String(x.channelId) === clientData.channelParent;
+    return String(x.id) === clientData.channelParent;
   });
 };
 
@@ -18,7 +18,7 @@ const checkServergroups = (
   clientData: ClientData
 ) => {
   return collection.servergroups.some((x) => {
-    return clientData.servergroups.includes(String(x.servergroupId));
+    return clientData.servergroups.includes(String(x.id));
   });
 };
 
