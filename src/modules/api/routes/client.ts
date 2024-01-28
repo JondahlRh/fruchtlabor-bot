@@ -11,5 +11,7 @@ export default (teamspeak: TeamSpeak) => {
 
   route.get("/online", client(teamspeak).getAllClientsOnline);
 
+  route.post("/ban", client(teamspeak).postBanClient);
+
   return route;
 };
