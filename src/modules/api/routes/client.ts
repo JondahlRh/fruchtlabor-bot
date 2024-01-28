@@ -6,9 +6,9 @@ import client from "../controllers/client";
 export default (teamspeak: TeamSpeak) => {
   const route = Router();
 
-  route.get("/:id", client(teamspeak).getSingleClient);
   route.get("/online", client(teamspeak).getAllClientsOnline);
   route.get("/online/:id", client(teamspeak).getSingleClientOnline);
+  route.get("/:id", client(teamspeak).getSingleClient);768
 
   route.post("/ban", client(teamspeak).postBanClient);
 
