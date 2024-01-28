@@ -9,6 +9,7 @@ import {
   ServerGroupClientEntry,
 } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
+import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
 import PartialError from "../../../classes/htmlErrors/PartialError";
 import ServergroupDoesNotExistError from "../../../classes/htmlErrors/ServergroupDoesNotExistError";
 import ServergroupDuplicateEntry from "../../../classes/htmlErrors/ServergroupDuplicateEntry";
@@ -115,10 +116,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
     }
 
     let dbId = client;
-    try {
+    if (Number.isNaN(Number(client))) {
       const clientDbFind = await teamspeak.clientDbFind(client, true);
       dbId = clientDbFind[0].cldbid;
-    } catch (error) {}
+    }
+
+    try {
+      await teamspeak.clientDbInfo(dbId);
+    } catch (error) {
+      return restrictedNext(next, new ClientDoesNotExistError("dbId", dbId));
+    }
 
     const errors: SingleError[] = [];
     await Promise.all(
@@ -180,10 +187,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
     }
 
     let dbId = client;
-    try {
+    if (Number.isNaN(Number(client))) {
       const clientDbFind = await teamspeak.clientDbFind(client, true);
       dbId = clientDbFind[0].cldbid;
-    } catch (error) {}
+    }
+
+    try {
+      await teamspeak.clientDbInfo(dbId);
+    } catch (error) {
+      return restrictedNext(next, new ClientDoesNotExistError("dbId", dbId));
+    }
 
     const errors: SingleError[] = [];
     await Promise.all(
