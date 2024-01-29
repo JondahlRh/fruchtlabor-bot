@@ -1,25 +1,20 @@
 import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
-import { ClientDBInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
 import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
-import ClientNotOnlineError from "../../../classes/htmlErrors/ClientNotOnlineError";
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
 import WrongTypeError from "../../../classes/htmlErrors/WrongTypeError";
 import { clientMapper, clientOnlineMapper } from "../mapper/clientMapper";
 import { getDbClient, getOnlineClient } from "../utility/getTeamspeakClient";
 import restrictedNext from "../utility/restrictedNext";
 
-const servergroup = (teamspeak: TeamSpeak) => {
+const client = (teamspeak: TeamSpeak) => {
   const getSingleClient: RequestHandler = async (req, res, next) => {
-    const client = req.params.id;
+    const id = req.params.id;
 
-    const dbClient = await getDbClient(teamspeak, client);
+    const dbClient = await getDbClient(teamspeak, id);
     if (dbClient === null) {
-      return restrictedNext(
-        next,
-        new ClientDoesNotExistError("client", client)
-      );
+      return restrictedNext(next, new ClientDoesNotExistError("id", id));
     }
 
     const mappedClient = clientMapper(dbClient);
@@ -48,7 +43,9 @@ const servergroup = (teamspeak: TeamSpeak) => {
       return restrictedNext(next, new ClientDoesNotExistError("id", id));
     }
 
-    res.json(clientOnlineMapper(onlineClient));
+    const mappedClient = clientOnlineMapper(onlineClient);
+
+    res.json(mappedClient);
   };
 
   const postBanClient: RequestHandler = async (req, res, next) => {
@@ -94,4 +91,4 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 };
 
-export default servergroup;
+export default client;
