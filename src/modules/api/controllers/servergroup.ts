@@ -19,6 +19,7 @@ import WrongTypeError from "../../../classes/htmlErrors/WrongTypeError";
 import { SingleError } from "../../../types/error";
 import { clientMapper } from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
+import { getDbClient } from "../utility/getTeamspeakClient";
 import restrictedNext from "../utility/restrictedNext";
 
 const servergroup = (teamspeak: TeamSpeak) => {
@@ -78,17 +79,12 @@ const servergroup = (teamspeak: TeamSpeak) => {
     const mappedClients: MappedClient[] = [];
 
     for (const sgClient of servergroupClientList) {
-      let client: ClientDBInfo[];
+      const dbClient = await getDbClient(teamspeak, sgClient.cldbid);
+      if (dbClient === null) continue;
 
-      try {
-        client = await teamspeak.clientDbInfo(sgClient.cldbid);
-      } catch (error) {
-        return restrictedNext(next, new UnkownTeamspeakError());
-      }
+      const mappedClient = clientMapper(dbClient);
 
-      if (client.length === 0) continue;
-
-      mappedClients.push(clientMapper(client[0]));
+      mappedClients.push(mappedClient);
     }
 
     res.json(mappedClients);
@@ -115,23 +111,22 @@ const servergroup = (teamspeak: TeamSpeak) => {
       );
     }
 
-    let dbId = client;
-    if (Number.isNaN(Number(client))) {
-      const clientDbFind = await teamspeak.clientDbFind(client, true);
-      dbId = clientDbFind[0].cldbid;
-    }
-
-    try {
-      await teamspeak.clientDbInfo(dbId);
-    } catch (error) {
-      return restrictedNext(next, new ClientDoesNotExistError("dbId", dbId));
+    const dbClient = await getDbClient(teamspeak, client);
+    if (dbClient === null) {
+      return restrictedNext(
+        next,
+        new ClientDoesNotExistError("client", client)
+      );
     }
 
     const errors: SingleError[] = [];
     await Promise.all(
       servergroups.map(async (servergroup) => {
         try {
-          await teamspeak.clientAddServerGroup(dbId, servergroup);
+          await teamspeak.clientAddServerGroup(
+            dbClient.clientDatabaseId,
+            servergroup
+          );
         } catch (error) {
           if (!(error instanceof ResponseError)) {
             return errors.push(new UnkownTeamspeakError());
@@ -186,23 +181,22 @@ const servergroup = (teamspeak: TeamSpeak) => {
       );
     }
 
-    let dbId = client;
-    if (Number.isNaN(Number(client))) {
-      const clientDbFind = await teamspeak.clientDbFind(client, true);
-      dbId = clientDbFind[0].cldbid;
-    }
-
-    try {
-      await teamspeak.clientDbInfo(dbId);
-    } catch (error) {
-      return restrictedNext(next, new ClientDoesNotExistError("dbId", dbId));
+    const dbClient = await getDbClient(teamspeak, client);
+    if (dbClient === null) {
+      return restrictedNext(
+        next,
+        new ClientDoesNotExistError("client", client)
+      );
     }
 
     const errors: SingleError[] = [];
     await Promise.all(
       servergroups.map(async (servergroup) => {
         try {
-          await teamspeak.clientDelServerGroup(dbId, servergroup);
+          await teamspeak.clientDelServerGroup(
+            dbClient.clientDatabaseId,
+            servergroup
+          );
         } catch (error) {
           if (!(error instanceof ResponseError)) {
             return errors.push(new UnkownTeamspeakError());
