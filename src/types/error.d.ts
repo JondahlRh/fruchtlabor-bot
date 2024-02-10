@@ -7,7 +7,6 @@ import ServergroupEmptyResult from "../classes/htmlErrors/ServergroupEmptyResult
 import UnkownError from "../classes/htmlErrors/UnkownError";
 import UnkownRouteError from "../classes/htmlErrors/UnkownRouteError";
 import UnkownTeamspeakError from "../classes/htmlErrors/UnkownTeamspeakError";
-import WrongTypeError from "../classes/htmlErrors/WrongTypeError";
 
 type SingleError =
   | AuthError
@@ -18,5 +17,4 @@ type SingleError =
   | ServergroupDoesNotExistError
   | ServergroupDuplicateEntry
   | ServergroupEmptyResult
-  | WrongTypeError
   | UnkownError;
