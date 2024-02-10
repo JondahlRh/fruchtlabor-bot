@@ -1,7 +1,7 @@
 import { ErrorRequestHandler, RequestHandler } from "express";
 
 import HtmlError from "../../../classes/HtmlError";
-import UnkownRouteError from "../../../classes/htmlErrors/UnkownRouteError";
+import { UnkownRouteError } from "../../../classes/htmlErrors";
 import restrictedNext from "../utility/restrictedNext";
 
 const unkownRouteError: RequestHandler = (req, res, next) => {

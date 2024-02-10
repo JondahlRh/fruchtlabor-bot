@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 
-import AuthError from "../../../classes/htmlErrors/AuthError";
+import { AuthError } from "../../../classes/htmlErrors";
 import restrictedNext from "../utility/restrictedNext";
 
 const checkApikey: RequestHandler = (req, res, next) => {

@@ -6,13 +6,15 @@ import {
 } from "ts3-nodejs-library";
 import { ServerGroupClientEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
-import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
-import PartialError from "../../../classes/htmlErrors/PartialError";
-import RequestBodyError from "../../../classes/htmlErrors/RequestBodyError";
-import ServergroupDoesNotExistError from "../../../classes/htmlErrors/ServergroupDoesNotExistError";
-import ServergroupDuplicateEntry from "../../../classes/htmlErrors/ServergroupDuplicateEntry";
-import ServergroupEmptyResult from "../../../classes/htmlErrors/ServergroupEmptyResult";
-import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
+import {
+  ClientDoesNotExistError,
+  PartialError,
+  RequestBodyError,
+  ServergroupDoesNotExistError,
+  ServergroupDuplicateEntry,
+  ServergroupEmptyResult,
+  UnkownTeamspeakError,
+} from "../../../classes/htmlErrors";
 import { EditServergroupSchema, ParamIdSchema } from "../../../types/apiBody";
 import { SingleError } from "../../../types/error";
 import { clientMapper } from "../mapper/clientMapper";

@@ -5,9 +5,11 @@ import {
   TeamSpeakClient,
 } from "ts3-nodejs-library";
 
-import ChannelDoesNotExistError from "../../../classes/htmlErrors/ChannelDoesNotExistError";
-import RequestBodyError from "../../../classes/htmlErrors/RequestBodyError";
-import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
+import {
+  ChannelDoesNotExistError,
+  RequestBodyError,
+  UnkownTeamspeakError,
+} from "../../../classes/htmlErrors";
 import { ParamIdSchema } from "../../../types/apiBody";
 import channelMapper from "../mapper/channelMapper";
 import { clientOnlineMapper } from "../mapper/clientMapper";

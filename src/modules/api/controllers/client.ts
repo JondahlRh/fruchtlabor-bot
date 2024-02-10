@@ -1,11 +1,13 @@
 import { RequestHandler } from "express";
 import { ResponseError, TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import BanIdDoesNotExistError from "../../../classes/htmlErrors/BanIdDoesNotExistError";
-import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
-import PartialError from "../../../classes/htmlErrors/PartialError";
-import RequestBodyError from "../../../classes/htmlErrors/RequestBodyError";
-import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
+import {
+  BanIdDoesNotExistError,
+  ClientDoesNotExistError,
+  PartialError,
+  RequestBodyError,
+  UnkownTeamspeakError,
+} from "../../../classes/htmlErrors";
 import {
   DelteBanClientSchema,
   ParamIdSchema,
