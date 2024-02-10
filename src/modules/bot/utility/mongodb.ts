@@ -1,3 +1,5 @@
+import { TeamSpeakClient } from "ts3-nodejs-library";
+
 import AddgroupChannel from "../../../models/functions/AddgroupChannel";
 import AfkChannel from "../../../models/functions/AfkChannel";
 import CustomChannel from "../../../models/functions/CustomChannel";
@@ -7,6 +9,7 @@ import OnlineChannel from "../../../models/functions/OnlineChannel";
 import SupportMessage from "../../../models/functions/SupportMessage";
 import AsyncError from "../../../models/general/AsyncError";
 import Fruit from "../../../models/general/Fruit";
+import SupportLog from "../../../models/general/SupportLog";
 import TsChannel from "../../../models/teamspeak/TsChannel";
 import TsServergroup from "../../../models/teamspeak/TsServergroup";
 
@@ -115,5 +118,27 @@ export const saveErrorLog = async (error: Error, fnName: string) => {
     message: error.message,
     name: error.name,
     stack: error.stack,
+  }).save();
+};
+
+export const addSupportLog = async (
+  supportMessage: SupportMessageType,
+  client: TeamSpeakClient,
+  supportClientsContact: TeamSpeakClient[],
+  supportClientsListed: TeamSpeakClient[]
+) => {
+  const supportClientsContactMapped = supportClientsContact.map(
+    (client) => client.uniqueIdentifier
+  );
+  const supportClientsListedMapped = supportClientsListed.map(
+    (client) => client.uniqueIdentifier
+  );
+
+  await new SupportLog({
+    timestamp: new Date(),
+    channel: supportMessage.channel.id,
+    client: client.uniqueIdentifier,
+    supportClientsContact: supportClientsContactMapped,
+    supportClientsListed: supportClientsListedMapped,
   }).save();
 };

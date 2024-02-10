@@ -1,6 +1,6 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import { getSupportMessages } from "../../utility/mongodb";
+import { addSupportLog, getSupportMessages } from "../../utility/mongodb";
 import { clientMatchesCollection } from "../../utility/tsCollectionHelper";
 
 /**
@@ -117,6 +117,13 @@ const messageSupport = async (
   }
 
   client.message(message);
+
+  await addSupportLog(
+    supportMessage,
+    client,
+    supportClientsContact,
+    supportClientsListed
+  );
 };
 
 export default messageSupport;
