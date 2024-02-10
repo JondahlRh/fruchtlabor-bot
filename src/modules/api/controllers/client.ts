@@ -73,14 +73,28 @@ const client = (teamspeak: TeamSpeak) => {
       );
     }
 
+    let ipBannId: string;
+    let tsidBannId: string;
     try {
-      await teamspeak.ban({ ip: dbClient.clientLastip, banreason });
-      await teamspeak.ban({ uid: dbClient.clientUniqueIdentifier, banreason });
+      const ipBann = await teamspeak.ban({
+        ip: dbClient.clientLastip,
+        banreason,
+      });
+      ipBannId = ipBann.banid;
+
+      const tsidBann = await teamspeak.ban({
+        uid: dbClient.clientUniqueIdentifier,
+        banreason,
+      });
+      tsidBannId = tsidBann.banid;
     } catch (error) {
       return restrictedNext(next, new UnkownTeamspeakError());
     }
 
-    res.json({ message: "Succesfully banned client!" });
+    res.json({
+      message: "Succesfully banned client!",
+      data: { ipBannId, tsidBannId },
+    });
   };
 
   return {
