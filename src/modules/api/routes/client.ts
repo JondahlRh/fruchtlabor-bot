@@ -11,6 +11,7 @@ export default (teamspeak: TeamSpeak) => {
   route.get("/:id", client(teamspeak).getSingleClient);
 
   route.post("/ban", client(teamspeak).postBanClient);
+  route.delete("/ban", client(teamspeak).deleteBanClient);
 
   return route;
 };

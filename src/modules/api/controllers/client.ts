@@ -1,10 +1,17 @@
 import { RequestHandler } from "express";
-import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
+import { ResponseError, TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
+import BanIdDoesNotExistError from "../../../classes/htmlErrors/BanIdDoesNotExistError";
 import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
+import PartialError from "../../../classes/htmlErrors/PartialError";
 import RequestBodyError from "../../../classes/htmlErrors/RequestBodyError";
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
-import { BanClientSchema, ParamIdSchema } from "../../../types/apiBody";
+import {
+  DelteBanClientSchema,
+  ParamIdSchema,
+  PostBanClientSchema,
+} from "../../../types/apiBody";
+import { SingleError } from "../../../types/error";
 import { clientMapper, clientOnlineMapper } from "../mapper/clientMapper";
 import { getDbClient, getOnlineClient } from "../utility/getTeamspeakClient";
 import restrictedNext from "../utility/restrictedNext";
@@ -68,7 +75,7 @@ const client = (teamspeak: TeamSpeak) => {
   };
 
   const postBanClient: RequestHandler = async (req, res, next) => {
-    const requestBody = BanClientSchema.safeParse(req.body);
+    const requestBody = PostBanClientSchema.safeParse(req.body);
 
     if (!requestBody.success) {
       return restrictedNext(
@@ -111,11 +118,54 @@ const client = (teamspeak: TeamSpeak) => {
     });
   };
 
+  const deleteBanClient: RequestHandler = async (req, res, next) => {
+    const requestBody = DelteBanClientSchema.safeParse(req.body);
+
+    if (!requestBody.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestBody.error.message)
+      );
+    }
+
+    const { banids } = requestBody.data;
+
+    const errors: SingleError[] = [];
+    await Promise.all(
+      banids.map(async (banid) => {
+        try {
+          await teamspeak.banDel(banid);
+        } catch (error) {
+          if (!(error instanceof ResponseError)) {
+            return errors.push(new UnkownTeamspeakError());
+          }
+
+          switch (error.msg) {
+            case "invalid ban id":
+              errors.push(new BanIdDoesNotExistError("banid", banid));
+              break;
+
+            default:
+              errors.push(new UnkownTeamspeakError());
+              break;
+          }
+        }
+      })
+    );
+
+    if (errors.length > 0) {
+      return restrictedNext(next, new PartialError(errors));
+    }
+
+    res.json({ message: "Succesfully removed Bans!" });
+  };
+
   return {
     getSingleClient,
     getAllClientsOnline,
     getSingleClientOnline,
     postBanClient,
+    deleteBanClient,
   };
 };
 
