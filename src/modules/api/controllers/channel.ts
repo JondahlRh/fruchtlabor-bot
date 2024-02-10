@@ -6,7 +6,9 @@ import {
 } from "ts3-nodejs-library";
 
 import ChannelDoesNotExistError from "../../../classes/htmlErrors/ChannelDoesNotExistError";
+import RequestBodyError from "../../../classes/htmlErrors/RequestBodyError";
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
+import { ParamIdSchema } from "../../../types/apiBody";
 import channelMapper from "../mapper/channelMapper";
 import { clientOnlineMapper } from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";
@@ -26,7 +28,16 @@ const channel = (teamspeak: TeamSpeak) => {
   };
 
   const getSingleChannel: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+    const requestParam = ParamIdSchema.safeParse(req.params.id);
+
+    if (!requestParam.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestParam.error.message)
+      );
+    }
+
+    const id = requestParam.data;
 
     let channel: TeamSpeakChannel | undefined;
     try {
@@ -45,7 +56,16 @@ const channel = (teamspeak: TeamSpeak) => {
   };
 
   const getClientsOfChannel: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+    const requestParam = ParamIdSchema.safeParse(req.params.id);
+
+    if (!requestParam.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestParam.error.message)
+      );
+    }
+
+    const id = requestParam.data;
 
     let channel: TeamSpeakChannel | undefined;
     try {

@@ -17,7 +17,8 @@
     "express": "^4.18.2",
     "mongoose": "^8.0.3",
     "node-cron": "^3.0.3",
-    "ts3-nodejs-library": "^3.5.1"
+    "ts3-nodejs-library": "^3.5.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

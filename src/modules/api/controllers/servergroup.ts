@@ -4,18 +4,16 @@ import {
   TeamSpeak,
   TeamSpeakServerGroup,
 } from "ts3-nodejs-library";
-import {
-  ClientDBInfo,
-  ServerGroupClientEntry,
-} from "ts3-nodejs-library/lib/types/ResponseTypes";
+import { ServerGroupClientEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
 import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
 import PartialError from "../../../classes/htmlErrors/PartialError";
+import RequestBodyError from "../../../classes/htmlErrors/RequestBodyError";
 import ServergroupDoesNotExistError from "../../../classes/htmlErrors/ServergroupDoesNotExistError";
 import ServergroupDuplicateEntry from "../../../classes/htmlErrors/ServergroupDuplicateEntry";
 import ServergroupEmptyResult from "../../../classes/htmlErrors/ServergroupEmptyResult";
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
-import WrongTypeError from "../../../classes/htmlErrors/WrongTypeError";
+import { EditServergroupSchema, ParamIdSchema } from "../../../types/apiBody";
 import { SingleError } from "../../../types/error";
 import { clientMapper } from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
@@ -37,7 +35,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   const getSingleServergroup: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+    const requestParam = ParamIdSchema.safeParse(req.params.id);
+
+    if (!requestParam.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestParam.error.message)
+      );
+    }
+
+    const id = requestParam.data;
 
     let servergroup: TeamSpeakServerGroup | undefined;
     try {
@@ -56,7 +63,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   const getClientsOfServergroup: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+    const requestParam = ParamIdSchema.safeParse(req.params.id);
+
+    if (!requestParam.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestParam.error.message)
+      );
+    }
+
+    const id = requestParam.data;
 
     let servergroup: TeamSpeakServerGroup | undefined;
     try {
@@ -91,25 +107,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   const postServergroup: RequestHandler = async (req, res, next) => {
-    const client: string = req.body.client;
-    const servergroups: string[] = req.body.servergroups;
+    const requestBody = EditServergroupSchema.safeParse(req.body);
 
-    if (typeof client !== "string") {
+    if (!requestBody.success) {
       return restrictedNext(
         next,
-        new WrongTypeError("client", client, "string")
+        new RequestBodyError(requestBody.error.message)
       );
     }
 
-    if (
-      !Array.isArray(servergroups) ||
-      servergroups.some((x) => typeof x !== "string")
-    ) {
-      return restrictedNext(
-        next,
-        new WrongTypeError("servergroups", servergroups, "string[]")
-      );
-    }
+    const { client, servergroups } = requestBody.data;
 
     const dbClient = await getDbClient(teamspeak, client);
     if (dbClient === null) {
@@ -161,25 +168,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   const deleteServergroup: RequestHandler = async (req, res, next) => {
-    const client: string = req.body.client;
-    const servergroups: string[] = req.body.servergroups;
+    const requestBody = EditServergroupSchema.safeParse(req.body);
 
-    if (typeof client !== "string") {
+    if (!requestBody.success) {
       return restrictedNext(
         next,
-        new WrongTypeError("client", client, "string")
+        new RequestBodyError(requestBody.error.message)
       );
     }
 
-    if (
-      !Array.isArray(servergroups) ||
-      servergroups.some((x) => typeof x !== "string")
-    ) {
-      return restrictedNext(
-        next,
-        new WrongTypeError("servergroups", servergroups, "string[]")
-      );
-    }
+    const { client, servergroups } = requestBody.data;
 
     const dbClient = await getDbClient(teamspeak, client);
     if (dbClient === null) {

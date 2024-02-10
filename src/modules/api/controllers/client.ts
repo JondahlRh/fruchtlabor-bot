@@ -2,15 +2,25 @@ import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import ClientDoesNotExistError from "../../../classes/htmlErrors/ClientDoesNotExistError";
+import RequestBodyError from "../../../classes/htmlErrors/RequestBodyError";
 import UnkownTeamspeakError from "../../../classes/htmlErrors/UnkownTeamspeakError";
-import WrongTypeError from "../../../classes/htmlErrors/WrongTypeError";
+import { BanClientSchema, ParamIdSchema } from "../../../types/apiBody";
 import { clientMapper, clientOnlineMapper } from "../mapper/clientMapper";
 import { getDbClient, getOnlineClient } from "../utility/getTeamspeakClient";
 import restrictedNext from "../utility/restrictedNext";
 
 const client = (teamspeak: TeamSpeak) => {
   const getSingleClient: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+    const requestParam = ParamIdSchema.safeParse(req.params.id);
+
+    if (!requestParam.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestParam.error.message)
+      );
+    }
+
+    const id = requestParam.data;
 
     const dbClient = await getDbClient(teamspeak, id);
     if (dbClient === null) {
@@ -36,7 +46,16 @@ const client = (teamspeak: TeamSpeak) => {
   };
 
   const getSingleClientOnline: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+    const requestParam = ParamIdSchema.safeParse(req.params.id);
+
+    if (!requestParam.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestParam.error.message)
+      );
+    }
+
+    const id = requestParam.data;
 
     const onlineClient = await getOnlineClient(teamspeak, id);
     if (onlineClient === null) {
@@ -49,21 +68,16 @@ const client = (teamspeak: TeamSpeak) => {
   };
 
   const postBanClient: RequestHandler = async (req, res, next) => {
-    const client: string = req.body.client;
-    const banreason: string = req.body.banreason;
+    const requestBody = BanClientSchema.safeParse(req.body);
 
-    if (typeof client !== "string") {
+    if (!requestBody.success) {
       return restrictedNext(
         next,
-        new WrongTypeError("client", client, "string")
+        new RequestBodyError(requestBody.error.message)
       );
     }
-    if (typeof banreason !== "string") {
-      return restrictedNext(
-        next,
-        new WrongTypeError("banreason", banreason, "string")
-      );
-    }
+
+    const { client, banreason } = requestBody.data;
 
     const dbClient = await getDbClient(teamspeak, client);
     if (dbClient === null) {
