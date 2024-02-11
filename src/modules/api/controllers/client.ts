@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { ResponseError, TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
+import { BanEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
 import {
   BanIdDoesNotExistError,
@@ -14,6 +15,7 @@ import {
   PostBanClientSchema,
 } from "../../../types/apiBody";
 import { SingleError } from "../../../types/error";
+import banMapper from "../mapper/banMapper";
 import { clientMapper, clientOnlineMapper } from "../mapper/clientMapper";
 import { getDbClient, getOnlineClient } from "../utility/getTeamspeakClient";
 import restrictedNext from "../utility/restrictedNext";
@@ -74,6 +76,30 @@ const client = (teamspeak: TeamSpeak) => {
     const mappedClient = clientOnlineMapper(onlineClient);
 
     res.json(mappedClient);
+  };
+
+  const getBanList: RequestHandler = async (req, res, next) => {
+    let banList: BanEntry[];
+    try {
+      banList = await teamspeak.banList();
+    } catch (error) {
+      if (!(error instanceof ResponseError)) {
+        return restrictedNext(next, new UnkownTeamspeakError());
+      }
+
+      switch (error.msg) {
+        case "database empty result set":
+          banList = [];
+          break;
+
+        default:
+          return restrictedNext(next, new UnkownTeamspeakError());
+      }
+    }
+
+    const mappedBanList = banList.map(banMapper);
+
+    res.json(mappedBanList);
   };
 
   const postBanClient: RequestHandler = async (req, res, next) => {
@@ -166,6 +192,7 @@ const client = (teamspeak: TeamSpeak) => {
     getSingleClient,
     getAllClientsOnline,
     getSingleClientOnline,
+    getBanList,
     postBanClient,
     deleteBanClient,
   };
