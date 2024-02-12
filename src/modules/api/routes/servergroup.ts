@@ -12,6 +12,7 @@ export default (teamspeak: TeamSpeak) => {
 
   route.post("/", servergroup(teamspeak).postServergroup);
   route.delete("/", servergroup(teamspeak).deleteServergroup);
+  route.delete("/all", servergroup(teamspeak).deleteAllServergroups);
 
   return route;
 };

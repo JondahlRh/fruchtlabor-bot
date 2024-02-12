@@ -15,7 +15,11 @@ import {
   ServergroupEmptyResult,
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
-import { EditServergroupSchema, ParamIdSchema } from "../../../types/apiBody";
+import {
+  DelteAllServergroupsSchema,
+  EditServergroupSchema,
+  ParamIdSchema,
+} from "../../../types/apiBody";
 import { SingleError } from "../../../types/error";
 import { clientMapper } from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
@@ -230,12 +234,56 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res.json({ message: "Succesfull removed servergroups!" });
   };
 
+  const deleteAllServergroups: RequestHandler = async (req, res, next) => {
+    const requestBody = DelteAllServergroupsSchema.safeParse(req.body);
+
+    if (!requestBody.success) {
+      return restrictedNext(
+        next,
+        new RequestBodyError(requestBody.error.message)
+      );
+    }
+
+    const { client } = requestBody.data;
+
+    const dbClient = await getDbClient(teamspeak, client);
+    if (dbClient === null) {
+      return restrictedNext(
+        next,
+        new ClientDoesNotExistError("client", client)
+      );
+    }
+
+    let servergroups: string[];
+    try {
+      const serverGroupsByClientId = await teamspeak.serverGroupsByClientId(
+        dbClient.clientDatabaseId
+      );
+
+      servergroups = serverGroupsByClientId.map((x) => x.sgid);
+    } catch (error) {
+      return restrictedNext(next, new UnkownTeamspeakError());
+    }
+
+    try {
+      await teamspeak.clientDelServerGroup(
+        dbClient.clientDatabaseId,
+        servergroups
+      );
+    } catch (error) {
+      return restrictedNext(next, new UnkownTeamspeakError());
+    }
+
+    res.json({ message: "Succesfull removed all servergroups!" });
+  };
+
   return {
     getAllServergroups,
     getSingleServergroup,
     getClientsOfServergroup,
     postServergroup,
     deleteServergroup,
+    deleteAllServergroups,
   };
 };
 

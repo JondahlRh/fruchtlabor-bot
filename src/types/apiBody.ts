@@ -5,6 +5,10 @@ export const EditServergroupSchema = z.object({
   servergroups: z.array(z.string()),
 });
 
+export const DelteAllServergroupsSchema = z.object({
+  client: z.string(),
+});
+
 export const PostBanClientSchema = z.object({
   client: z.string(),
   banreason: z.string(),
