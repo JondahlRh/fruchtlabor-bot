@@ -3,6 +3,6 @@ services:
     build: .
     container_name: fruchtlabor-bot
     env_file:
-      - .env
+      - .env.prod
     ports:
       - "${EXPOSED_PORT}:3000"
