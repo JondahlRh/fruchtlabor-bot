@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: fruchtlabor-bot-dev
+    env_file:
+      - .env.dev
+    ports:
+      - "${EXPOSED_PORT}:3000"
+    volumes:
+      - .\src:/app/src
+    command: npm run dev
