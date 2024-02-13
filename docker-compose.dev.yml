@@ -7,5 +7,5 @@ services:
     ports:
       - "${EXPOSED_PORT}:3000"
     volumes:
-      - .\src:/app/src
+      - ./src:/app/src
     command: npm run dev
