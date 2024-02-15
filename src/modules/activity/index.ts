@@ -9,7 +9,7 @@ export default (teamspeak: TeamSpeak) => {
   let dailyRunning = false;
   const cachedClients: CachedClient[] = [];
 
-  schedule("*/2 * * * *", async () => {
+  schedule("0 0 * * *", async () => {
     dailyRunning = true;
     await dailySchedule();
     dailyRunning = false;
