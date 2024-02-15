@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    container_name: fruchtlabor-bot-dev
+    container_name: fruchtlabor-bot-stage
     env_file:
       - .env.stage
     ports:
