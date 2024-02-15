@@ -61,8 +61,17 @@ const activity = () => {
       return restrictedNext(next, new UnkownDatabaseError());
     }
 
+    let activityEntriesDaily: ActivityEntryType[];
+    try {
+      activityEntriesDaily = await ActivityEntryDaily.find();
+    } catch (error) {
+      return restrictedNext(next, new UnkownDatabaseError());
+    }
+
+    const combinedEntries = [...activityEntries, ...activityEntriesDaily];
+
     const groupedActivityEntries: ActivityEntryType[] = [];
-    for (const client of activityEntries) {
+    for (const client of combinedEntries) {
       const existingClient = groupedActivityEntries.find(
         (x) => x.uuid === client.uuid
       );
