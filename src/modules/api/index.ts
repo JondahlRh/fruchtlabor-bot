@@ -7,6 +7,7 @@ import { errorRoute, unkownRouteError } from "./controllers/errors";
 import channel from "./routes/channel";
 import client from "./routes/client";
 import servergroup from "./routes/servergroup";
+import activity from "./routes/activity";
 
 export default (teamspeak: TeamSpeak) => {
   const app = express();
@@ -19,6 +20,7 @@ export default (teamspeak: TeamSpeak) => {
   app.use("/v1/servergroup", servergroup(teamspeak));
   app.use("/v1/channel", channel(teamspeak));
   app.use("/v1/client", client(teamspeak));
+  app.use("/v1/activity", activity());
 
   app.use(unkownRouteError);
   app.use(errorRoute);

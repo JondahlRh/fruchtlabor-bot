@@ -15,3 +15,17 @@ type SupportSpecialType = {
     color: string;
   };
 };
+
+type ActivityEntryType = {
+  uuid: string;
+  activeTime: number;
+  onlineTime: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type ActivityEntryDailyType = {
+  uuid: string;
+  activeTime: number;
+  onlineTime: number;
+};
