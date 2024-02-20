@@ -10,6 +10,8 @@ export const moveDefaultChannel = (teamspeak: TeamSpeak) => {
 };
 
 export default (teamspeak: TeamSpeak) => {
+  console.log("feature enabled bot");
+
   moveDefaultChannel(teamspeak);
 
   teamspeak.on("clientconnect", (event) => {

@@ -22,6 +22,11 @@ export default async () => {
 
   moveDefaultChannel(teamspeak);
 
-  bot(teamspeak);
-  api(teamspeak);
+  if (process.env.FEATUREFLAG_BOT === "true") {
+    bot(teamspeak);
+  }
+
+  if (process.env.FEATUREFLAG_API === "true") {
+    api(teamspeak);
+  }
 };

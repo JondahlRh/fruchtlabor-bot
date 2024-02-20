@@ -21,6 +21,9 @@ EXPOSED_PORT=""
 <sub>Environment variables for development or production
 
 ```
+FEATUREFLAG_BOT="" # "true" if enabled
+FEATUREFLAG_API="" # "true" if enabled
+
 TEAMSPEAK_IP=""
 TEAMSPEAK_PORT=""
 TEAMSPEAK_QUERYPORT=""

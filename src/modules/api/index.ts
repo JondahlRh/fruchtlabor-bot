@@ -9,6 +9,8 @@ import client from "./routes/client";
 import servergroup from "./routes/servergroup";
 
 export default (teamspeak: TeamSpeak) => {
+  console.log("feature enabled api");
+
   const app = express();
 
   app.use(express.json());
