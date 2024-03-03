@@ -10,9 +10,10 @@ npm install
 
 ### .env
 
-<sub>Exposed port outside of docker container
+<sub>Exposed ip and port outside of docker container
 
 ```
+EXPOSED_IP=""
 EXPOSED_PORT=""
 ```
 
