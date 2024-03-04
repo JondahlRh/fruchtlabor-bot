@@ -15,6 +15,7 @@ const envObject = z.object({
   TEAMSPEAK_NICKNAME: z.string(),
   MONGODB_CONNECT: z.string().regex(MONGODB_REGEX),
   MONGODB_DBNAME: z.string(),
+  CS_SERVER_DOMAIN: z.string(),
   API_KEY: z.string(),
 });
 
