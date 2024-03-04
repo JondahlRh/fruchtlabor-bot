@@ -56,11 +56,18 @@ const playercount = async (teamspeak: TeamSpeak) => {
       );
     }
 
+    const channelName = `● ${title} | ${status}`;
+
     const channelInfo = await teamspeak.channelInfo(String(channel.id));
-    if (channelInfo.channelDescription === channelDescription) return;
+    if (
+      channelInfo.channelName === channelName &&
+      channelInfo.channelDescription === channelDescription
+    ) {
+      return;
+    }
 
     await teamspeak.channelEdit(String(channel.id), {
-      channelName: `● ${title} | ${status}`,
+      channelName,
       channelDescription,
     });
   }
