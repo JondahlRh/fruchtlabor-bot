@@ -4,8 +4,6 @@ import { z } from "zod";
 
 import { getServerPlayercounts } from "../../utility/mongodb";
 
-const CS_SERVER_DOMAIN = "cs.fruchtlabor.net";
-
 const ServerInfoSchema = z.object({
   name: z.string(),
   map: z.string(),
@@ -20,7 +18,7 @@ const getChannelDescription = (
   port?: number
 ) => {
   const connectData = `[tr][/tr]\n[tr][td][center][size=8]Instaconnect: [url=steam://connect/${ip}:${port}/]hier[/url][/td][/tr]
-[tr][td][center][size=8]${CS_SERVER_DOMAIN}:${port}[/td][/tr]`;
+[tr][td][center][size=8]${process.env.CS_SERVER_DOMAIN}:${port}[/td][/tr]`;
 
   return `[center][table][tr][td][hr][/td][/tr]
 [tr][td]                                                                                                    [/td][/tr]
