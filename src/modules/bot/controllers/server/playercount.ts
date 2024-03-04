@@ -47,10 +47,10 @@ const playercount = async (teamspeak: TeamSpeak) => {
     let channelDescription = getChannelDescription(title, "Offline");
 
     if (serverInfo !== undefined) {
-      status = `${serverInfo.players} / ${serverInfo.max_players}`;
+      status = `Spieler: ${serverInfo.players}/${serverInfo.max_players}`;
       channelDescription = getChannelDescription(
         title,
-        `Spieler: ${status}`,
+        status,
         server.ip,
         server.port
       );
