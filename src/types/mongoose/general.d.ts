@@ -15,3 +15,10 @@ type SupportSpecialType = {
     color: string;
   };
 };
+
+type CsServerType = {
+  name: string;
+  description: string;
+  ip: string;
+  port: number;
+};

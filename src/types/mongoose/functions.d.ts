@@ -57,3 +57,10 @@ type SupportMessageType = {
   doNotDisturb: TsCollectionType[];
   specials: SupportSpecialType[];
 };
+
+type ServerPlayercountType = {
+  title: string;
+  description: string;
+  channel: TsChannelType;
+  server: CsServerType;
+};

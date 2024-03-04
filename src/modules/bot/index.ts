@@ -3,6 +3,7 @@ import { TeamSpeak } from "ts3-nodejs-library";
 
 import channelController from "./controllers/channel";
 import messageController from "./controllers/message";
+import serverController from "./controllers/server";
 import eHandler from "./utility/asyncErrorHandler";
 
 export const moveDefaultChannel = (teamspeak: TeamSpeak) => {
@@ -35,5 +36,6 @@ export default (teamspeak: TeamSpeak) => {
   schedule("*/30 * * * * *", () => {
     eHandler(channelController.online)(teamspeak);
     eHandler(channelController.afk)(teamspeak);
+    eHandler(serverController.playercount)(teamspeak);
   });
 };

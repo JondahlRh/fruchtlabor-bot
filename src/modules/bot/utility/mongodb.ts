@@ -6,6 +6,7 @@ import CustomChannel from "../../../models/functions/CustomChannel";
 import JoinMessage from "../../../models/functions/JoinMessage";
 import LobbyChannel from "../../../models/functions/LobbyChannel";
 import OnlineChannel from "../../../models/functions/OnlineChannel";
+import ServerPlayercount from "../../../models/functions/ServerPlayercount";
 import SupportMessage from "../../../models/functions/SupportMessage";
 import AsyncError from "../../../models/general/AsyncError";
 import Fruit from "../../../models/general/Fruit";
@@ -141,4 +142,10 @@ export const addSupportLog = async (
     supportClientsContact: supportClientsContactMapped,
     supportClientsListed: supportClientsListedMapped,
   }).save();
+};
+
+export const getServerPlayercounts = async (): Promise<
+  ServerPlayercountType[]
+> => {
+  return await ServerPlayercount.find().populate("channel").populate("server");
 };
