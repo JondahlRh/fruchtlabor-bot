@@ -11,9 +11,8 @@ const getDbid = async (teamspeak: TeamSpeak, client: string) => {
 };
 
 const getDbClient = async (teamspeak: TeamSpeak, client: string) => {
-  const dbId = await getDbid(teamspeak, client);
-
   try {
+    const dbId = await getDbid(teamspeak, client);
     const dbClients = await teamspeak.clientDbInfo(dbId);
     return dbClients[0];
   } catch (error) {
