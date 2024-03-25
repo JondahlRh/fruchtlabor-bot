@@ -1,7 +1,9 @@
-export default class HtmlResponse {
+export default class HtmlResponse<T> {
   message: string;
+  data: T;
 
-  constructor(message: string) {
+  constructor(message: string, data: T) {
     this.message = message;
+    this.data = data;
   }
 }

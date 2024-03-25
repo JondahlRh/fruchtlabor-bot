@@ -1,6 +1,6 @@
-import DataResponse from "../DataResponse";
+import HtmlResponse from "../HtmlResponse";
 
-export default class SingleServergroup extends DataResponse<MappedServerGroup> {
+export default class SingleServergroup extends HtmlResponse<MappedServerGroup> {
   constructor(mappedServergroup: MappedServerGroup) {
     super("Single Servergroup", mappedServergroup);
   }
