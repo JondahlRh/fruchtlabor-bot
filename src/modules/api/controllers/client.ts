@@ -15,6 +15,7 @@ import {
   SingleBan,
   SingleClient,
 } from "../../../classes/htmlResponses";
+import PostBanResponse from "../../../classes/htmlResponses/postBanResponse";
 import {
   DelteBanClientSchema,
   PostBanClientSchema,
@@ -141,28 +142,25 @@ const client = (teamspeak: TeamSpeak) => {
       );
     }
 
-    let ipBannId: string;
-    let tsidBannId: string;
+    let ipBanId: string | null = null;
     try {
       const ipBann = await teamspeak.ban({
         ip: dbClient.clientLastip,
         banreason,
       });
-      ipBannId = ipBann.banid;
+      ipBanId = ipBann.banid;
+    } catch (error) {}
 
+    let tsidBanId: string | null = null;
+    try {
       const tsidBann = await teamspeak.ban({
         uid: dbClient.clientUniqueIdentifier,
         banreason,
       });
-      tsidBannId = tsidBann.banid;
-    } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
-    }
+      tsidBanId = tsidBann.banid;
+    } catch (error) {}
 
-    res.json({
-      message: "Succesfully banned client!",
-      data: { ipBannId, tsidBannId },
-    });
+    restrictedResponse(res, new PostBanResponse(ipBanId, tsidBanId));
   };
 
   const deleteBanClient: RequestHandler = async (req, res, next) => {
