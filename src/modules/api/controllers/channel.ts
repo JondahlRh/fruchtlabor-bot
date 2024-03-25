@@ -7,7 +7,6 @@ import {
 
 import {
   ChannelDoesNotExistError,
-  RequestBodyError,
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
 import channelMapper from "../mapper/channelMapper";
