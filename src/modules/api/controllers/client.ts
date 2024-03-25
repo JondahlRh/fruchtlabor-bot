@@ -9,6 +9,7 @@ import {
   RequestBodyError,
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
+import BanDoesNotExistError from "../../../classes/htmlErrors/BanDoesNotExistError";
 import {
   DelteBanClientSchema,
   PostBanClientSchema,
@@ -41,9 +42,9 @@ const client = (teamspeak: TeamSpeak) => {
       return restrictedNext(next, new UnkownTeamspeakError());
     }
 
-    const mappedClients = clientList.map(clientOnlineMapper);
+    const mappedClientList = clientList.map(clientOnlineMapper);
 
-    res.json(mappedClients);
+    res.json(mappedClientList);
   };
 
   const getSingleClientOnline: RequestHandler = async (req, res, next) => {
@@ -81,6 +82,37 @@ const client = (teamspeak: TeamSpeak) => {
     const mappedBanList = banList.map(banMapper);
 
     res.json(mappedBanList);
+  };
+
+  const getSingleBan: RequestHandler = async (req, res, next) => {
+    const id = req.params.id;
+
+    let banList: BanEntry[];
+    try {
+      banList = await teamspeak.banList();
+    } catch (error) {
+      if (!(error instanceof ResponseError)) {
+        return restrictedNext(next, new UnkownTeamspeakError());
+      }
+
+      switch (error.msg) {
+        case "database empty result set":
+          banList = [];
+          break;
+
+        default:
+          return restrictedNext(next, new UnkownTeamspeakError());
+      }
+    }
+
+    const singleBan = banList.find((x) => x.banid === id);
+    if (singleBan === undefined) {
+      return restrictedNext(next, new BanDoesNotExistError("id", id));
+    }
+
+    const mappedBan = banMapper(singleBan);
+
+    res.json(mappedBan);
   };
 
   const postBanClient: RequestHandler = async (req, res, next) => {
@@ -174,6 +206,7 @@ const client = (teamspeak: TeamSpeak) => {
     getAllClientsOnline,
     getSingleClientOnline,
     getBanList,
+    getSingleBan,
     postBanClient,
     deleteBanClient,
   };
