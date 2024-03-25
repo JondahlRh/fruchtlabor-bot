@@ -24,6 +24,7 @@ import PutServergroupResponse, {
   PutServergroupDuplicateError,
   PutServergroupIdError,
   PutServergroupStatus,
+  PutServergroupSuccess,
   PutServergroupUnkownError,
 } from "../../../classes/htmlResponses/putServergroupResponse";
 import {
@@ -133,6 +134,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
             dbClient.clientDatabaseId,
             servergroup
           );
+          putServergroupStatus.push(new PutServergroupSuccess(servergroup));
         } catch (error) {
           if (!(error instanceof ResponseError)) {
             putServergroupStatus.push(

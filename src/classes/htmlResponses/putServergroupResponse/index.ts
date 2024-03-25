@@ -1,12 +1,14 @@
 import HtmlResponse from "../../HtmlResponse";
 import PutServergroupDuplicateError from "./PutServergroupDuplicateError";
 import PutServergroupIdError from "./PutServergroupIdError";
+import PutServergroupSuccess from "./PutServergroupSuccess";
 import PutServergroupUnkownError from "./PutServergroupUnkownError";
 
 export type PutServergroupStatus =
   | PutServergroupIdError
   | PutServergroupDuplicateError
-  | PutServergroupUnkownError;
+  | PutServergroupUnkownError
+  | PutServergroupSuccess;
 
 export default class PutServergroupResponse extends HtmlResponse<
   PutServergroupStatus[]
@@ -20,4 +22,5 @@ export {
   PutServergroupIdError,
   PutServergroupDuplicateError,
   PutServergroupUnkownError,
+  PutServergroupSuccess,
 };
