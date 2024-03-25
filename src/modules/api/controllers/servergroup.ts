@@ -112,7 +112,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     res.json(mappedClients);
   };
 
-  const postServergroup: RequestHandler = async (req, res, next) => {
+  const putServergroup: RequestHandler = async (req, res, next) => {
     const requestBody = EditServergroupSchema.safeParse(req.body);
 
     if (!requestBody.success) {
@@ -281,7 +281,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     getAllServergroups,
     getSingleServergroup,
     getClientsOfServergroup,
-    postServergroup,
+    putServergroup,
     deleteServergroup,
     deleteAllServergroups,
   };
