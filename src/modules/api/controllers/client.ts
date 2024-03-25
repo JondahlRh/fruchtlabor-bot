@@ -16,7 +16,7 @@ import {
   SingleClient,
 } from "../../../classes/htmlResponses";
 import DeleteBanResponse, {
-  DeleteBanBanidError,
+  DeleteBanIdError,
   DeleteBanSuccess,
   DeleteBanUnkownError,
   DeletedBanStatus,
@@ -196,7 +196,7 @@ const client = (teamspeak: TeamSpeak) => {
 
           switch (error.msg) {
             case "invalid ban id":
-              deletedBanStatusList.push(new DeleteBanBanidError(banid));
+              deletedBanStatusList.push(new DeleteBanIdError(banid));
               return;
 
             default:

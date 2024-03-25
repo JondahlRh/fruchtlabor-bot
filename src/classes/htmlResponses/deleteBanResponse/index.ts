@@ -1,10 +1,10 @@
 import HtmlResponse from "../../HtmlResponse";
-import DeleteBanBanidError from "./DeleteBanBanidError";
+import DeleteBanIdError from "./DeleteBanIdError";
 import DeleteBanSuccess from "./DeleteBanSuccess";
 import DeleteBanUnkownError from "./DeleteBanUnkownError";
 
 export type DeletedBanStatus =
-  | DeleteBanBanidError
+  | DeleteBanIdError
   | DeleteBanUnkownError
   | DeleteBanSuccess;
 
@@ -16,4 +16,4 @@ export default class DeleteBanResponse extends HtmlResponse<
   }
 }
 
-export { DeleteBanBanidError, DeleteBanSuccess, DeleteBanUnkownError };
+export { DeleteBanIdError, DeleteBanSuccess, DeleteBanUnkownError };
