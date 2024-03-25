@@ -20,6 +20,12 @@ import {
   ServergroupList,
   SingleServergroup,
 } from "../../../classes/htmlResponses";
+import PutServergroupResponse, {
+  PutServergroupDuplicateError,
+  PutServergroupIdError,
+  PutServergroupStatus,
+  PutServergroupUnkownError,
+} from "../../../classes/htmlResponses/putServergroupResponse";
 import {
   DelteAllServergroupsSchema,
   EditServergroupSchema,
@@ -119,7 +125,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
       );
     }
 
-    const errors: SingleError[] = [];
+    const putServergroupStatus: PutServergroupStatus[] = [];
     await Promise.all(
       servergroups.map(async (servergroup) => {
         try {
@@ -129,33 +135,34 @@ const servergroup = (teamspeak: TeamSpeak) => {
           );
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            return errors.push(new UnkownTeamspeakError());
+            putServergroupStatus.push(
+              new PutServergroupUnkownError(servergroup)
+            );
+            return;
           }
 
           switch (error.msg) {
             case "invalid group ID":
-              errors.push(
-                new ServergroupDoesNotExistError("servergroup", servergroup)
-              );
-              break;
+              putServergroupStatus.push(new PutServergroupIdError(servergroup));
+              return;
 
             case "duplicate entry":
-              errors.push(
-                new ServergroupDuplicateEntry("servergroup", servergroup)
+              putServergroupStatus.push(
+                new PutServergroupDuplicateError(servergroup)
               );
-              break;
+              return;
 
             default:
-              errors.push(new UnkownTeamspeakError());
-              break;
+              putServergroupStatus.push(
+                new PutServergroupUnkownError(servergroup)
+              );
+              return;
           }
         }
       })
     );
 
-    if (errors.length > 0) {
-      return restrictedNext(next, new PartialError(errors));
-    }
+    restrictedResponse(res, new PutServergroupResponse(putServergroupStatus));
 
     res.json({ message: "Succesfull added servergroups!" });
   };
