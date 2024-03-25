@@ -12,9 +12,9 @@ import {
   RequestBodyError,
   UnkownTeamSpeakError,
 } from "../../../classes/htmlErrors";
+import DeleteAllServergroupsResponse from "../../../classes/htmlSuccesses/DeleteAllServergroupsResponse";
 import ListDataResponse from "../../../classes/htmlSuccesses/ListDataResponse";
 import SingleDataResponse from "../../../classes/htmlSuccesses/SingleDataResponse";
-import DeleteAllServergroupsResponse from "../../../classes/htmlSuccesses/deleteAllServergroupsResponse";
 import PartialSuccessResponse, {
   PartialResponse,
   PartialDuplicateError,
