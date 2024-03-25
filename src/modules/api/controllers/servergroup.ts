@@ -20,6 +20,13 @@ import {
   ServergroupList,
   SingleServergroup,
 } from "../../../classes/htmlResponses";
+import DeleteServergroupResponse, {
+  DeleteServergroupEmptyError,
+  DeleteServergroupIdError,
+  DeleteServergroupStatus,
+  DeleteServergroupSuccess,
+  DeleteServergroupUnkownError,
+} from "../../../classes/htmlResponses/deleteServergroupResponse";
 import PutServergroupResponse, {
   PutServergroupDuplicateError,
   PutServergroupIdError,
@@ -189,7 +196,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
       );
     }
 
-    const errors: SingleError[] = [];
+    const deleteServergroupStatus: DeleteServergroupStatus[] = [];
     await Promise.all(
       servergroups.map(async (servergroup) => {
         try {
@@ -197,37 +204,44 @@ const servergroup = (teamspeak: TeamSpeak) => {
             dbClient.clientDatabaseId,
             servergroup
           );
+          deleteServergroupStatus.push(
+            new DeleteServergroupSuccess(servergroup)
+          );
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            return errors.push(new UnkownTeamspeakError());
+            deleteServergroupStatus.push(
+              new DeleteServergroupUnkownError(servergroup)
+            );
+            return;
           }
 
           switch (error.msg) {
             case "invalid group ID":
-              errors.push(
-                new ServergroupDoesNotExistError("servergroup", servergroup)
+              deleteServergroupStatus.push(
+                new DeleteServergroupIdError(servergroup)
               );
-              break;
+              return;
 
             case "empty result set":
-              errors.push(
-                new ServergroupEmptyResult("servergroup", servergroup)
+              deleteServergroupStatus.push(
+                new DeleteServergroupEmptyError(servergroup)
               );
-              break;
+              return;
 
             default:
-              errors.push(new UnkownTeamspeakError());
-              break;
+              deleteServergroupStatus.push(
+                new DeleteServergroupUnkownError(servergroup)
+              );
+              return;
           }
         }
       })
     );
 
-    if (errors.length > 0) {
-      return restrictedNext(next, new PartialError(errors));
-    }
-
-    res.json({ message: "Succesfull removed servergroups!" });
+    restrictedResponse(
+      res,
+      new DeleteServergroupResponse(deleteServergroupStatus)
+    );
   };
 
   const deleteAllServergroups: RequestHandler = async (req, res, next) => {
