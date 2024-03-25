@@ -12,7 +12,7 @@ export default class DeleteBanResponse extends HtmlResponse<
   DeletedBanStatus[]
 > {
   constructor(deletedBans: DeletedBanStatus[]) {
-    super("Remove bans initalizied", deletedBans);
+    super("Delete bans initalizied", deletedBans);
   }
 }
 
