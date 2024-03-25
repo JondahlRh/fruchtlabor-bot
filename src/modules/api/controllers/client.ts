@@ -9,7 +9,6 @@ import {
   RequestBodyError,
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
-import BanDoesNotExistError from "../../../classes/htmlErrors/BanDoesNotExistError";
 import {
   DelteBanClientSchema,
   PostBanClientSchema,
@@ -107,7 +106,7 @@ const client = (teamspeak: TeamSpeak) => {
 
     const singleBan = banList.find((x) => x.banid === id);
     if (singleBan === undefined) {
-      return restrictedNext(next, new BanDoesNotExistError("id", id));
+      return restrictedNext(next, new BanIdDoesNotExistError("id", id));
     }
 
     const mappedBan = banMapper(singleBan);
