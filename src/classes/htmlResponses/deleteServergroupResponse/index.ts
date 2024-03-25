@@ -1,14 +1,14 @@
 import HtmlResponse from "../../HtmlResponse";
+import IdDoesNotExistError from "../general/IdDoesNotExistError";
+import IdSuccess from "../general/IdSuccess";
+import UnkownError from "../general/UnkownError";
 import DeleteServergroupEmptyError from "./DeleteServergroupEmptyError";
-import DeleteServergroupIdError from "./DeleteServergroupIdError";
-import DeleteServergroupSuccess from "./DeleteServergroupSuccess";
-import DeleteServergroupUnkownError from "./DeleteServergroupUnkownError";
 
 export type DeleteServergroupStatus =
-  | DeleteServergroupEmptyError
-  | DeleteServergroupIdError
-  | DeleteServergroupUnkownError
-  | DeleteServergroupSuccess;
+  | IdDoesNotExistError
+  | IdSuccess
+  | UnkownError
+  | DeleteServergroupEmptyError;
 
 export default class DeleteServergroupResponse extends HtmlResponse<
   DeleteServergroupStatus[]
@@ -18,9 +18,4 @@ export default class DeleteServergroupResponse extends HtmlResponse<
   }
 }
 
-export {
-  DeleteServergroupEmptyError,
-  DeleteServergroupIdError,
-  DeleteServergroupUnkownError,
-  DeleteServergroupSuccess,
-};
+export { DeleteServergroupEmptyError };

@@ -22,17 +22,14 @@ import {
 } from "../../../classes/htmlResponses";
 import DeleteServergroupResponse, {
   DeleteServergroupEmptyError,
-  DeleteServergroupIdError,
   DeleteServergroupStatus,
-  DeleteServergroupSuccess,
-  DeleteServergroupUnkownError,
 } from "../../../classes/htmlResponses/deleteServergroupResponse";
+import IdDoesNotExistError from "../../../classes/htmlResponses/general/IdDoesNotExistError";
+import IdSuccess from "../../../classes/htmlResponses/general/IdSuccess";
+import UnkownError from "../../../classes/htmlResponses/general/UnkownError";
 import PutServergroupResponse, {
   PutServergroupDuplicateError,
-  PutServergroupIdError,
   PutServergroupStatus,
-  PutServergroupSuccess,
-  PutServergroupUnkownError,
 } from "../../../classes/htmlResponses/putServergroupResponse";
 import {
   DelteAllServergroupsSchema,
@@ -141,18 +138,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
             dbClient.clientDatabaseId,
             servergroup
           );
-          putServergroupStatus.push(new PutServergroupSuccess(servergroup));
+          putServergroupStatus.push(new IdSuccess(servergroup));
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            putServergroupStatus.push(
-              new PutServergroupUnkownError(servergroup)
-            );
+            putServergroupStatus.push(new UnkownError(servergroup));
             return;
           }
 
           switch (error.msg) {
             case "invalid group ID":
-              putServergroupStatus.push(new PutServergroupIdError(servergroup));
+              putServergroupStatus.push(new IdDoesNotExistError(servergroup));
               return;
 
             case "duplicate entry":
@@ -162,9 +157,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
               return;
 
             default:
-              putServergroupStatus.push(
-                new PutServergroupUnkownError(servergroup)
-              );
+              putServergroupStatus.push(new UnkownError(servergroup));
               return;
           }
         }
@@ -202,21 +195,17 @@ const servergroup = (teamspeak: TeamSpeak) => {
             dbClient.clientDatabaseId,
             servergroup
           );
-          deleteServergroupStatus.push(
-            new DeleteServergroupSuccess(servergroup)
-          );
+          deleteServergroupStatus.push(new IdSuccess(servergroup));
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            deleteServergroupStatus.push(
-              new DeleteServergroupUnkownError(servergroup)
-            );
+            deleteServergroupStatus.push(new UnkownError(servergroup));
             return;
           }
 
           switch (error.msg) {
             case "invalid group ID":
               deleteServergroupStatus.push(
-                new DeleteServergroupIdError(servergroup)
+                new IdDoesNotExistError(servergroup)
               );
               return;
 
@@ -227,9 +216,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
               return;
 
             default:
-              deleteServergroupStatus.push(
-                new DeleteServergroupUnkownError(servergroup)
-              );
+              deleteServergroupStatus.push(new UnkownError(servergroup));
               return;
           }
         }

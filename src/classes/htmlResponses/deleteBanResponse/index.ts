@@ -1,12 +1,9 @@
 import HtmlResponse from "../../HtmlResponse";
-import DeleteBanIdError from "./DeleteBanIdError";
-import DeleteBanSuccess from "./DeleteBanSuccess";
-import DeleteBanUnkownError from "./DeleteBanUnkownError";
+import IdDoesNotExistError from "../general/IdDoesNotExistError";
+import IdSuccess from "../general/IdSuccess";
+import UnkownError from "../general/UnkownError";
 
-export type DeletedBanStatus =
-  | DeleteBanIdError
-  | DeleteBanUnkownError
-  | DeleteBanSuccess;
+export type DeletedBanStatus = IdDoesNotExistError | IdSuccess | UnkownError;
 
 export default class DeleteBanResponse extends HtmlResponse<
   DeletedBanStatus[]
@@ -15,5 +12,3 @@ export default class DeleteBanResponse extends HtmlResponse<
     super("Delete bans initalizied", deletedBans);
   }
 }
-
-export { DeleteBanIdError, DeleteBanSuccess, DeleteBanUnkownError };
