@@ -172,8 +172,6 @@ const servergroup = (teamspeak: TeamSpeak) => {
     );
 
     restrictedResponse(res, new PutServergroupResponse(putServergroupStatus));
-
-    res.json({ message: "Succesfull added servergroups!" });
   };
 
   const deleteServergroup: RequestHandler = async (req, res, next) => {
