@@ -1,9 +1,10 @@
-export default class HtmlError {
-  message: string;
+export default class HtmlError extends Error {
   statuscode: number;
 
-  constructor(message: string, statuscode: number) {
-    this.message = message;
+  constructor(message: string, statuscode: number, stack?: string) {
+    super(message);
     this.statuscode = statuscode;
+
+    this.stack = stack;
   }
 }
