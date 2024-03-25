@@ -1,4 +1,4 @@
-import HtmlError from "./HtmlError";
+import HtmlError from "../HtmlError";
 import KeyValue from "./KeyValue";
 
 export default class KeyValueError extends HtmlError {

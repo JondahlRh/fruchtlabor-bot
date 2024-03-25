@@ -1,5 +1,5 @@
-import KeyValue from "../KeyValue";
-import KeyValueError from "../KeyValueError";
+import KeyValue from "../keyvalues/KeyValue";
+import KeyValueError from "../keyvalues/KeyValueError";
 
 export default class ServergroupDuplicateEntry extends KeyValueError {
   constructor(key: string, value: any) {
