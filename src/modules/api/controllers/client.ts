@@ -15,6 +15,12 @@ import {
   SingleBan,
   SingleClient,
 } from "../../../classes/htmlResponses";
+import DeleteBanResponse, {
+  DeleteBanBanidError,
+  DeleteBanSuccess,
+  DeleteBanUnkownError,
+  DeletedBanStatus,
+} from "../../../classes/htmlResponses/deleteBanResponse";
 import PostBanResponse from "../../../classes/htmlResponses/postBanResponse";
 import {
   DelteBanClientSchema,
@@ -175,34 +181,33 @@ const client = (teamspeak: TeamSpeak) => {
 
     const { banids } = requestBody.data;
 
-    const errors: SingleError[] = [];
+    const deletedBanStatusList: DeletedBanStatus[] = [];
     await Promise.all(
       banids.map(async (banid) => {
         try {
           await teamspeak.banDel(banid);
+          deletedBanStatusList.push(new DeleteBanSuccess(banid));
+          return;
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            return errors.push(new UnkownTeamspeakError());
+            deletedBanStatusList.push(new DeleteBanUnkownError(banid));
+            return;
           }
 
           switch (error.msg) {
             case "invalid ban id":
-              errors.push(new BanIdDoesNotExistError("banid", banid));
-              break;
+              deletedBanStatusList.push(new DeleteBanBanidError(banid));
+              return;
 
             default:
-              errors.push(new UnkownTeamspeakError());
-              break;
+              deletedBanStatusList.push(new DeleteBanUnkownError(banid));
+              return;
           }
         }
       })
     );
 
-    if (errors.length > 0) {
-      return restrictedNext(next, new PartialError(errors));
-    }
-
-    res.json({ message: "Succesfully removed Bans!" });
+    restrictedResponse(res, new DeleteBanResponse(deletedBanStatusList));
   };
 
   return {
