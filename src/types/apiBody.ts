@@ -17,5 +17,3 @@ export const PostBanClientSchema = z.object({
 export const DelteBanClientSchema = z.object({
   banids: z.array(z.string()),
 });
-
-export const ParamIdSchema = z.string();

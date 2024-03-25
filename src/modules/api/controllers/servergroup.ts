@@ -18,7 +18,6 @@ import {
 import {
   DelteAllServergroupsSchema,
   EditServergroupSchema,
-  ParamIdSchema,
 } from "../../../types/apiBody";
 import { SingleError } from "../../../types/error";
 import { clientMapper } from "../mapper/clientMapper";
@@ -41,16 +40,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   const getSingleServergroup: RequestHandler = async (req, res, next) => {
-    const requestParam = ParamIdSchema.safeParse(req.params.id);
-
-    if (!requestParam.success) {
-      return restrictedNext(
-        next,
-        new RequestBodyError(requestParam.error.message)
-      );
-    }
-
-    const id = requestParam.data;
+    const id = req.params.id;
 
     let servergroup: TeamSpeakServerGroup | undefined;
     try {
@@ -69,16 +59,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
   };
 
   const getClientsOfServergroup: RequestHandler = async (req, res, next) => {
-    const requestParam = ParamIdSchema.safeParse(req.params.id);
-
-    if (!requestParam.success) {
-      return restrictedNext(
-        next,
-        new RequestBodyError(requestParam.error.message)
-      );
-    }
-
-    const id = requestParam.data;
+    const id = req.params.id;
 
     let servergroup: TeamSpeakServerGroup | undefined;
     try {

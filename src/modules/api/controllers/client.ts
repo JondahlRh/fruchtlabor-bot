@@ -11,7 +11,6 @@ import {
 } from "../../../classes/htmlErrors";
 import {
   DelteBanClientSchema,
-  ParamIdSchema,
   PostBanClientSchema,
 } from "../../../types/apiBody";
 import { SingleError } from "../../../types/error";
@@ -22,16 +21,7 @@ import restrictedNext from "../utility/restrictedNext";
 
 const client = (teamspeak: TeamSpeak) => {
   const getSingleClient: RequestHandler = async (req, res, next) => {
-    const requestParam = ParamIdSchema.safeParse(req.params.id);
-
-    if (!requestParam.success) {
-      return restrictedNext(
-        next,
-        new RequestBodyError(requestParam.error.message)
-      );
-    }
-
-    const id = requestParam.data;
+    const id = req.params.id;
 
     const dbClient = await getDbClient(teamspeak, id);
     if (dbClient === null) {
@@ -57,16 +47,7 @@ const client = (teamspeak: TeamSpeak) => {
   };
 
   const getSingleClientOnline: RequestHandler = async (req, res, next) => {
-    const requestParam = ParamIdSchema.safeParse(req.params.id);
-
-    if (!requestParam.success) {
-      return restrictedNext(
-        next,
-        new RequestBodyError(requestParam.error.message)
-      );
-    }
-
-    const id = requestParam.data;
+    const id = req.params.id;
 
     const onlineClient = await getOnlineClient(teamspeak, id);
     if (onlineClient === null) {

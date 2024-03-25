@@ -10,7 +10,6 @@ import {
   RequestBodyError,
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
-import { ParamIdSchema } from "../../../types/apiBody";
 import channelMapper from "../mapper/channelMapper";
 import { clientOnlineMapper } from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";
@@ -30,16 +29,7 @@ const channel = (teamspeak: TeamSpeak) => {
   };
 
   const getSingleChannel: RequestHandler = async (req, res, next) => {
-    const requestParam = ParamIdSchema.safeParse(req.params.id);
-
-    if (!requestParam.success) {
-      return restrictedNext(
-        next,
-        new RequestBodyError(requestParam.error.message)
-      );
-    }
-
-    const id = requestParam.data;
+    const id = req.params.id;
 
     let channel: TeamSpeakChannel | undefined;
     try {
@@ -58,16 +48,7 @@ const channel = (teamspeak: TeamSpeak) => {
   };
 
   const getClientsOfChannel: RequestHandler = async (req, res, next) => {
-    const requestParam = ParamIdSchema.safeParse(req.params.id);
-
-    if (!requestParam.success) {
-      return restrictedNext(
-        next,
-        new RequestBodyError(requestParam.error.message)
-      );
-    }
-
-    const id = requestParam.data;
+    const id = req.params.id;
 
     let channel: TeamSpeakChannel | undefined;
     try {
