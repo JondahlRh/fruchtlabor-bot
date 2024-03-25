@@ -1,9 +1,8 @@
 export default class IpBanSuccess {
-  success: boolean;
+  readonly success = true;
   banid: string;
 
   constructor(banid: string) {
-    this.success = true;
     this.banid = banid;
   }
 }
