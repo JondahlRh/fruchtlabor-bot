@@ -1,4 +1,4 @@
-export default class IdSuccess {
+export default class PartialSuccess {
   readonly success = true;
   id: string;
 

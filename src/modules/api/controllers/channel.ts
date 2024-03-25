@@ -5,15 +5,9 @@ import {
   TeamSpeakClient,
 } from "ts3-nodejs-library";
 
-import {
-  ChannelDoesNotExistError,
-  UnkownTeamspeakError,
-} from "../../../classes/htmlErrors";
-import {
-  ChannelList,
-  ClientList,
-  SingleChannel,
-} from "../../../classes/htmlResponses";
+import { IdError, UnkownTeamSpeakError } from "../../../classes/htmlErrors";
+import ListDataResponse from "../../../classes/htmlSuccesses/ListDataResponse";
+import SingleDataResponse from "../../../classes/htmlSuccesses/SingleDataResponse";
 import channelMapper from "../mapper/channelMapper";
 import { clientOnlineMapper } from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";
@@ -25,12 +19,12 @@ const channel = (teamspeak: TeamSpeak) => {
     try {
       channelList = await teamspeak.channelList();
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     const mappedChannelList = channelList.map(channelMapper);
 
-    restrictedResponse(res, new ChannelList(mappedChannelList));
+    restrictedResponse(res, new ListDataResponse(mappedChannelList));
   };
 
   const getSingleChannel: RequestHandler = async (req, res, next) => {
@@ -40,16 +34,16 @@ const channel = (teamspeak: TeamSpeak) => {
     try {
       channel = await teamspeak.getChannelById(id);
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     if (channel === undefined) {
-      return restrictedNext(next, new ChannelDoesNotExistError("id", id));
+      return restrictedNext(next, new IdError(id));
     }
 
     const mappedChannel = channelMapper(channel);
 
-    restrictedResponse(res, new SingleChannel(mappedChannel));
+    restrictedResponse(res, new SingleDataResponse(mappedChannel));
   };
 
   const getClientsOfChannel: RequestHandler = async (req, res, next) => {
@@ -59,11 +53,11 @@ const channel = (teamspeak: TeamSpeak) => {
     try {
       channel = await teamspeak.getChannelById(id);
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     if (channel === undefined) {
-      return restrictedNext(next, new ChannelDoesNotExistError("id", id));
+      return restrictedNext(next, new IdError(id));
     }
 
     let channelClients: TeamSpeakClient[];
@@ -71,12 +65,12 @@ const channel = (teamspeak: TeamSpeak) => {
     try {
       channelClients = await channel.getClients();
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     const mappedClients = channelClients.map(clientOnlineMapper);
 
-    restrictedResponse(res, new ClientList(mappedClients));
+    restrictedResponse(res, new ListDataResponse(mappedClients));
   };
 
   return { getAllChannels, getSingleChannel, getClientsOfChannel };

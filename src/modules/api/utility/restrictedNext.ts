@@ -1,8 +1,8 @@
 import { NextFunction } from "express";
 
-import HtmlError from "../../../classes/HtmlError";
+import HtmlResponse from "../../../classes/HtmlResponse";
 
-const restrictedNext = (next: NextFunction, error: HtmlError) => {
+const restrictedNext = <T>(next: NextFunction, error: HtmlResponse<T>) => {
   next(error);
 };
 

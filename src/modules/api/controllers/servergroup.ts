@@ -5,37 +5,28 @@ import {
   TeamSpeakServerGroup,
 } from "ts3-nodejs-library";
 import { ServerGroupClientEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
+import { fromZodError } from "zod-validation-error";
 
 import {
-  ClientDoesNotExistError,
-  PartialError,
+  IdError,
   RequestBodyError,
-  ServergroupDoesNotExistError,
-  ServergroupDuplicateEntry,
-  ServergroupEmptyResult,
-  UnkownTeamspeakError,
+  UnkownTeamSpeakError,
 } from "../../../classes/htmlErrors";
-import {
-  ClientList,
-  ServergroupList,
-  SingleServergroup,
-} from "../../../classes/htmlResponses";
-import DeleteServergroupResponse, {
-  DeleteServergroupEmptyError,
-  DeleteServergroupStatus,
-} from "../../../classes/htmlResponses/deleteServergroupResponse";
-import IdDoesNotExistError from "../../../classes/htmlResponses/general/IdDoesNotExistError";
-import IdSuccess from "../../../classes/htmlResponses/general/IdSuccess";
-import UnkownError from "../../../classes/htmlResponses/general/UnkownError";
-import PutServergroupResponse, {
-  PutServergroupDuplicateError,
-  PutServergroupStatus,
-} from "../../../classes/htmlResponses/putServergroupResponse";
+import ListDataResponse from "../../../classes/htmlSuccesses/ListDataResponse";
+import SingleDataResponse from "../../../classes/htmlSuccesses/SingleDataResponse";
+import DeleteAllServergroupsResponse from "../../../classes/htmlSuccesses/deleteAllServergroupsResponse";
+import PartialSuccessResponse, {
+  PartialResponse,
+  PartialDuplicateError,
+  PartialEmptyError,
+  PartialIdError,
+  PartialUnkownTeamspeakError,
+} from "../../../classes/partial";
+import PartialSuccess from "../../../classes/partial/PartialSuccess";
 import {
   DelteAllServergroupsSchema,
   EditServergroupSchema,
 } from "../../../types/apiBody";
-import { SingleError } from "../../../types/error";
 import { clientMapper } from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
 import { getDbClient } from "../utility/getTeamspeakClient";
@@ -48,12 +39,12 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       servergroupList = await teamspeak.serverGroupList();
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     const mappedServergroupList = servergroupList.map(servergroupMapper);
 
-    restrictedResponse(res, new ServergroupList(mappedServergroupList));
+    restrictedResponse(res, new ListDataResponse(mappedServergroupList));
   };
 
   const getSingleServergroup: RequestHandler = async (req, res, next) => {
@@ -63,16 +54,16 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       servergroup = await teamspeak.getServerGroupById(id);
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     if (servergroup === undefined) {
-      return restrictedNext(next, new ServergroupDoesNotExistError("id", id));
+      return restrictedNext(next, new IdError(id));
     }
 
     const mappedServergroup = servergroupMapper(servergroup);
 
-    restrictedResponse(res, new SingleServergroup(mappedServergroup));
+    restrictedResponse(res, new SingleDataResponse(mappedServergroup));
   };
 
   const getClientsOfServergroup: RequestHandler = async (req, res, next) => {
@@ -82,18 +73,18 @@ const servergroup = (teamspeak: TeamSpeak) => {
     try {
       servergroup = await teamspeak.getServerGroupById(id);
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     if (servergroup === undefined) {
-      return restrictedNext(next, new ServergroupDoesNotExistError("id", id));
+      return restrictedNext(next, new IdError(id));
     }
 
     let servergroupClientList: ServerGroupClientEntry[];
     try {
       servergroupClientList = await servergroup.clientList();
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     const mappedClients: MappedClient[] = [];
@@ -107,7 +98,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
       mappedClients.push(mappedClient);
     }
 
-    restrictedResponse(res, new ClientList(mappedClients));
+    restrictedResponse(res, new ListDataResponse(mappedClients));
   };
 
   const putServergroup: RequestHandler = async (req, res, next) => {
@@ -116,7 +107,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     if (!requestBody.success) {
       return restrictedNext(
         next,
-        new RequestBodyError(requestBody.error.message)
+        new RequestBodyError(fromZodError(requestBody.error).toString())
       );
     }
 
@@ -124,13 +115,10 @@ const servergroup = (teamspeak: TeamSpeak) => {
 
     const dbClient = await getDbClient(teamspeak, client);
     if (dbClient === null) {
-      return restrictedNext(
-        next,
-        new ClientDoesNotExistError("client", client)
-      );
+      return restrictedNext(next, new IdError(client));
     }
 
-    const putServergroupStatus: PutServergroupStatus[] = [];
+    const partialResponses: PartialResponse[] = [];
     await Promise.all(
       servergroups.map(async (servergroup) => {
         try {
@@ -138,33 +126,33 @@ const servergroup = (teamspeak: TeamSpeak) => {
             dbClient.clientDatabaseId,
             servergroup
           );
-          putServergroupStatus.push(new IdSuccess(servergroup));
+          partialResponses.push(new PartialSuccess(servergroup));
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            putServergroupStatus.push(new UnkownError(servergroup));
+            partialResponses.push(new PartialUnkownTeamspeakError(servergroup));
             return;
           }
 
           switch (error.msg) {
             case "invalid group ID":
-              putServergroupStatus.push(new IdDoesNotExistError(servergroup));
+              partialResponses.push(new PartialIdError(servergroup));
               return;
 
             case "duplicate entry":
-              putServergroupStatus.push(
-                new PutServergroupDuplicateError(servergroup)
-              );
+              partialResponses.push(new PartialDuplicateError(servergroup));
               return;
 
             default:
-              putServergroupStatus.push(new UnkownError(servergroup));
+              partialResponses.push(
+                new PartialUnkownTeamspeakError(servergroup)
+              );
               return;
           }
         }
       })
     );
 
-    restrictedResponse(res, new PutServergroupResponse(putServergroupStatus));
+    restrictedResponse(res, new PartialSuccessResponse(partialResponses));
   };
 
   const deleteServergroup: RequestHandler = async (req, res, next) => {
@@ -173,7 +161,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     if (!requestBody.success) {
       return restrictedNext(
         next,
-        new RequestBodyError(requestBody.error.message)
+        new RequestBodyError(fromZodError(requestBody.error).toString())
       );
     }
 
@@ -181,13 +169,10 @@ const servergroup = (teamspeak: TeamSpeak) => {
 
     const dbClient = await getDbClient(teamspeak, client);
     if (dbClient === null) {
-      return restrictedNext(
-        next,
-        new ClientDoesNotExistError("client", client)
-      );
+      return restrictedNext(next, new IdError(client));
     }
 
-    const deleteServergroupStatus: DeleteServergroupStatus[] = [];
+    const partialResponses: PartialResponse[] = [];
     await Promise.all(
       servergroups.map(async (servergroup) => {
         try {
@@ -195,38 +180,33 @@ const servergroup = (teamspeak: TeamSpeak) => {
             dbClient.clientDatabaseId,
             servergroup
           );
-          deleteServergroupStatus.push(new IdSuccess(servergroup));
+          partialResponses.push(new PartialSuccess(servergroup));
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            deleteServergroupStatus.push(new UnkownError(servergroup));
+            partialResponses.push(new PartialUnkownTeamspeakError(servergroup));
             return;
           }
 
           switch (error.msg) {
             case "invalid group ID":
-              deleteServergroupStatus.push(
-                new IdDoesNotExistError(servergroup)
-              );
+              partialResponses.push(new PartialIdError(servergroup));
               return;
 
             case "empty result set":
-              deleteServergroupStatus.push(
-                new DeleteServergroupEmptyError(servergroup)
-              );
+              partialResponses.push(new PartialEmptyError(servergroup));
               return;
 
             default:
-              deleteServergroupStatus.push(new UnkownError(servergroup));
+              partialResponses.push(
+                new PartialUnkownTeamspeakError(servergroup)
+              );
               return;
           }
         }
       })
     );
 
-    restrictedResponse(
-      res,
-      new DeleteServergroupResponse(deleteServergroupStatus)
-    );
+    restrictedResponse(res, new PartialSuccessResponse(partialResponses));
   };
 
   const deleteAllServergroups: RequestHandler = async (req, res, next) => {
@@ -235,7 +215,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
     if (!requestBody.success) {
       return restrictedNext(
         next,
-        new RequestBodyError(requestBody.error.message)
+        new RequestBodyError(fromZodError(requestBody.error).toString())
       );
     }
 
@@ -243,10 +223,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
 
     const dbClient = await getDbClient(teamspeak, client);
     if (dbClient === null) {
-      return restrictedNext(
-        next,
-        new ClientDoesNotExistError("client", client)
-      );
+      return restrictedNext(next, new IdError(client));
     }
 
     let servergroups: string[];
@@ -257,7 +234,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
 
       servergroups = serverGroupsByClientId.map((x) => x.sgid);
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
     try {
@@ -266,10 +243,10 @@ const servergroup = (teamspeak: TeamSpeak) => {
         servergroups
       );
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamspeakError());
+      return restrictedNext(next, new UnkownTeamSpeakError());
     }
 
-    res.json({ message: "Succesfull removed all servergroups!" });
+    restrictedResponse(res, new DeleteAllServergroupsResponse());
   };
 
   return {

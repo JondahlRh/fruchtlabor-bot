@@ -1,11 +1,11 @@
 export default class HtmlResponse<T> {
   message: string;
-  statusCode: number;
+  status: number;
   data: T;
 
-  constructor(message: string, data: T, statusCode: number = 200) {
+  constructor(message: string, status: number, data: T) {
     this.message = message;
-    this.statusCode = statusCode;
+    this.status = status;
     this.data = data;
   }
 }

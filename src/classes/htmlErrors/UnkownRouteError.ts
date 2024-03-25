@@ -1,7 +1,7 @@
-import HtmlError from "../HtmlError";
+import HtmlResponse from "../HtmlResponse";
 
-export default class UnkownRouteError extends HtmlError {
+export default class UnkownRouteError extends HtmlResponse<null> {
   constructor() {
-    super("Route does not exist!", 500);
+    super("Route does not exist!", 404, null);
   }
 }
