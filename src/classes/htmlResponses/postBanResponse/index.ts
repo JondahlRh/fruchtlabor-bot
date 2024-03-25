@@ -18,6 +18,8 @@ class PostBanData {
 
 export default class PostBanResponse extends HtmlResponse<PostBanData> {
   constructor(ipBanId: string | null, tsidBanId: string | null) {
-    super("Ban initalizied", new PostBanData(ipBanId, tsidBanId));
+    const statusCode = ipBanId || tsidBanId ? 201 : 200;
+
+    super("Ban initalizied", new PostBanData(ipBanId, tsidBanId), statusCode);
   }
 }
