@@ -9,7 +9,7 @@ const unkownRouteError: RequestHandler = (req, res, next) => {
 };
 
 const errorRoute: ErrorRequestHandler = (error: HtmlError, req, res, next) => {
-  if (res.headersSent) restrictedNext(next, error);
+  if (res.headersSent) return restrictedNext(next, error);
 
   res.status(error.statuscode).json(error);
 };

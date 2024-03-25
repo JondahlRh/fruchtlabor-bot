@@ -30,7 +30,7 @@ const client = (teamspeak: TeamSpeak) => {
 
     const mappedClient = clientMapper(dbClient);
 
-    return res.json(mappedClient);
+    res.json(mappedClient);
   };
 
   const getAllClientsOnline: RequestHandler = async (req, res, next) => {
