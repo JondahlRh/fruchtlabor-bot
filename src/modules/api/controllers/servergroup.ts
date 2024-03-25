@@ -16,6 +16,11 @@ import {
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
 import {
+  ClientList,
+  ServergroupList,
+  SingleServergroup,
+} from "../../../classes/htmlResponses";
+import {
   DelteAllServergroupsSchema,
   EditServergroupSchema,
 } from "../../../types/apiBody";
@@ -24,6 +29,7 @@ import { clientMapper } from "../mapper/clientMapper";
 import servergroupMapper from "../mapper/servergroupMapper";
 import { getDbClient } from "../utility/getTeamspeakClient";
 import restrictedNext from "../utility/restrictedNext";
+import restrictedResponse from "../utility/restrictedResponse";
 
 const servergroup = (teamspeak: TeamSpeak) => {
   const getAllServergroups: RequestHandler = async (req, res, next) => {
@@ -36,7 +42,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
 
     const mappedServergroupList = servergroupList.map(servergroupMapper);
 
-    res.json(mappedServergroupList);
+    restrictedResponse(res, new ServergroupList(mappedServergroupList));
   };
 
   const getSingleServergroup: RequestHandler = async (req, res, next) => {
@@ -55,7 +61,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
 
     const mappedServergroup = servergroupMapper(servergroup);
 
-    res.json(mappedServergroup);
+    restrictedResponse(res, new SingleServergroup(mappedServergroup));
   };
 
   const getClientsOfServergroup: RequestHandler = async (req, res, next) => {
@@ -90,7 +96,7 @@ const servergroup = (teamspeak: TeamSpeak) => {
       mappedClients.push(mappedClient);
     }
 
-    res.json(mappedClients);
+    restrictedResponse(res, new ClientList(mappedClients));
   };
 
   const putServergroup: RequestHandler = async (req, res, next) => {

@@ -10,6 +10,12 @@ import {
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
 import {
+  BanList,
+  ClientList,
+  SingleBan,
+  SingleClient,
+} from "../../../classes/htmlResponses";
+import {
   DelteBanClientSchema,
   PostBanClientSchema,
 } from "../../../types/apiBody";
@@ -18,6 +24,7 @@ import banMapper from "../mapper/banMapper";
 import { clientMapper, clientOnlineMapper } from "../mapper/clientMapper";
 import { getDbClient, getOnlineClient } from "../utility/getTeamspeakClient";
 import restrictedNext from "../utility/restrictedNext";
+import restrictedResponse from "../utility/restrictedResponse";
 
 const client = (teamspeak: TeamSpeak) => {
   const getSingleClient: RequestHandler = async (req, res, next) => {
@@ -30,7 +37,7 @@ const client = (teamspeak: TeamSpeak) => {
 
     const mappedClient = clientMapper(dbClient);
 
-    res.json(mappedClient);
+    restrictedResponse(res, new SingleClient(mappedClient));
   };
 
   const getAllClientsOnline: RequestHandler = async (req, res, next) => {
@@ -43,7 +50,7 @@ const client = (teamspeak: TeamSpeak) => {
 
     const mappedClientList = clientList.map(clientOnlineMapper);
 
-    res.json(mappedClientList);
+    restrictedResponse(res, new ClientList(mappedClientList));
   };
 
   const getSingleClientOnline: RequestHandler = async (req, res, next) => {
@@ -56,7 +63,7 @@ const client = (teamspeak: TeamSpeak) => {
 
     const mappedClient = clientOnlineMapper(onlineClient);
 
-    res.json(mappedClient);
+    restrictedResponse(res, new SingleClient(mappedClient));
   };
 
   const getBanList: RequestHandler = async (req, res, next) => {
@@ -80,7 +87,7 @@ const client = (teamspeak: TeamSpeak) => {
 
     const mappedBanList = banList.map(banMapper);
 
-    res.json(mappedBanList);
+    restrictedResponse(res, new BanList(mappedBanList));
   };
 
   const getSingleBan: RequestHandler = async (req, res, next) => {
@@ -111,7 +118,7 @@ const client = (teamspeak: TeamSpeak) => {
 
     const mappedBan = banMapper(singleBan);
 
-    res.json(mappedBan);
+    restrictedResponse(res, new SingleBan(mappedBan));
   };
 
   const postBanClient: RequestHandler = async (req, res, next) => {

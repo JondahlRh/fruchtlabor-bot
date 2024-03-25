@@ -9,9 +9,15 @@ import {
   ChannelDoesNotExistError,
   UnkownTeamspeakError,
 } from "../../../classes/htmlErrors";
+import {
+  ChannelList,
+  ClientList,
+  SingleChannel,
+} from "../../../classes/htmlResponses";
 import channelMapper from "../mapper/channelMapper";
 import { clientOnlineMapper } from "../mapper/clientMapper";
 import restrictedNext from "../utility/restrictedNext";
+import restrictedResponse from "../utility/restrictedResponse";
 
 const channel = (teamspeak: TeamSpeak) => {
   const getAllChannels: RequestHandler = async (req, res, next) => {
@@ -24,7 +30,7 @@ const channel = (teamspeak: TeamSpeak) => {
 
     const mappedChannelList = channelList.map(channelMapper);
 
-    res.json(mappedChannelList);
+    restrictedResponse(res, new ChannelList(mappedChannelList));
   };
 
   const getSingleChannel: RequestHandler = async (req, res, next) => {
@@ -43,7 +49,7 @@ const channel = (teamspeak: TeamSpeak) => {
 
     const mappedChannel = channelMapper(channel);
 
-    res.json(mappedChannel);
+    restrictedResponse(res, new SingleChannel(mappedChannel));
   };
 
   const getClientsOfChannel: RequestHandler = async (req, res, next) => {
@@ -70,7 +76,7 @@ const channel = (teamspeak: TeamSpeak) => {
 
     const mappedClients = channelClients.map(clientOnlineMapper);
 
-    res.json(mappedClients);
+    restrictedResponse(res, new ClientList(mappedClients));
   };
 
   return { getAllChannels, getSingleChannel, getClientsOfChannel };
