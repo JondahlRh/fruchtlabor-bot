@@ -4,7 +4,7 @@
   "description": "teamspeak bot for the fruchtlabor cs community",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node build",
+    "start": "node build",
     "dev": "nodemon -L src/index.ts",
     "build": "tsc",
     "prettier": "prettier --write ."
