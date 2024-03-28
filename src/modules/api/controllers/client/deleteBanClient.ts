@@ -9,7 +9,7 @@ import PartialSuccessResponse, {
   PartialUnkownTeamspeakError,
 } from "../../../../classes/partial";
 import PartialSuccess from "../../../../classes/partial/PartialSuccess";
-import { DelteBanClientSchema } from "../../../../types/apiBody";
+import DelteBanClientSchema from "../../schemas/DelteBanClientSchema";
 import restrictedNext from "../../utility/restrictedNext";
 import restrictedResponse from "../../utility/restrictedResponse";
 

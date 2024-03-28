@@ -10,7 +10,7 @@ import PartialSuccessResponse, {
   PartialUnkownTeamspeakError,
 } from "../../../../classes/partial";
 import PartialSuccess from "../../../../classes/partial/PartialSuccess";
-import { EditServergroupSchema } from "../../../../types/apiBody";
+import EditServergroupSchema from "../../schemas/editGroupSchema";
 import { getDbClient } from "../../utility/getTeamspeakClient";
 import restrictedNext from "../../utility/restrictedNext";
 import restrictedResponse from "../../utility/restrictedResponse";

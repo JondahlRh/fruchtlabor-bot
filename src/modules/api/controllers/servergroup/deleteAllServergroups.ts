@@ -8,7 +8,7 @@ import {
   UnkownTeamSpeakError,
 } from "../../../../classes/htmlErrors";
 import DeleteAllServergroupsResponse from "../../../../classes/htmlSuccesses/DeleteAllServergroupsResponse";
-import { DelteAllServergroupsSchema } from "../../../../types/apiBody";
+import DelteAllServergroupsSchema from "../../schemas/DelteAllServergroupsSchema";
 import { getDbClient } from "../../utility/getTeamspeakClient";
 import restrictedNext from "../../utility/restrictedNext";
 import restrictedResponse from "../../utility/restrictedResponse";

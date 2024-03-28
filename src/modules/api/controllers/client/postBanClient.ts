@@ -4,7 +4,7 @@ import { fromZodError } from "zod-validation-error";
 
 import { IdError, RequestBodyError } from "../../../../classes/htmlErrors";
 import PostBanResponse from "../../../../classes/htmlSuccesses/PostBanResponse";
-import { PostBanClientSchema } from "../../../../types/apiBody";
+import PostBanClientSchema from "../../schemas/PostBanClientSchema";
 import { getDbClient } from "../../utility/getTeamspeakClient";
 import restrictedNext from "../../utility/restrictedNext";
 import restrictedResponse from "../../utility/restrictedResponse";
