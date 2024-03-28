@@ -1,6 +1,7 @@
 services:
   app:
-    build: .
+    build:
+      dockerfile: Dockerfile.dev
     container_name: fruchtlabor-bot-dev
     restart: unless-stopped
     env_file:
@@ -9,4 +10,3 @@ services:
       - "${EXPOSED_IP}:${EXPOSED_PORT}:3000"
     volumes:
       - ./src:/app/src
-    command: npm run dev

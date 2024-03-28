@@ -1,6 +1,7 @@
 services:
   app:
-    build: .
+    build:
+      dockerfile: Dockerfile
     container_name: fruchtlabor-bot
     restart: unless-stopped
     env_file:

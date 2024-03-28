@@ -25,6 +25,7 @@ export default (teamspeak: TeamSpeak) => {
   app.use(unkownRouteController);
   app.use(errorController);
 
-  console.log(`Listening on htttp://0.0.0.0:${process.env.API_PORT}/`);
-  app.listen(Number(process.env.API_PORT));
+  app.listen(Number(process.env.INTERNAL_PORT), () => {
+    console.log(`Listening on Port ${process.env.INTERNAL_PORT}`);
+  });
 };
