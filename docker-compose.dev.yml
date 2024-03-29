@@ -1,6 +1,7 @@
 services:
   app:
     build:
+      conext: .
       dockerfile: Dockerfile.dev
     container_name: fruchtlabor-bot-dev
     restart: unless-stopped
