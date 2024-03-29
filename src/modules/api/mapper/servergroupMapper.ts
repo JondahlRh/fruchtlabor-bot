@@ -9,6 +9,4 @@ const servergroupMapper = (
   };
 };
 
-let a: MappedServerGroup;
-
 export default servergroupMapper;

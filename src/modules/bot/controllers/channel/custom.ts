@@ -34,7 +34,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
         channelGroupClientList.some((y) => y.cid === x.cid)
       );
     });
-  } catch (error) {}
+  } catch (error) {} // eslint-disable-line
 
   if (tsCustomChannel == undefined) {
     const channelName = customChannel.prefix

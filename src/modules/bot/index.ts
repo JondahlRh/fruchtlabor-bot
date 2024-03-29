@@ -22,7 +22,7 @@ export default (teamspeak: TeamSpeak) => {
     eHandler(channelController.addgroup)(event.client);
   });
 
-  teamspeak.on("clientdisconnect", (event) => {
+  teamspeak.on("clientdisconnect", () => {
     eHandler(channelController.lobby)(teamspeak);
   });
 

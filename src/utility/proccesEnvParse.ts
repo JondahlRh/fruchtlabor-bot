@@ -20,6 +20,7 @@ const envObject = z.object({
 });
 
 declare global {
+  // eslint-disable-next-line
   namespace NodeJS {
     interface ProcessEnv extends z.infer<typeof envObject> {}
   }

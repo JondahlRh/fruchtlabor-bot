@@ -16,7 +16,9 @@ const catcher = async (error: Error, functionname: string) => {
   }
 };
 
+// eslint-disable-next-line
 export default (fn: Function) =>
+  // eslint-disable-next-line
   (...args: any) =>
     Promise.resolve(
       fn(...args).catch((error: Error) => catcher(error, fn.name))

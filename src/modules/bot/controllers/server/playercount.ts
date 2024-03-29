@@ -39,7 +39,7 @@ const playercount = async (teamspeak: TeamSpeak) => {
       const serverInfoRaw = await query.info(server.ip, server.port);
 
       serverInfo = ServerInfoSchema.parse(serverInfoRaw);
-    } catch (error) {}
+    } catch (error) {} // eslint-disable-line
 
     let status = "Offline";
     let channelDescription = getChannelDescription(title, "Offline");

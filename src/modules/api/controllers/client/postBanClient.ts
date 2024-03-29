@@ -34,7 +34,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
         banreason,
       });
       ipBanId = ipBann.banid;
-    } catch (error) {}
+    } catch (error) {} // eslint-disable-line
 
     let tsidBanId: string | null = null;
     try {
@@ -43,7 +43,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
         banreason,
       });
       tsidBanId = tsidBann.banid;
-    } catch (error) {}
+    } catch (error) {} // eslint-disable-line
 
     restrictedResponse(res, new PostBanResponse(ipBanId, tsidBanId));
   };
