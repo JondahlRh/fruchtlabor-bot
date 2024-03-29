@@ -1,3 +1,7 @@
+import { RequestHandler } from "express";
+import { ResponseError, TeamSpeak } from "ts3-nodejs-library";
+import { fromZodError } from "zod-validation-error";
+
 import { RequestBodyError } from "classes/htmlErrors";
 import PartialSuccessResponse, {
   PartialIdError,
@@ -5,12 +9,10 @@ import PartialSuccessResponse, {
   PartialUnkownTeamspeakError,
 } from "classes/partial";
 import PartialSuccess from "classes/partial/PartialSuccess";
-import { RequestHandler } from "express";
+
 import DelteBanClientSchema from "modules/api/schemas/DelteBanClientSchema";
 import restrictedNext from "modules/api/utility/restrictedNext";
 import restrictedResponse from "modules/api/utility/restrictedResponse";
-import { ResponseError, TeamSpeak } from "ts3-nodejs-library";
-import { fromZodError } from "zod-validation-error";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {

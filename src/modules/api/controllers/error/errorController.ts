@@ -1,4 +1,5 @@
 import { ErrorRequestHandler } from "express";
+
 import restrictedNext from "modules/api/utility/restrictedNext";
 
 const errorController: ErrorRequestHandler = (error, req, res, next) => {

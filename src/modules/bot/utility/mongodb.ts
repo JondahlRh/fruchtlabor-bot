@@ -1,3 +1,5 @@
+import { TeamSpeakClient } from "ts3-nodejs-library";
+
 import AddgroupChannel from "models/functions/AddgroupChannel";
 import AfkChannel from "models/functions/AfkChannel";
 import CustomChannel from "models/functions/CustomChannel";
@@ -11,7 +13,6 @@ import Fruit from "models/general/Fruit";
 import SupportLog from "models/general/SupportLog";
 import TsChannel from "models/teamspeak/TsChannel";
 import TsServergroup from "models/teamspeak/TsServergroup";
-import { TeamSpeakClient } from "ts3-nodejs-library";
 
 export const getAddgroupChannels = async (): Promise<AddgroupChannelType[]> => {
   return await AddgroupChannel.find()

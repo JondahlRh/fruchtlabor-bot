@@ -1,6 +1,7 @@
 import { Router } from "express";
-import servergroup from "modules/api/controllers/servergroup";
 import { TeamSpeak } from "ts3-nodejs-library";
+
+import servergroup from "modules/api/controllers/servergroup";
 
 export default (teamspeak: TeamSpeak) => {
   const route = Router();

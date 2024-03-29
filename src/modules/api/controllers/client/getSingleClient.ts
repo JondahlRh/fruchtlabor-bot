@@ -1,11 +1,13 @@
+import { RequestHandler } from "express";
+import { TeamSpeak } from "ts3-nodejs-library";
+
 import { IdError } from "classes/htmlErrors";
 import SingleDataResponse from "classes/htmlSuccesses/SingleDataResponse";
-import { RequestHandler } from "express";
+
 import { clientMapper } from "modules/api/mapper/clientMapper";
 import { getDbClient } from "modules/api/utility/getTeamspeakClient";
 import restrictedNext from "modules/api/utility/restrictedNext";
 import restrictedResponse from "modules/api/utility/restrictedResponse";
-import { TeamSpeak } from "ts3-nodejs-library";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {

@@ -1,5 +1,6 @@
-import { getAddgroupChannels } from "modules/bot/utility/mongodb";
 import { TeamSpeakClient } from "ts3-nodejs-library";
+
+import { getAddgroupChannels } from "modules/bot/utility/mongodb";
 
 /**
  * @param {TeamSpeakClient} client Client from the Event
