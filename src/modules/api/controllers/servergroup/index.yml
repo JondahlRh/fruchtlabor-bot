@@ -26,13 +26,13 @@
     summary: "Add TeamSpeak servergroups to TeamSpeak client"
     tags:
       - servergroup
-    parameters:
-      - in: body
-        name: requestBody
-        description: "The request body"
-        required: true
-        schema:
-          $ref: "#/components/schemas/EditServergroupSchema"
+    requestBody:
+      description: "The request body"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EditServergroupSchema"
     responses:
       200:
         description: "List of responses"
@@ -56,13 +56,13 @@
     summary: "Remove TeamSpeak servergroups from a TeamSpeak client"
     tags:
       - servergroup
-    parameters:
-      - in: body
-        name: requestBody
-        description: "The request body"
-        required: true
-        schema:
-          $ref: "#/components/schemas/EditServergroupSchema"
+    requestBody:
+      description: "The request body"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EditServergroupSchema"
     responses:
       200:
         description: "List of responses"
@@ -87,13 +87,13 @@
     summary: "Remove all TeamSpeak servergroups from a TeamSpeak client"
     tags:
       - servergroup
-    parameters:
-      - in: body
-        name: requestBody
-        description: "The request body"
-        required: true
-        schema:
-          $ref: "#/components/schemas/DelteAllServergroupsSchema"
+    requestBody:
+      description: "The request body"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DelteAllServergroupsSchema"
     responses:
       200:
         description: "Success"

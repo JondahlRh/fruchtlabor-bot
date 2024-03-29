@@ -120,13 +120,13 @@
     summary: "Create a TeamSpeak ban"
     tags:
       - client
-    parameters:
-      - in: body
-        name: requestBody
-        description: "The request body"
-        required: true
-        schema:
-          $ref: "#/components/schemas/PostBanClientSchema"
+    requestBody:
+      description: "The request body"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PostBanClientSchema"
     responses:
       201:
         description: "Ban id of the created ip and tsid ban"
@@ -156,13 +156,13 @@
     summary: "Remove TeamSpeak bans"
     tags:
       - client
-    parameters:
-      - in: body
-        name: requestBody
-        description: "The request body"
-        required: true
-        schema:
-          $ref: "#/components/schemas/DelteBanClientSchema"
+    requestBody:
+      description: "The request body"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DelteBanClientSchema"
     responses:
       200:
         description: "List of responses"
