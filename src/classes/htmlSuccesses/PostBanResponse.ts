@@ -1,12 +1,12 @@
 import HtmlResponse from "classes/HtmlResponse";
 
 class PostBanData {
-  ipBanSuccesful: boolean;
-  tsidBanSuccesful: boolean;
+  ipBanId: string | null;
+  tsidBanId: string | null;
 
   constructor(ipBanId: string | null, tsidBanId: string | null) {
-    this.ipBanSuccesful = ipBanId !== null;
-    this.tsidBanSuccesful = tsidBanId !== null;
+    this.ipBanId = ipBanId;
+    this.tsidBanId = tsidBanId;
   }
 }
 
