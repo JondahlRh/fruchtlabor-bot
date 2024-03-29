@@ -36,7 +36,7 @@
           type: string
     responses:
       200:
-        description: "Single TeamSpeak channels."
+        description: "Single TeamSpeak channel."
         content:
           application/json:
             schema:
