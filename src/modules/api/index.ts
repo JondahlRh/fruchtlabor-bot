@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import checkApikey from "./controllers/checkApikey";
@@ -7,6 +8,7 @@ import { unkownRouteController, errorController } from "./controllers/error";
 import channel from "./routes/channel";
 import client from "./routes/client";
 import servergroup from "./routes/servergroup";
+import swaggerSpec from "./utility/swaggerConfig";
 
 export default (teamspeak: TeamSpeak) => {
   console.log("feature enabled api");
@@ -15,6 +17,8 @@ export default (teamspeak: TeamSpeak) => {
 
   app.use(express.json());
   app.use(cors());
+
+  app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   app.use(checkApikey);
 

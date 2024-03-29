@@ -1,0 +1,95 @@
+/v1/channel:
+  get:
+    summary: "Retrieve all TeamSpeak channels"
+    tags:
+      - channel
+    responses:
+      200:
+        description: "List of all TeamSpeak channels"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/MappedChannel"
+      500:
+        description: "UnkownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+/v1/channel/{id}:
+  get:
+    summary: "Retrieve a TeamSpeak channel by id"
+    tags:
+      - channel
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: "TeamSpeak channel id."
+        schema:
+          type: string
+    responses:
+      200:
+        description: "Single TeamSpeak channels."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/MappedChannel"
+      400:
+        description: "IdError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+/v1/channel/{id}/clients:
+  get:
+    summary: "Retrieve all TeamSpeak clients of a TeamSpeak channel by id"
+    tags:
+      - channel
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: "TeamSpeak channel id."
+        schema:
+          type: string
+    responses:
+      200:
+        description: "List of all TeamSpeak clients."
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/MappedClient"
+      400:
+        description: "IdError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"

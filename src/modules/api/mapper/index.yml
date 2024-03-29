@@ -1,0 +1,41 @@
+components:
+  schemas:
+    MappedBan:
+      type: "object"
+      properties:
+        id:
+          type: "number"
+        reason:
+          type: "string"
+        uuid:
+          type: "string"
+          nullable: true
+        ip:
+          type: "string"
+          nullable: true
+
+    MappedChannel:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        id:
+          type: "number"
+
+    MappedClient:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        uuid:
+          type: "string"
+        dbid:
+          type: "number"
+
+    MappedServergroup:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        id:
+          type: "number"

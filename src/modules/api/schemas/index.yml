@@ -1,0 +1,39 @@
+components:
+  schemas:
+    DelteAllServergroupsSchema:
+      type: "object"
+      properties:
+        client:
+          type: "string"
+          description: TeamSpeak client dbid or tsid
+
+    DelteBanClientSchema:
+      type: "object"
+      properties:
+        banids:
+          type: "array"
+          items:
+            type: "string"
+            description: TeamSpeak ban ids
+
+    EditServergroupSchema:
+      type: "object"
+      properties:
+        client:
+          type: "string"
+          description: TeamSpeak client dbid or tsid
+        servergroups:
+          type: "array"
+          items:
+            type: "string"
+            description: TeamSpeak servergroup ids
+
+    PostBanClientSchema:
+      type: "object"
+      properties:
+        client:
+          type: "string"
+          description: TeamSpeak client dbid or tsid
+        banreason:
+          type: "string"
+          description: Ban reason

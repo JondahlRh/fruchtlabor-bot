@@ -1,0 +1,33 @@
+components:
+  schemas:
+    DeleteAllServergroupsResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: All servergroups removed!
+        status:
+          type: number
+          default: 200
+        data:
+          type: string
+          default: null
+
+    PostBanResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Client bann added!
+        status:
+          type: number
+          default: 201
+        data:
+          type: object
+          properties:
+            ipBanSuccesful:
+              type: string
+              nullable: true
+            tsidBanSuccesful:
+              type: string
+              nullable: true

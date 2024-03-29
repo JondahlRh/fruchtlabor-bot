@@ -1,0 +1,83 @@
+components:
+  schemas:
+    PartialSuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: PartialSuccessResponse
+        status:
+          type: number
+          default: 200
+        data:
+          type: array
+          items:
+            type: object
+            anyOf:
+              - $ref: "#/components/schemas/PartialSuccess"
+              - $ref: "#/components/schemas/PartialDuplicateError"
+              - $ref: "#/components/schemas/PartialEmptyError"
+              - $ref: "#/components/schemas/PartialIdError"
+              - $ref: "#/components/schemas/PartialUnkownTeamspeakError"
+
+    PartialDuplicateError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        message:
+          type: string
+          default: The id is already applied!
+        id:
+          type: string
+          description: The provided id
+
+    PartialEmptyError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        message:
+          type: string
+          default: The id is already removed!
+        id:
+          type: string
+          description: The provided id
+
+    PartialIdError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        message:
+          type: string
+          default: The id does not exist!
+        id:
+          type: string
+          description: The provided id
+
+    PartialSuccess:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: true
+        id:
+          type: string
+          description: The provided id
+
+    PartialUnkownTeamspeakError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        message:
+          type: string
+          default: An unkown teamspeak error occured!
+        id:
+          type: string
+          description: The provided id

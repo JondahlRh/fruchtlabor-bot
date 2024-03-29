@@ -1,0 +1,181 @@
+/v1/servergroup:
+  get:
+    summary: "Retrieve all TeamSpeak servergroups"
+    tags:
+      - servergroup
+    responses:
+      200:
+        description: "List of all TeamSpeak servergroups"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/MappedServergroup"
+      500:
+        description: "UnkownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+  put:
+    summary: "Add TeamSpeak servergroups to TeamSpeak client"
+    tags:
+      - servergroup
+    parameters:
+      - in: body
+        name: requestBody
+        description: "The request body"
+        required: true
+        schema:
+          $ref: "#/components/schemas/EditServergroupSchema"
+    responses:
+      200:
+        description: "List of responses"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  $ref: "#/components/schemas/PartialSuccessResponse"
+      400:
+        description: "RequestBodyError or IdError."
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/RequestBodyError"
+                - $ref: "#/components/schemas/IdError"
+
+  delete:
+    summary: "Remove TeamSpeak servergroups from a TeamSpeak client"
+    tags:
+      - servergroup
+    parameters:
+      - in: body
+        name: requestBody
+        description: "The request body"
+        required: true
+        schema:
+          $ref: "#/components/schemas/EditServergroupSchema"
+    responses:
+      200:
+        description: "List of responses"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  $ref: "#/components/schemas/PartialSuccessResponse"
+      400:
+        description: "RequestBodyError or IdError."
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/RequestBodyError"
+                - $ref: "#/components/schemas/IdError"
+
+/v1/servergroup/all:
+  delete:
+    summary: "Remove all TeamSpeak servergroups from a TeamSpeak client"
+    tags:
+      - servergroup
+    parameters:
+      - in: body
+        name: requestBody
+        description: "The request body"
+        required: true
+        schema:
+          $ref: "#/components/schemas/DelteAllServergroupsSchema"
+    responses:
+      200:
+        description: "Success"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteAllServergroupsResponse"
+      500:
+        description: "UnkownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+/v1/servergroup/{id}:
+  get:
+    summary: "Retrieve a TeamSpeak servergroup by id"
+    tags:
+      - servergroup
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: "TeamSpeak servergroup id."
+        schema:
+          type: string
+    responses:
+      200:
+        description: "Single TeamSpeak servergroups."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/MappedServergroup"
+      400:
+        description: "IdError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+/v1/servergroup/{id}/clients:
+  get:
+    summary: "Retrieve all TeamSpeak clients of a TeamSpeak servergroup by id"
+    tags:
+      - servergroup
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: "TeamSpeak servergroup id."
+        schema:
+          type: string
+    responses:
+      200:
+        description: "List of all TeamSpeak servergroups."
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/MappedServergroup"
+      400:
+        description: "IdError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"

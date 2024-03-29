@@ -1,0 +1,66 @@
+components:
+  schemas:
+    AuthError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Api key is not valid!
+        status:
+          type: number
+          default: 401
+        data:
+          type: string
+          default: null
+
+    IdError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: The id does not exist!
+        status:
+          type: number
+          default: 400
+        data:
+          type: string
+          description: The provided query id
+
+    RequestBodyError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Request body invalid!
+        status:
+          type: number
+          default: 400
+        data:
+          type: string
+          description: The request body zod error message
+
+    UnkownRouteError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Route does not exist!
+        status:
+          type: number
+          default: 404
+        data:
+          type: string
+          default: null
+
+    UnkownTeamSpeakError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: An unkown teamspeak error occured!
+        status:
+          type: number
+          default: 500
+        data:
+          type: string
+          default: null

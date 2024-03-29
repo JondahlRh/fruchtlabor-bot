@@ -1,0 +1,216 @@
+/v1/client/{id}:
+  get:
+    summary: "Retrieve a TeamSpeak client by id"
+    tags:
+      - client
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: "TeamSpeak client dbid or tsid."
+        schema:
+          type: string
+    responses:
+      200:
+        description: "Single TeamSpeak client."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/MappedClient"
+      400:
+        description: "IdError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+/v1/client/online:
+  get:
+    summary: "Retrieve all online TeamSpeak clients"
+    tags:
+      - client
+    responses:
+      200:
+        description: "List of all online TeamSpeak clients"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/MappedClient"
+      500:
+        description: "UnkownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+/v1/client/online/{id}:
+  get:
+    summary: "Retrieve a online TeamSpeak client by id"
+    tags:
+      - client
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: "TeamSpeak client dbid or tsid."
+        schema:
+          type: string
+    responses:
+      200:
+        description: "Single online TeamSpeak client."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/MappedClient"
+      400:
+        description: "IdError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+/v1/client/ban:
+  get:
+    summary: "Retrieve all TeamSpeak bans"
+    tags:
+      - client
+    responses:
+      200:
+        description: "List of all TeamSpeak bans"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "array"
+                  items:
+                    $ref: "#/components/schemas/MappedBan"
+      500:
+        description: "UnkownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+  post:
+    summary: "Create a TeamSpeak ban"
+    tags:
+      - client
+    parameters:
+      - in: body
+        name: requestBody
+        description: "The request body"
+        required: true
+        schema:
+          $ref: "#/components/schemas/PostBanClientSchema"
+    responses:
+      201:
+        description: "Ban id of the created ip and tsid ban"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  $ref: "#/components/schemas/PostBanResponse"
+      400:
+        description: "RequestBodyError or IdError."
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/RequestBodyError"
+                - $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
+
+  delete:
+    summary: "Remove TeamSpeak bans"
+    tags:
+      - client
+    parameters:
+      - in: body
+        name: requestBody
+        description: "The request body"
+        required: true
+        schema:
+          $ref: "#/components/schemas/DelteBanClientSchema"
+    responses:
+      200:
+        description: "List of responses"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  $ref: "#/components/schemas/PartialSuccessResponse"
+      400:
+        description: "RequestBodyError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestBodyError"
+
+/v1/client/ban/{id}:
+  get:
+    summary: "Retrieve a TeamSpeak ban by id"
+    tags:
+      - client
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: "TeamSpeak ban id."
+        schema:
+          type: string
+    responses:
+      200:
+        description: "Single TeamSpeak ban."
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/MappedBan"
+      400:
+        description: "IdError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdError"
+      500:
+        description: "UnkownTeamSpeakError."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnkownTeamSpeakError"
