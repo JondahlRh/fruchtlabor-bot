@@ -11,6 +11,15 @@ const swaggerDocs = swaggerJSDoc({
       },
       version: "2.5",
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+        },
+      },
+    },
+    security: [{ bearerAuth: [] }],
   },
   apis: ["./**/*.yml"],
 });
