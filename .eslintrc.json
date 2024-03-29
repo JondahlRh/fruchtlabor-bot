@@ -9,6 +9,11 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
-  "rules": {}
+  "plugins": ["no-relative-import-paths"],
+  "rules": {
+    "no-relative-import-paths/no-relative-import-paths": [
+      "warn",
+      { "allowSameFolder": true, "rootDir": "src" }
+    ]
+  }
 }
