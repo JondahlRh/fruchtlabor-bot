@@ -1,7 +1,6 @@
+import { AuthError } from "classes/htmlErrors";
 import { RequestHandler } from "express";
-
-import { AuthError } from "../../../classes/htmlErrors";
-import restrictedNext from "../utility/restrictedNext";
+import restrictedNext from "modules/api/utility/restrictedNext";
 
 const checkApikey: RequestHandler = (req, res, next) => {
   const apikey = req.headers.authorization?.split(" ")[1];

@@ -1,12 +1,11 @@
+import { UnkownTeamSpeakError } from "classes/htmlErrors";
+import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 import { RequestHandler } from "express";
+import banMapper from "modules/api/mapper/banMapper";
+import restrictedNext from "modules/api/utility/restrictedNext";
+import restrictedResponse from "modules/api/utility/restrictedResponse";
 import { ResponseError, TeamSpeak } from "ts3-nodejs-library";
 import { BanEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
-
-import { UnkownTeamSpeakError } from "../../../../classes/htmlErrors";
-import ListDataResponse from "../../../../classes/htmlSuccesses/ListDataResponse";
-import banMapper from "../../mapper/banMapper";
-import restrictedNext from "../../utility/restrictedNext";
-import restrictedResponse from "../../utility/restrictedResponse";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {

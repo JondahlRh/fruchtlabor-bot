@@ -1,4 +1,4 @@
-import HtmlResponse from "../HtmlResponse";
+import HtmlResponse from "classes/HtmlResponse";
 
 export default class ListDataResponse<T> extends HtmlResponse<T[]> {
   constructor(list: T[]) {

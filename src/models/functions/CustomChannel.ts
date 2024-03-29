@@ -1,7 +1,6 @@
+import TsChannel from "models/teamspeak/TsChannel";
+import TsChannelgroup from "models/teamspeak/TsChannelgroup";
 import mongoose from "mongoose";
-
-import TsChannel from "../teamspeak/TsChannel";
-import TsChannelgroup from "../teamspeak/TsChannelgroup";
 
 const { ObjectId } = mongoose.Schema.Types;
 const CustomChannelSchema = new mongoose.Schema({

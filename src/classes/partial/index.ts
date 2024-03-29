@@ -1,4 +1,5 @@
-import HtmlResponse from "../HtmlResponse";
+import HtmlResponse from "classes/HtmlResponse";
+
 import PartialDuplicateError from "./PartialDuplicateError";
 import PartialEmptyError from "./PartialEmptyError";
 import PartialError from "./PartialError";

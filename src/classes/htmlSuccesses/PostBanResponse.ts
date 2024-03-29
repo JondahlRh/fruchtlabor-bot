@@ -1,4 +1,4 @@
-import HtmlResponse from "../HtmlResponse";
+import HtmlResponse from "classes/HtmlResponse";
 
 class PostBanData {
   ipBanSuccesful: boolean;

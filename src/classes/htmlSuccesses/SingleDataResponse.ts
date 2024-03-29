@@ -1,4 +1,4 @@
-import HtmlResponse from "../HtmlResponse";
+import HtmlResponse from "classes/HtmlResponse";
 
 export default class SingleDataResponse<T> extends HtmlResponse<T> {
   constructor(single: T) {

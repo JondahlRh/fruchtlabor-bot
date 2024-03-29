@@ -1,7 +1,6 @@
+import { getAfkChannels, getTsServergroups } from "modules/bot/utility/mongodb";
+import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
-
-import { getAfkChannels, getTsServergroups } from "../../utility/mongodb";
-import { clientMatchesCollection } from "../../utility/tsCollectionHelper";
 
 /**
  * @param {TeamSpeakClient} client

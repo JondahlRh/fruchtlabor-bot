@@ -1,8 +1,7 @@
+import TsChannel from "models/teamspeak/TsChannel";
+import TsCollection from "models/teamspeak/TsCollection";
+import TsServergroup from "models/teamspeak/TsServergroup";
 import mongoose from "mongoose";
-
-import TsChannel from "../teamspeak/TsChannel";
-import TsCollection from "../teamspeak/TsCollection";
-import TsServergroup from "../teamspeak/TsServergroup";
 
 const { ObjectId } = mongoose.Schema.Types;
 const SupportMessageSchema = new mongoose.Schema({

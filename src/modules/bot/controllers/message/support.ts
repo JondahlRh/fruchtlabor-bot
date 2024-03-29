@@ -1,7 +1,6 @@
+import { addSupportLog, getSupportMessages } from "modules/bot/utility/mongodb";
+import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
-
-import { addSupportLog, getSupportMessages } from "../../utility/mongodb";
-import { clientMatchesCollection } from "../../utility/tsCollectionHelper";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

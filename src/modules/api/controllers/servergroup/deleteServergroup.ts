@@ -1,19 +1,18 @@
-import { RequestHandler } from "express";
-import { ResponseError, TeamSpeak } from "ts3-nodejs-library";
-import { fromZodError } from "zod-validation-error";
-
-import { IdError, RequestBodyError } from "../../../../classes/htmlErrors";
+import { IdError, RequestBodyError } from "classes/htmlErrors";
 import PartialSuccessResponse, {
   PartialEmptyError,
   PartialIdError,
   PartialResponse,
   PartialUnkownTeamspeakError,
-} from "../../../../classes/partial";
-import PartialSuccess from "../../../../classes/partial/PartialSuccess";
-import EditServergroupSchema from "../../schemas/EditGroupSchema";
-import { getDbClient } from "../../utility/getTeamspeakClient";
-import restrictedNext from "../../utility/restrictedNext";
-import restrictedResponse from "../../utility/restrictedResponse";
+} from "classes/partial";
+import PartialSuccess from "classes/partial/PartialSuccess";
+import { RequestHandler } from "express";
+import EditServergroupSchema from "modules/api/schemas/EditGroupSchema";
+import { getDbClient } from "modules/api/utility/getTeamspeakClient";
+import restrictedNext from "modules/api/utility/restrictedNext";
+import restrictedResponse from "modules/api/utility/restrictedResponse";
+import { ResponseError, TeamSpeak } from "ts3-nodejs-library";
+import { fromZodError } from "zod-validation-error";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {

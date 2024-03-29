@@ -5,7 +5,8 @@
     "allowJs": true,
     "target": "ES5",
     "strict": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {}
   },
   "ts-node": {
     "files": true,

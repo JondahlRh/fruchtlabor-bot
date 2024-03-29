@@ -1,13 +1,12 @@
+import { IdError, RequestBodyError } from "classes/htmlErrors";
+import PostBanResponse from "classes/htmlSuccesses/PostBanResponse";
 import { RequestHandler } from "express";
+import PostBanClientSchema from "modules/api/schemas/PostBanClientSchema";
+import { getDbClient } from "modules/api/utility/getTeamspeakClient";
+import restrictedNext from "modules/api/utility/restrictedNext";
+import restrictedResponse from "modules/api/utility/restrictedResponse";
 import { TeamSpeak } from "ts3-nodejs-library";
 import { fromZodError } from "zod-validation-error";
-
-import { IdError, RequestBodyError } from "../../../../classes/htmlErrors";
-import PostBanResponse from "../../../../classes/htmlSuccesses/PostBanResponse";
-import PostBanClientSchema from "../../schemas/PostBanClientSchema";
-import { getDbClient } from "../../utility/getTeamspeakClient";
-import restrictedNext from "../../utility/restrictedNext";
-import restrictedResponse from "../../utility/restrictedResponse";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {

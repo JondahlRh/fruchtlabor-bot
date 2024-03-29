@@ -1,11 +1,10 @@
+import { IdError, UnkownTeamSpeakError } from "classes/htmlErrors";
+import SingleDataResponse from "classes/htmlSuccesses/SingleDataResponse";
 import { RequestHandler } from "express";
+import channelMapper from "modules/api/mapper/channelMapper";
+import restrictedNext from "modules/api/utility/restrictedNext";
+import restrictedResponse from "modules/api/utility/restrictedResponse";
 import { TeamSpeak, TeamSpeakChannel } from "ts3-nodejs-library";
-
-import { IdError, UnkownTeamSpeakError } from "../../../../classes/htmlErrors";
-import SingleDataResponse from "../../../../classes/htmlSuccesses/SingleDataResponse";
-import channelMapper from "../../mapper/channelMapper";
-import restrictedNext from "../../utility/restrictedNext";
-import restrictedResponse from "../../utility/restrictedResponse";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {

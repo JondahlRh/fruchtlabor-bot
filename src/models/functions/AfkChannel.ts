@@ -1,7 +1,6 @@
+import TsChannel from "models/teamspeak/TsChannel";
+import TsCollection from "models/teamspeak/TsCollection";
 import mongoose from "mongoose";
-
-import TsChannel from "../teamspeak/TsChannel";
-import TsCollection from "../teamspeak/TsCollection";
 
 const { ObjectId } = mongoose.Schema.Types;
 const AfkChannelSchema = new mongoose.Schema({

@@ -1,6 +1,5 @@
+import { getBotTsChannel } from "modules/bot/utility/mongodb";
 import { TeamSpeak } from "ts3-nodejs-library";
-
-import { getBotTsChannel } from "../../utility/mongodb";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance

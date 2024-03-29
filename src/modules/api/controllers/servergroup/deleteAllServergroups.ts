@@ -1,17 +1,16 @@
-import { RequestHandler } from "express";
-import { TeamSpeak } from "ts3-nodejs-library";
-import { fromZodError } from "zod-validation-error";
-
 import {
   IdError,
   RequestBodyError,
   UnkownTeamSpeakError,
-} from "../../../../classes/htmlErrors";
-import DeleteAllServergroupsResponse from "../../../../classes/htmlSuccesses/DeleteAllServergroupsResponse";
-import DelteAllServergroupsSchema from "../../schemas/DelteAllServergroupsSchema";
-import { getDbClient } from "../../utility/getTeamspeakClient";
-import restrictedNext from "../../utility/restrictedNext";
-import restrictedResponse from "../../utility/restrictedResponse";
+} from "classes/htmlErrors";
+import DeleteAllServergroupsResponse from "classes/htmlSuccesses/DeleteAllServergroupsResponse";
+import { RequestHandler } from "express";
+import DelteAllServergroupsSchema from "modules/api/schemas/DelteAllServergroupsSchema";
+import { getDbClient } from "modules/api/utility/getTeamspeakClient";
+import restrictedNext from "modules/api/utility/restrictedNext";
+import restrictedResponse from "modules/api/utility/restrictedResponse";
+import { TeamSpeak } from "ts3-nodejs-library";
+import { fromZodError } from "zod-validation-error";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {

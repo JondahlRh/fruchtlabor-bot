@@ -1,7 +1,6 @@
+import CsServer from "models/general/CsServer";
+import TsChannel from "models/teamspeak/TsChannel";
 import mongoose from "mongoose";
-
-import CsServer from "../general/CsServer";
-import TsChannel from "../teamspeak/TsChannel";
 
 const { ObjectId } = mongoose.Schema.Types;
 const ServerPlayercountSchema = new mongoose.Schema({

@@ -1,6 +1,5 @@
+import { getJoinMessages } from "modules/bot/utility/mongodb";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
-
-import { getJoinMessages } from "../../utility/mongodb";
 
 /**
  * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
