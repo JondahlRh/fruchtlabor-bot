@@ -22,8 +22,8 @@ const daily = async (retryNumber: number = 0) => {
   const aggregatedClientsArray = Object.entries(aggregatedClients).map(
     ([uuid, values]) => ({
       uuid,
-      active: values.active,
-      online: values.online,
+      active: Math.round(values.active / 1000),
+      online: Math.round(values.online / 1000),
     })
   );
 
