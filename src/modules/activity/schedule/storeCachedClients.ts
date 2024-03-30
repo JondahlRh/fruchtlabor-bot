@@ -12,8 +12,8 @@ const storeCachedClients = async (
   const aggregatedClients = localClients.reduce<AggregatedClients>(
     (prev, cur) => {
       prev[cur.uuid] = {
-        active: prev[cur.uuid]?.active ?? 0 + (cur.active ? cacheTimer : 0),
-        online: prev[cur.uuid]?.active ?? 0 + cacheTimer,
+        active: (prev[cur.uuid]?.active ?? 0) + (cur.active ? cacheTimer : 0),
+        online: (prev[cur.uuid]?.active ?? 0) + cacheTimer,
       };
 
       return prev;
