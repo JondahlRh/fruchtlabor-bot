@@ -13,7 +13,7 @@ const storeCachedClients = async (
     (prev, cur) => {
       prev[cur.uuid] = {
         active: (prev[cur.uuid]?.active ?? 0) + (cur.active ? cacheTimer : 0),
-        online: (prev[cur.uuid]?.active ?? 0) + cacheTimer,
+        online: (prev[cur.uuid]?.online ?? 0) + cacheTimer,
       };
 
       return prev;
