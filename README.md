@@ -24,6 +24,7 @@ EXPOSED_PORT=""
 ```
 FEATUREFLAG_BOT="" # "true" if enabled
 FEATUREFLAG_API="" # "true" if enabled
+FEATUREFLAG_ACTIVITY="" # "true" if enabled
 
 TEAMSPEAK_IP=""
 TEAMSPEAK_PORT=""

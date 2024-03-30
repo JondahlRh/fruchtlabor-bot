@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { TeamSpeak } from "ts3-nodejs-library";
 
+import activity from "./modules/activity";
 import api from "./modules/api";
 import bot, { moveDefaultChannel } from "./modules/bot";
 
@@ -28,5 +29,9 @@ export default async () => {
 
   if (process.env.FEATUREFLAG_API === "true") {
     api(teamspeak);
+  }
+
+  if (process.env.FEATUREFLAG_ACTIVITY === "true") {
+    activity(teamspeak);
   }
 };
