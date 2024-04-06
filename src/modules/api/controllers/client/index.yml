@@ -26,12 +26,18 @@
           application/json:
             schema:
               $ref: "#/components/schemas/IdError"
+            examples:
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
 /v1/client/online:
   get:
@@ -56,6 +62,9 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
 /v1/client/online/{id}:
   get:
@@ -85,12 +94,18 @@
           application/json:
             schema:
               $ref: "#/components/schemas/IdError"
+            examples:
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
 /v1/client/ban:
   get:
@@ -115,6 +130,9 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
   post:
     summary: "Create a TeamSpeak ban"
@@ -145,12 +163,20 @@
               oneOf:
                 - $ref: "#/components/schemas/RequestBodyError"
                 - $ref: "#/components/schemas/IdError"
+            examples:
+              RequestBodyError:
+                $ref: "#/components/schemas/RequestBodyError"
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError"
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
   delete:
     summary: "Remove TeamSpeak bans"
@@ -179,6 +205,9 @@
           application/json:
             schema:
               $ref: "#/components/schemas/RequestBodyError"
+            examples:
+              RequestBodyError:
+                $ref: "#/components/schemas/RequestBodyError"
 
 /v1/client/ban/{id}:
   get:
@@ -208,9 +237,15 @@
           application/json:
             schema:
               $ref: "#/components/schemas/IdError"
+            examples:
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"

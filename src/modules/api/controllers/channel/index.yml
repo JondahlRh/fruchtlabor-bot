@@ -21,6 +21,9 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
 /v1/channel/{id}:
   get:
@@ -50,12 +53,18 @@
           application/json:
             schema:
               $ref: "#/components/schemas/IdError"
+            examples:
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
 /v1/channel/{id}/clients:
   get:
@@ -87,9 +96,15 @@
           application/json:
             schema:
               $ref: "#/components/schemas/IdError"
+            examples:
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"

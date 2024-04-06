@@ -21,6 +21,9 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
   put:
     summary: "Add TeamSpeak servergroups to TeamSpeak client"
@@ -51,6 +54,11 @@
               oneOf:
                 - $ref: "#/components/schemas/RequestBodyError"
                 - $ref: "#/components/schemas/IdError"
+            examples:
+              RequestBodyError:
+                $ref: "#/components/schemas/RequestBodyError"
+              IdError:
+                $ref: "#/components/schemas/IdError"
 
   delete:
     summary: "Remove TeamSpeak servergroups from a TeamSpeak client"
@@ -81,6 +89,11 @@
               oneOf:
                 - $ref: "#/components/schemas/RequestBodyError"
                 - $ref: "#/components/schemas/IdError"
+            examples:
+              RequestBodyError:
+                $ref: "#/components/schemas/RequestBodyError"
+              IdError:
+                $ref: "#/components/schemas/IdError"
 
 /v1/servergroup/all:
   delete:
@@ -107,6 +120,9 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
 /v1/servergroup/{id}:
   get:
@@ -136,12 +152,18 @@
           application/json:
             schema:
               $ref: "#/components/schemas/IdError"
+            examples:
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
 
 /v1/servergroup/{id}/clients:
   get:
@@ -173,9 +195,15 @@
           application/json:
             schema:
               $ref: "#/components/schemas/IdError"
+            examples:
+              IdError:
+                $ref: "#/components/schemas/IdError"
       500:
         description: "UnkownTeamSpeakError."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UnkownTeamSpeakError"
+            examples:
+              UnkownTeamSpeakError:
+                $ref: "#/components/schemas/UnkownTeamSpeakError"
