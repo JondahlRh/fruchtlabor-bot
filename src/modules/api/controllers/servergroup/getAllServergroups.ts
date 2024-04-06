@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakServerGroup } from "ts3-nodejs-library";
 
-import { UnkownTeamSpeakError } from "classes/htmlErrors";
+import { UnknownTeamSpeakError } from "classes/htmlErrors";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 
 import servergroupMapper from "modules/api/mapper/servergroupMapper";
@@ -14,7 +14,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
     try {
       servergroupList = await teamspeak.serverGroupList();
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamSpeakError());
+      return restrictedNext(next, new UnknownTeamSpeakError());
     }
 
     const mappedServergroupList = servergroupList.map(servergroupMapper);

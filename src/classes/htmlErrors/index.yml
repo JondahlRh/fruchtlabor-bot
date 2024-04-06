@@ -51,7 +51,7 @@ components:
         status: 400
         data: string
 
-    UnkownRouteError:
+    UnknownRouteError:
       type: object
       properties:
         message:
@@ -68,12 +68,12 @@ components:
         status: 404
         data: null
 
-    UnkownTeamSpeakError:
+    UnknownTeamSpeakError:
       type: object
       properties:
         message:
           type: string
-          default: An unkown teamspeak error occured!
+          default: An unknown teamspeak error occured!
         status:
           type: number
           default: 500
@@ -81,6 +81,6 @@ components:
           type: string
           default: null
       value:
-        message: An unkown teamspeak error occured!
+        message: An unknown teamspeak error occured!
         status: 500
         data: null

@@ -1,6 +1,6 @@
 import AuthError from "./AuthError";
 import IdError from "./IdError";
 import RequestBodyError from "./RequestBodyError";
-import UnkownTeamSpeakError from "./UnkownTeamspeakError";
+import UnknownTeamSpeakError from "./UnknownTeamspeakError";
 
-export { AuthError, IdError, RequestBodyError, UnkownTeamSpeakError };
+export { AuthError, IdError, RequestBodyError, UnknownTeamSpeakError };

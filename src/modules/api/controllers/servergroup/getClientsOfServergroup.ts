@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakServerGroup } from "ts3-nodejs-library";
 import { ServerGroupClientEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
-import { IdError, UnkownTeamSpeakError } from "classes/htmlErrors";
+import { IdError, UnknownTeamSpeakError } from "classes/htmlErrors";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 
 import { clientMapper } from "modules/api/mapper/clientMapper";
@@ -18,7 +18,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
     try {
       servergroup = await teamspeak.getServerGroupById(id);
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamSpeakError());
+      return restrictedNext(next, new UnknownTeamSpeakError());
     }
 
     if (servergroup === undefined) {
@@ -29,7 +29,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
     try {
       servergroupClientList = await servergroup.clientList();
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamSpeakError());
+      return restrictedNext(next, new UnknownTeamSpeakError());
     }
 
     const mappedClients: MappedClient[] = [];

@@ -1,4 +1,4 @@
 import errorController from "./errorController";
-import unkownRouteController from "./unkownRouteController";
+import unknownRouteController from "./unknownRouteController";
 
-export { unkownRouteController, errorController };
+export { unknownRouteController, errorController };

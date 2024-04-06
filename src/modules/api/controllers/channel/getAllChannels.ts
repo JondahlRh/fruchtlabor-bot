@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakChannel } from "ts3-nodejs-library";
 
-import { UnkownTeamSpeakError } from "classes/htmlErrors";
+import { UnknownTeamSpeakError } from "classes/htmlErrors";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 
 import channelMapper from "modules/api/mapper/channelMapper";
@@ -14,7 +14,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
     try {
       channelList = await teamspeak.channelList();
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamSpeakError());
+      return restrictedNext(next, new UnknownTeamSpeakError());
     }
 
     const mappedChannelList = channelList.map(channelMapper);

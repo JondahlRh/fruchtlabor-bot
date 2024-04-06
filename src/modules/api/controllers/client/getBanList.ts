@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { ResponseError, TeamSpeak } from "ts3-nodejs-library";
 import { BanEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
-import { UnkownTeamSpeakError } from "classes/htmlErrors";
+import { UnknownTeamSpeakError } from "classes/htmlErrors";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 
 import banMapper from "modules/api/mapper/banMapper";
@@ -16,7 +16,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
       banList = await teamspeak.banList();
     } catch (error) {
       if (!(error instanceof ResponseError)) {
-        return restrictedNext(next, new UnkownTeamSpeakError());
+        return restrictedNext(next, new UnknownTeamSpeakError());
       }
 
       switch (error.msg) {
@@ -25,7 +25,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
           break;
 
         default:
-          return restrictedNext(next, new UnkownTeamSpeakError());
+          return restrictedNext(next, new UnknownTeamSpeakError());
       }
     }
 

@@ -5,7 +5,7 @@ import PartialEmptyError from "./PartialEmptyError";
 import PartialError from "./PartialError";
 import PartialIdError from "./PartialIdError";
 import PartialSuccess from "./PartialSuccess";
-import PartialUnkownTeamspeakError from "./PartialUnkownTeamspeakError";
+import PartialUnknownTeamspeakError from "./PartialUnknownTeamspeakError";
 
 export type PartialResponse = PartialError | PartialSuccess;
 
@@ -21,5 +21,5 @@ export {
   PartialDuplicateError,
   PartialEmptyError,
   PartialIdError,
-  PartialUnkownTeamspeakError,
+  PartialUnknownTeamspeakError,
 };

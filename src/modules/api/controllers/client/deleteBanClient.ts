@@ -6,7 +6,7 @@ import { RequestBodyError } from "classes/htmlErrors";
 import PartialSuccessResponse, {
   PartialIdError,
   PartialResponse,
-  PartialUnkownTeamspeakError,
+  PartialUnknownTeamspeakError,
 } from "classes/partial";
 import PartialSuccess from "classes/partial/PartialSuccess";
 
@@ -36,7 +36,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
           return;
         } catch (error) {
           if (!(error instanceof ResponseError)) {
-            partialResponses.push(new PartialUnkownTeamspeakError(banid));
+            partialResponses.push(new PartialUnknownTeamspeakError(banid));
             return;
           }
 
@@ -46,7 +46,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
               return;
 
             default:
-              partialResponses.push(new PartialUnkownTeamspeakError(banid));
+              partialResponses.push(new PartialUnknownTeamspeakError(banid));
               return;
           }
         }

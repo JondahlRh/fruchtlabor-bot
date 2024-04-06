@@ -5,7 +5,7 @@ import { fromZodError } from "zod-validation-error";
 import {
   IdError,
   RequestBodyError,
-  UnkownTeamSpeakError,
+  UnknownTeamSpeakError,
 } from "classes/htmlErrors";
 import DeleteAllServergroupsResponse from "classes/htmlSuccesses/DeleteAllServergroupsResponse";
 
@@ -40,7 +40,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
 
       servergroups = serverGroupsByClientId.map((x) => x.sgid);
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamSpeakError());
+      return restrictedNext(next, new UnknownTeamSpeakError());
     }
 
     try {
@@ -49,7 +49,7 @@ export default (teamspeak: TeamSpeak): RequestHandler => {
         servergroups
       );
     } catch (error) {
-      return restrictedNext(next, new UnkownTeamSpeakError());
+      return restrictedNext(next, new UnknownTeamSpeakError());
     }
 
     restrictedResponse(res, new DeleteAllServergroupsResponse());
