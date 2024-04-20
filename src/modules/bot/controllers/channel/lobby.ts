@@ -51,7 +51,10 @@ const lobby = async () => {
     );
 
     for (let i = 0; i < channelsToBeDeleted; i++) {
-      await teamspeak.channelDelete(channelChildrenEmpty[i + 1].cid);
+      const channel = channelChildrenEmpty[i + 1];
+      if (!channel) break;
+
+      await teamspeak.channelDelete(channel.cid);
     }
 
     const channelsToBeCreated = Math.max(
@@ -92,12 +95,12 @@ const lobby = async () => {
       );
     }
 
-    if (
-      channelChildren[0]?.totalClients > 0 &&
-      channelChildrenEmpty.length > 0
-    ) {
-      await teamspeak.channelEdit(channelChildrenEmpty[0].cid, {
-        channelOrder: channelChildren[0].order,
+    const firstEmptyChannel = channelChildrenEmpty[0];
+    const firstChannel = channelChildren[0];
+
+    if (firstEmptyChannel && firstChannel && firstChannel.totalClients > 0) {
+      await teamspeak.channelEdit(firstEmptyChannel.cid, {
+        channelOrder: firstChannel.order,
       });
     }
   }
