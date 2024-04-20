@@ -8,7 +8,7 @@
     "dev": "nodemon -L -e \"*\" src/index.ts",
     "build": "tsc && tsc-alias",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --check ."
   },
   "author": "Jondahl \"Gamix\" Rhenius",
   "license": "ISC",
