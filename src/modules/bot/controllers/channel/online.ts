@@ -1,7 +1,12 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
+import { TsCollectionType } from "models/teamspeak/TsCollection";
+
 import { getOnlineChannels } from "modules/bot/utility/mongodb";
-import { clientMatchesCollectionsSorted } from "modules/bot/utility/tsCollectionHelper";
+import {
+  ClientData,
+  clientMatchesCollectionsSorted,
+} from "modules/bot/utility/tsCollectionHelper";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
   if (!clientData.channel || !clientData.channelParent) {
@@ -90,7 +95,7 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
         );
         const channel = channelList.find((x) => x.cid === client?.cid);
 
-        const clientData: ClientData = {
+        const clientData = {
           channel: channel?.cid,
           channelParent: channel?.pid,
           servergroups: client?.servergroups ?? [],

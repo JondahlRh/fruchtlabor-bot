@@ -36,7 +36,7 @@ const messageSupport = async (
     if (!isSupporter) return;
 
     const channel = channelList.find((c) => c.cid === listClient.cid);
-    const clientData: ClientData = {
+    const clientData = {
       channel: channel?.cid,
       channelParent: channel?.pid,
       servergroups: listClient.servergroups,

@@ -9,7 +9,7 @@ import {
 } from "classes/htmlErrors";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 
-import { clientMapper } from "modules/api/mapper/clientMapper";
+import { MappedClient, clientMapper } from "modules/api/mapper/clientMapper";
 import { getDbClient } from "modules/api/utility/getTeamspeakClient";
 import restrictedNext from "modules/api/utility/restrictedNext";
 import restrictedResponse from "modules/api/utility/restrictedResponse";

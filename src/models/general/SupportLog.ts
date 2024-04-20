@@ -1,6 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
-const SupportLogSchema = new mongoose.Schema({
+export type SupportLogType = {
+  timestamp: Date;
+  channel: string;
+  client: string;
+  supportClientsListed: Types.Array<string>;
+  supportClientsContact: Types.Array<string>;
+};
+
+const SupportLogSchema = new mongoose.Schema<SupportLogType>({
   timestamp: { type: Date, required: true },
   channel: { type: String, require: true },
   client: { type: String, require: true },
@@ -8,4 +16,4 @@ const SupportLogSchema = new mongoose.Schema({
   supportClientsContact: [{ type: String, require: true }],
 });
 
-export default mongoose.model("SupportLog", SupportLogSchema);
+export default mongoose.model<SupportLogType>("SupportLog", SupportLogSchema);

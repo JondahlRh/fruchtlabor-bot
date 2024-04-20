@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
-const ActivityEntryDSchema = new mongoose.Schema(
+export type ActivityEntryDType = {
+  uuid: string;
+  active: number;
+  online: number;
+};
+
+const ActivityEntryDSchema = new mongoose.Schema<ActivityEntryDType>(
   {
     uuid: { type: String, required: true },
     active: { type: Number, required: true },
@@ -9,4 +15,7 @@ const ActivityEntryDSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("ActivityEntryD", ActivityEntryDSchema);
+export default mongoose.model<ActivityEntryDType>(
+  "ActivityEntryD",
+  ActivityEntryDSchema
+);

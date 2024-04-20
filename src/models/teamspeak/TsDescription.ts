@@ -1,7 +1,14 @@
 import mongoose from "mongoose";
 
-const TsDescriptionSchema = new mongoose.Schema({
+export type TsDescriptionType = {
+  text: string;
+};
+
+const TsDescriptionSchema = new mongoose.Schema<TsDescriptionType>({
   text: { type: String, required: true },
 });
 
-export default mongoose.model("TsDescription", TsDescriptionSchema);
+export default mongoose.model<TsDescriptionType>(
+  "TsDescription",
+  TsDescriptionSchema
+);

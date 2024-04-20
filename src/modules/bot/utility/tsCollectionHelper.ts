@@ -1,3 +1,11 @@
+import { TsCollectionType } from "models/teamspeak/TsCollection";
+
+export type ClientData = {
+  channel?: string;
+  channelParent?: string;
+  servergroups: string[];
+};
+
 const checkChannel = (collection: TsCollectionType, clientData: ClientData) => {
   return collection.channels.some((x) => {
     return String(x.id) === clientData.channel;

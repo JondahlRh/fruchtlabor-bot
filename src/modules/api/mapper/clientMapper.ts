@@ -1,6 +1,12 @@
 import { TeamSpeakClient } from "ts3-nodejs-library";
 import { ClientDBInfo } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
+export type MappedClient = {
+  name: string;
+  uuid: string;
+  dbid: number;
+};
+
 const clientMapper = (client: ClientDBInfo): MappedClient => {
   return {
     name: client.clientNickname,

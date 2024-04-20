@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 
-const AsyncErrorSchema = new mongoose.Schema({
+export type AsyncErrorType = {
+  timestamp: Date;
+  function: string;
+  message: string;
+  name: string;
+  stack: string;
+};
+
+const AsyncErrorSchema = new mongoose.Schema<AsyncErrorType>({
   timestamp: { type: Date, required: true },
   function: { type: String, required: true },
   message: { type: String, required: true },
@@ -8,4 +16,4 @@ const AsyncErrorSchema = new mongoose.Schema({
   stack: { type: String, default: "" },
 });
 
-export default mongoose.model("AsyncError", AsyncErrorSchema);
+export default mongoose.model<AsyncErrorType>("AsyncError", AsyncErrorSchema);

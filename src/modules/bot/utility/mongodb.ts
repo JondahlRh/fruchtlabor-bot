@@ -1,18 +1,30 @@
 import { TeamSpeakClient } from "ts3-nodejs-library";
 
-import AddgroupChannel from "models/functions/AddgroupChannel";
-import AfkChannel from "models/functions/AfkChannel";
-import CustomChannel from "models/functions/CustomChannel";
-import JoinMessage from "models/functions/JoinMessage";
-import LobbyChannel from "models/functions/LobbyChannel";
-import OnlineChannel from "models/functions/OnlineChannel";
-import ServerPlayercount from "models/functions/ServerPlayercount";
-import SupportMessage from "models/functions/SupportMessage";
+import AddgroupChannel, {
+  AddgroupChannelType,
+} from "models/functions/AddgroupChannel";
+import AfkChannel, { AfkChannelType } from "models/functions/AfkChannel";
+import CustomChannel, {
+  CustomChannelType,
+} from "models/functions/CustomChannel";
+import JoinMessage, { JoinMessageType } from "models/functions/JoinMessage";
+import LobbyChannel, { LobbyChannelType } from "models/functions/LobbyChannel";
+import OnlineChannel, {
+  OnlineChannelType,
+} from "models/functions/OnlineChannel";
+import ServerPlayercount, {
+  ServerPlayercountType,
+} from "models/functions/ServerPlayercount";
+import SupportMessage, {
+  SupportMessageType,
+} from "models/functions/SupportMessage";
 import AsyncError from "models/general/AsyncError";
-import Fruit from "models/general/Fruit";
+import Fruit, { FruitType } from "models/general/Fruit";
 import SupportLog from "models/general/SupportLog";
-import TsChannel from "models/teamspeak/TsChannel";
-import TsServergroup from "models/teamspeak/TsServergroup";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
+import TsServergroup, {
+  TsServergroupType,
+} from "models/teamspeak/TsServergroup";
 
 export const getAddgroupChannels = async (): Promise<AddgroupChannelType[]> => {
   return await AddgroupChannel.find()
