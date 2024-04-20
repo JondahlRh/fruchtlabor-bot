@@ -51,6 +51,23 @@ components:
         status: 400
         data: string
 
+    RequestParamIdError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: No param id provided!
+        status:
+          type: number
+          default: 400
+        data:
+          type: string
+          default: null
+      value:
+        message: No param id provided!
+        status: 400
+        data: string
+
     UnknownRouteError:
       type: object
       properties:
