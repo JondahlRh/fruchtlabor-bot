@@ -1,19 +1,22 @@
-import { TeamSpeak } from "ts3-nodejs-library";
+import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 const getDbid = async (teamspeak: TeamSpeak, client: string) => {
-  let dbId = client;
   if (Number.isNaN(Number(client))) {
     const clientDbFind = await teamspeak.clientDbFind(client, true);
-    dbId = clientDbFind[0].cldbid;
+    return clientDbFind[0]?.cldbid;
   }
 
-  return dbId;
+  return client;
 };
 
 const getDbClient = async (teamspeak: TeamSpeak, client: string) => {
   try {
     const dbId = await getDbid(teamspeak, client);
+    if (dbId === undefined) return null;
+
     const dbClients = await teamspeak.clientDbInfo(dbId);
+    if (dbClients[0] === undefined) return null;
+
     return dbClients[0];
   } catch (error) {
     return null;
@@ -22,8 +25,9 @@ const getDbClient = async (teamspeak: TeamSpeak, client: string) => {
 
 const getOnlineClient = async (teamspeak: TeamSpeak, client: string) => {
   const dbId = await getDbid(teamspeak, client);
+  if (dbId === undefined) return null;
 
-  let onlineClient;
+  let onlineClient: TeamSpeakClient | undefined;
   try {
     onlineClient = await teamspeak.getClientByDbid(dbId);
   } catch (error) {
