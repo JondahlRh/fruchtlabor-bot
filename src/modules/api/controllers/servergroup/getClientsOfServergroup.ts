@@ -2,7 +2,11 @@ import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakServerGroup } from "ts3-nodejs-library";
 import { ServerGroupClientEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
 
-import { IdError, UnknownTeamSpeakError } from "classes/htmlErrors";
+import {
+  IdError,
+  RequestParamIdError,
+  UnknownTeamSpeakError,
+} from "classes/htmlErrors";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 
 import { clientMapper } from "modules/api/mapper/clientMapper";
@@ -13,6 +17,10 @@ import restrictedResponse from "modules/api/utility/restrictedResponse";
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {
     const id = req.params.id;
+
+    if (!id) {
+      return restrictedNext(next, new RequestParamIdError());
+    }
 
     let servergroup: TeamSpeakServerGroup | undefined;
     try {

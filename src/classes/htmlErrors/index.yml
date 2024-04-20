@@ -66,7 +66,7 @@ components:
       value:
         message: No param id provided!
         status: 400
-        data: string
+        data: null
 
     UnknownRouteError:
       type: object

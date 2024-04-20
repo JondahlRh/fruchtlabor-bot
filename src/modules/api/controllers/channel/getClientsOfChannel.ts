@@ -5,7 +5,11 @@ import {
   TeamSpeakClient,
 } from "ts3-nodejs-library";
 
-import { IdError, UnknownTeamSpeakError } from "classes/htmlErrors";
+import {
+  IdError,
+  RequestParamIdError,
+  UnknownTeamSpeakError,
+} from "classes/htmlErrors";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 
 import { clientOnlineMapper } from "modules/api/mapper/clientMapper";
@@ -15,6 +19,10 @@ import restrictedResponse from "modules/api/utility/restrictedResponse";
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {
     const id = req.params.id;
+
+    if (!id) {
+      return restrictedNext(next, new RequestParamIdError());
+    }
 
     let channel: TeamSpeakChannel | undefined;
     try {

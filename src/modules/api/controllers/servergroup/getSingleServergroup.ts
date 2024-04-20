@@ -1,7 +1,11 @@
 import { RequestHandler } from "express";
 import { TeamSpeak, TeamSpeakServerGroup } from "ts3-nodejs-library";
 
-import { IdError, UnknownTeamSpeakError } from "classes/htmlErrors";
+import {
+  IdError,
+  RequestParamIdError,
+  UnknownTeamSpeakError,
+} from "classes/htmlErrors";
 import SingleDataResponse from "classes/htmlSuccesses/SingleDataResponse";
 
 import servergroupMapper from "modules/api/mapper/servergroupMapper";
@@ -11,6 +15,10 @@ import restrictedResponse from "modules/api/utility/restrictedResponse";
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {
     const id = req.params.id;
+
+    if (!id) {
+      return restrictedNext(next, new RequestParamIdError());
+    }
 
     let servergroup: TeamSpeakServerGroup | undefined;
     try {

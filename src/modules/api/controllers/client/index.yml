@@ -25,8 +25,12 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IdError"
+              oneOf:
+                - $ref: "#/components/schemas/RequestParamIdError"
+                - $ref: "#/components/schemas/IdError"
             examples:
+              RequestParamIdError:
+                $ref: "#/components/schemas/RequestParamIdError"
               IdError:
                 $ref: "#/components/schemas/IdError"
       500:
@@ -93,8 +97,12 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IdError"
+              oneOf:
+                - $ref: "#/components/schemas/RequestParamIdError"
+                - $ref: "#/components/schemas/IdError"
             examples:
+              RequestParamIdError:
+                $ref: "#/components/schemas/RequestParamIdError"
               IdError:
                 $ref: "#/components/schemas/IdError"
       500:
@@ -236,8 +244,12 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IdError"
+              oneOf:
+                - $ref: "#/components/schemas/RequestParamIdError"
+                - $ref: "#/components/schemas/IdError"
             examples:
+              RequestParamIdError:
+                $ref: "#/components/schemas/RequestParamIdError"
               IdError:
                 $ref: "#/components/schemas/IdError"
       500:
