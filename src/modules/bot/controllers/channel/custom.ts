@@ -5,10 +5,6 @@ import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
 
 import botMove from "./botMove";
 
-/**
- * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
- * @param {TeamSpeakClient} client Client from the Event
- */
 const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   if (client.type === 1) return;
 

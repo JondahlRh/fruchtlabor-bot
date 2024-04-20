@@ -3,9 +3,6 @@ import { TeamSpeak } from "ts3-nodejs-library";
 import { getFruits, getLobbyChannels } from "modules/bot/utility/mongodb";
 import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
 
-/**
- * @type {TeamSpeak[]}
- */
 const eventQueue: TeamSpeak[] = [];
 let isProcessing = false;
 
@@ -109,9 +106,6 @@ const lobby = async () => {
   lobby();
 };
 
-/**
- * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
- */
 const channelLobby = async (teamspeak: TeamSpeak) => {
   eventQueue.push(teamspeak);
   lobby();

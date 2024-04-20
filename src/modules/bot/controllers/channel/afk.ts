@@ -3,10 +3,6 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 import { getAfkChannels, getTsServergroups } from "modules/bot/utility/mongodb";
 import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper";
 
-/**
- * @param {TeamSpeakClient} client
- * @param {{ general: number, micMuted: number, sndMuted: number }} conditions
- */
 const checkMove = (
   client: TeamSpeakClient,
   conditions: { general: number; micMuted: number; sndMuted: number }
@@ -22,9 +18,6 @@ const checkMove = (
   return -1;
 };
 
-/**
- * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
- */
 const channelAfk = async (teamspeak: TeamSpeak) => {
   const afkChannels = await getAfkChannels();
 

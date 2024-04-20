@@ -70,9 +70,6 @@ const getDescription = (title: string, descGroups: string[]) => {
 ${descGroups.join("")}`;
 };
 
-/**
- * @param {TeamSpeak} teamspeak Current TeamSpeak Instance
- */
 const channelOnline = async (teamspeak: TeamSpeak) => {
   const onlineChannels = await getOnlineChannels();
 
