@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-import TsServergroup, { TsServergroupType } from "models/teamspeak/TsServergroup";
+import TsServergroup, {
+  TsServergroupType,
+} from "models/teamspeak/TsServergroup";
 
 export type JoinMessageType = {
   servergroup: TsServergroupType;

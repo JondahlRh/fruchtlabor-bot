@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 import { PermissionType } from "types/general";
 
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
-import TsChannelgroup, { TsChannelgroupType } from "models/teamspeak/TsChannelgroup";
+import TsChannelgroup, {
+  TsChannelgroupType,
+} from "models/teamspeak/TsChannelgroup";
 
 export type CustomChannelType = {
   channelParent: TsChannelType;

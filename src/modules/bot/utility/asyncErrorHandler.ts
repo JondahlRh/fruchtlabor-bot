@@ -1,10 +1,9 @@
+import { saveAsyncError } from "services/mongodbServices/general";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
-
-import { saveErrorLog } from "./mongodb";
 
 const catcher = async (error: Error, functionname: string) => {
   try {
-    await saveErrorLog(error, functionname);
+    await saveAsyncError(error, functionname);
   } catch (err) {
     console.table([
       {

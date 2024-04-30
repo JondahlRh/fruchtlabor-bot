@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 import { PermissionType } from "types/general";
 
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
-import TsDescription, { TsDescriptionType } from "models/teamspeak/TsDescription";
+import TsDescription, {
+  TsDescriptionType,
+} from "models/teamspeak/TsDescription";
 
 export type LobbyChannelType = {
   channelParent: TsChannelType;

@@ -1,6 +1,9 @@
+import { findLobbyChannels } from "services/mongodbServices/functions";
+import { findFruits } from "services/mongodbServices/general";
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import { getFruits, getLobbyChannels } from "modules/bot/utility/mongodb";
+import Fruit from "models/general/Fruit";
+
 import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
 
 const eventQueue: TeamSpeak[] = [];
@@ -15,9 +18,11 @@ const lobby = async () => {
   const teamspeak = eventQueue.shift();
   if (!teamspeak) return;
 
-  const fruitList = await getFruits();
+  const fruitList = await findFruits();
+  if (fruitList === null) return;
 
-  const lobbyChannels = await getLobbyChannels();
+  const lobbyChannels = await findLobbyChannels();
+  if (lobbyChannels === null) return;
 
   for (const lobbyChannel of lobbyChannels) {
     const channelList = await teamspeak.channelList();
@@ -62,7 +67,7 @@ const lobby = async () => {
 
     const extraChanelnames = channelsToBeCreated - unusedFruitList.length;
     for (let i = 0; i < extraChanelnames; i++) {
-      unusedFruitList.push({ name: String(Date.now() + i) });
+      unusedFruitList.push(new Fruit({ name: String(Date.now() + i) }));
     }
 
     const channelSuffixes = unusedFruitList.slice(0, channelsToBeCreated);

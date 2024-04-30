@@ -1,4 +1,4 @@
-import ActivityEntry from "models/general/ActivityEntry";
+import { insertManyActivityEntries } from "services/mongodbServices/general";
 
 import { AggregatedClients, CachedClient } from "..";
 
@@ -29,19 +29,14 @@ const storeCachedClients = async (
     })
   );
 
-  try {
-    await ActivityEntry.insertMany(aggregatedClientsArray);
-  } catch (error) {
-    console.error(error);
+  const data = await insertManyActivityEntries(aggregatedClientsArray);
+  if (data.success || retryNumber === 3) return;
+  retryNumber++;
 
-    if (retryNumber === 3) return;
-    retryNumber++;
-
-    setTimeout(
-      () => storeCachedClients(localClients, cacheTimer, retryNumber),
-      Math.pow(retryNumber, 2) * 1000
-    );
-  }
+  setTimeout(
+    () => storeCachedClients(localClients, cacheTimer, retryNumber),
+    Math.pow(retryNumber, 2) * 1000
+  );
 };
 
 export default storeCachedClients;

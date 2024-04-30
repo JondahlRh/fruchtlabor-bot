@@ -1,8 +1,8 @@
+import { findOnlineChannels } from "services/mongodbServices/functions";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import { TsCollectionType } from "models/teamspeak/TsCollection";
 
-import { getOnlineChannels } from "modules/bot/utility/mongodb";
 import {
   ClientData,
   clientMatchesCollectionsSorted,
@@ -76,7 +76,8 @@ ${descGroups.join("")}`;
 };
 
 const channelOnline = async (teamspeak: TeamSpeak) => {
-  const onlineChannels = await getOnlineChannels();
+  const onlineChannels = await findOnlineChannels();
+  if (onlineChannels === null) return;
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();

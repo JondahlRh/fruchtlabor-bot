@@ -1,9 +1,9 @@
+import { findJoinMessages } from "services/mongodbServices/functions";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
-import { getJoinMessages } from "modules/bot/utility/mongodb";
-
 const messageJoin = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
-  const joinMessages = await getJoinMessages();
+  const joinMessages = await findJoinMessages();
+  if (joinMessages === null) return;
 
   for (const joinMessage of joinMessages) {
     const includesServergroup = client.servergroups.includes(
