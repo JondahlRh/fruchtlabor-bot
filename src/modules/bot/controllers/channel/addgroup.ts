@@ -12,12 +12,13 @@ const addgroup = async (client: TeamSpeakClient) => {
   );
   if (hasServergroup) {
     await client.delGroups(String(channelAddgroup.servergroup.id));
-  } else {
-    await client.addGroups(String(channelAddgroup.servergroup.id));
+    return;
+  }
 
-    if (channelAddgroup.message.length > 0) {
-      await client.message(channelAddgroup.message);
-    }
+  await client.addGroups(String(channelAddgroup.servergroup.id));
+
+  if (channelAddgroup.message.length > 0) {
+    await client.message(channelAddgroup.message);
   }
 };
 
