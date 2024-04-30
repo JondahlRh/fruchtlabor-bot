@@ -4,6 +4,7 @@ import CustomChannel from "models/functions/CustomChannel";
 import JoinMessage from "models/functions/JoinMessage";
 import LobbyChannel from "models/functions/LobbyChannel";
 import OnlineChannel from "models/functions/OnlineChannel";
+import ServerOverview from "models/functions/ServerOverview";
 import ServerPlayercount from "models/functions/ServerPlayercount";
 import SupportMessage from "models/functions/SupportMessage";
 
@@ -102,6 +103,14 @@ export const findOnlineChannels = async () => {
         populate: ["channels", "channelParents", "servergroups"],
       },
     ]);
+  } catch (error) {
+    return null;
+  }
+};
+
+export const findServerOverviews = async () => {
+  try {
+    return await ServerOverview.find().populate(["channel", "servers"]);
   } catch (error) {
     return null;
   }

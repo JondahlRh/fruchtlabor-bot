@@ -1,3 +1,4 @@
+import overview from "./overview";
 import playercount from "./playercount";
 
-export default { playercount };
+export default { overview, playercount };

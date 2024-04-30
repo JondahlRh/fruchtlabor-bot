@@ -36,6 +36,7 @@ export default (teamspeak: TeamSpeak) => {
   schedule("*/30 * * * * *", () => {
     eHandler(channelController.online)(teamspeak);
     eHandler(channelController.afk)(teamspeak);
+    eHandler(serverController.overview)(teamspeak);
     eHandler(serverController.playercount)(teamspeak);
   });
 };
