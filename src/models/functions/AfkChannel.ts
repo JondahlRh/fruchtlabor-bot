@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
 
+export type AfkChannelConditions = {
+  general: number;
+  micMuted: number;
+  sndMuted: number;
+};
+
 export type AfkChannelType = {
   isDefault: boolean;
   moveChannel: {
@@ -11,11 +17,7 @@ export type AfkChannelType = {
   };
   apply: TsCollectionType[];
   ignore: TsCollectionType[];
-  conditions: {
-    general: number;
-    micMuted: number;
-    sndMuted: number;
-  };
+  conditions: AfkChannelConditions;
 };
 
 const { ObjectId } = mongoose.Schema.Types;

@@ -5,11 +5,13 @@ import {
 import { findTsServergroups } from "services/mongodbServices/teamspeak";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
+import { AfkChannelConditions } from "models/functions/AfkChannel";
+
 import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper";
 
 const checkMove = (
   client: TeamSpeakClient,
-  conditions: { general: number; micMuted: number; sndMuted: number }
+  conditions: AfkChannelConditions
 ) => {
   const { general, micMuted, sndMuted } = conditions;
 
