@@ -1,4 +1,4 @@
-import { findSupportMessages } from "services/mongodbServices/functions";
+import { findOneSupportMessages } from "services/mongodbServices/functions";
 import { saveSupportLog } from "services/mongodbServices/general";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
@@ -10,13 +10,8 @@ const messageSupport = async (
 ) => {
   if (client.type === 1) return;
 
-  const supportMessages = await findSupportMessages();
-  if (supportMessages === null) return;
-
-  const supportMessage = supportMessages.find(
-    (x) => x.channel.id === +client.cid
-  );
-  if (supportMessage == undefined) return;
+  const supportMessage = await findOneSupportMessages(+client.cid);
+  if (supportMessage === null) return;
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();

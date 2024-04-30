@@ -115,10 +115,10 @@ export const findServerPlayercounts = async () => {
   }
 };
 
-export const findSupportMessages = async () => {
+export const findOneSupportMessages = async (channelid: number) => {
   try {
-    return await SupportMessage.find().populate([
-      "channel",
+    return await SupportMessage.findOne().populate([
+      { path: "channel", match: { id: { $eq: channelid } } },
       "contactServergroups",
       {
         path: "ignore",
