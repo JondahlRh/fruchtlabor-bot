@@ -29,7 +29,10 @@ const getDescClient = (
   clientUId: string,
   status: string
 ) => {
-  return `[tr][td][URL=client:///${clientUId}]${clientName} [/URL][/td][td][center]${status}[/td][/tr]`;
+  const escapedClientName = clientName
+    .replaceAll("[", "\\[")
+    .replaceAll("]", "\\]");
+  return `[tr][td][URL=client:///${clientUId}]${escapedClientName} [/URL][/td][td][center]${status}[/td][/tr]`;
 };
 
 const getDescGroup = (title: string, clients: string[]) => {
