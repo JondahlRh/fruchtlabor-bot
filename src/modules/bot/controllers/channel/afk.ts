@@ -14,12 +14,11 @@ const checkMove = (
   conditions: AfkChannelConditions
 ) => {
   const { general, micMuted, sndMuted } = conditions;
+  const { idleTime, inputMuted, outputMuted } = client;
 
-  if (general !== -1 && client.idleTime > general) return general;
-  if (micMuted !== -1 && client.inputMuted && client.idleTime > micMuted)
-    return micMuted;
-  if (sndMuted !== -1 && client.outputMuted && client.idleTime > sndMuted)
-    return sndMuted;
+  if (general !== -1 && idleTime > general) return general;
+  if (micMuted !== -1 && inputMuted && idleTime > micMuted) return micMuted;
+  if (sndMuted !== -1 && outputMuted && idleTime > sndMuted) return sndMuted;
 
   return -1;
 };
