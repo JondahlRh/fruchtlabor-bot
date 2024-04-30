@@ -7,10 +7,10 @@ import OnlineChannel from "models/functions/OnlineChannel";
 import ServerPlayercount from "models/functions/ServerPlayercount";
 import SupportMessage from "models/functions/SupportMessage";
 
-export const findAddgroupChannels = async () => {
+export const findOneAddgroupChannel = async (channelid: number) => {
   try {
-    return await AddgroupChannel.find().populate([
-      "channel",
+    return await AddgroupChannel.findOne().populate([
+      { path: "channel", match: { id: { $eq: channelid } } },
       "moveChannel",
       "servergroup",
     ]);
