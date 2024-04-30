@@ -61,10 +61,10 @@ export const findAfkChannels = async () => {
   }
 };
 
-export const findCustomChannels = async () => {
+export const findOneCustomChannels = async (channelid: number) => {
   try {
-    return await CustomChannel.find().populate([
-      "channelParent",
+    return await CustomChannel.findOne().populate([
+      { path: "channelParent", match: { id: { $eq: channelid } } },
       "channelGroup",
     ]);
   } catch (error) {
