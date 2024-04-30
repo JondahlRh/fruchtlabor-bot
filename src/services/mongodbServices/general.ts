@@ -20,7 +20,6 @@ export const insertManyActivityEntries = async (
 export const saveAsyncError = async (error: Error, functionname: string) => {
   try {
     await new AsyncError({
-      timestamp: new Date(),
       function: functionname,
       message: error.message,
       name: error.name,
@@ -48,7 +47,6 @@ export const saveSupportLog = async (
 ) => {
   try {
     await new SupportLog({
-      timestamp: new Date(),
       channel: channel.id,
       client: client.uniqueIdentifier,
       supportClientsContact: contactedClients.map((x) => x.uniqueIdentifier),
