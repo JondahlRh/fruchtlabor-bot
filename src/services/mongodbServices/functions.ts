@@ -61,7 +61,7 @@ export const findAfkChannels = async () => {
   }
 };
 
-export const findOneCustomChannels = async (channelid: number) => {
+export const findOneCustomChannel = async (channelid: number) => {
   try {
     return await CustomChannel.findOne().populate([
       { path: "channelParent", match: { id: { $eq: channelid } } },
@@ -115,7 +115,7 @@ export const findServerPlayercounts = async () => {
   }
 };
 
-export const findOneSupportMessages = async (channelid: number) => {
+export const findOneSupportMessage = async (channelid: number) => {
   try {
     return await SupportMessage.findOne().populate([
       { path: "channel", match: { id: { $eq: channelid } } },
