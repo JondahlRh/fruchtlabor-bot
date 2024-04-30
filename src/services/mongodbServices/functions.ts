@@ -19,9 +19,30 @@ export const findOneAddgroupChannel = async (channelid: number) => {
   }
 };
 
+export const findDefaultAfkChannel = async () => {
+  try {
+    return await AfkChannel.findOne({ isDefault: true }).populate([
+      {
+        path: "moveChannel",
+        populate: ["member", "teammember"],
+      },
+      {
+        path: "apply",
+        populate: ["channels", "channelParents", "servergroups"],
+      },
+      {
+        path: "ignore",
+        populate: ["channels", "channelParents", "servergroups"],
+      },
+    ]);
+  } catch (error) {
+    return null;
+  }
+};
+
 export const findAfkChannels = async () => {
   try {
-    return await AfkChannel.find().populate([
+    return await AfkChannel.find({ isDefault: false }).populate([
       {
         path: "moveChannel",
         populate: ["member", "teammember"],

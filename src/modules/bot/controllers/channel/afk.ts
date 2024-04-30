@@ -1,4 +1,7 @@
-import { findAfkChannels } from "services/mongodbServices/functions";
+import {
+  findAfkChannels,
+  findDefaultAfkChannel,
+} from "services/mongodbServices/functions";
 import { findTsServergroups } from "services/mongodbServices/teamspeak";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
@@ -23,10 +26,10 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
   const afkChannels = await findAfkChannels();
   if (afkChannels === null) return;
 
-  const defaultMove = afkChannels.find((x) => x.isDefault);
-  if (!defaultMove) throw new Error("Afk Channel default is not definded!");
-
-  const allButDefaultMove = afkChannels.filter((x) => !x.isDefault);
+  const defaultAfkChannel = await findDefaultAfkChannel();
+  if (!defaultAfkChannel) {
+    throw new Error("Afk Channel default is not definded!");
+  }
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
@@ -44,15 +47,15 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
       servergroups: listClient.servergroups,
     };
 
-    const ignore = allButDefaultMove.some((afkChannel) =>
+    const ignore = afkChannels.some((afkChannel) =>
       afkChannel.ignore.some((x) => clientMatchesCollection(clientData, x))
     );
     if (ignore) continue;
 
-    const apply = allButDefaultMove.find((afkChannel) =>
+    const apply = afkChannels.find((afkChannel) =>
       afkChannel.apply.some((x) => clientMatchesCollection(clientData, x))
     );
-    const afkChannel = apply ?? defaultMove;
+    const afkChannel = apply ?? defaultAfkChannel;
 
     const maxIdleTime = checkMove(listClient, afkChannel.conditions);
     const maxIdleTimeMinutes = Math.floor(maxIdleTime / 1000 / 60);
