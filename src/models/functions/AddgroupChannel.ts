@@ -1,12 +1,14 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-import TsChannel from "models/teamspeak/TsChannel";
-import TsServergroup from "models/teamspeak/TsServergroup";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
+import TsServergroup, {
+  TsServergroupType,
+} from "models/teamspeak/TsServergroup";
 
 export type AddgroupChannelType = {
-  channel: Types.ObjectId;
-  moveChannel: Types.ObjectId;
-  servergroup: Types.ObjectId;
+  channel: TsChannelType;
+  moveChannel: TsChannelType;
+  servergroup: TsServergroupType;
   message: string;
 };
 

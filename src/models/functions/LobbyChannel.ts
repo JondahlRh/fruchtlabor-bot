@@ -1,13 +1,13 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { PermissionType } from "types/general";
 
-import TsChannel from "models/teamspeak/TsChannel";
-import TsDescription from "models/teamspeak/TsDescription";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
+import TsDescription, { TsDescriptionType } from "models/teamspeak/TsDescription";
 
 export type LobbyChannelType = {
-  channelParent: Types.ObjectId;
-  channelParentSiblings: Types.Array<Types.ObjectId>;
-  description: Types.ObjectId;
+  channelParent: TsChannelType;
+  channelParentSiblings: TsChannelType[];
+  description: TsDescriptionType;
   prefix: string;
   minimum: number;
   clientLimit: number;

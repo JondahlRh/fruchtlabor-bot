@@ -1,9 +1,9 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-import TsServergroup from "models/teamspeak/TsServergroup";
+import TsServergroup, { TsServergroupType } from "models/teamspeak/TsServergroup";
 
 export type JoinMessageType = {
-  servergroup: Types.ObjectId;
+  servergroup: TsServergroupType;
   message: string;
 };
 

@@ -1,12 +1,12 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 import CsServer, { CsServerType } from "models/general/CsServer";
-import TsChannel from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
 export type ServerPlayercountType = {
   title: string;
   description: string;
-  channel: Types.ObjectId;
+  channel: TsChannelType;
   server: CsServerType;
 };
 

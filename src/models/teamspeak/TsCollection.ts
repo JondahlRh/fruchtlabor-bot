@@ -1,14 +1,14 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-import TsChannel from "./TsChannel";
-import TsServergroup from "./TsServergroup";
+import TsChannel, { TsChannelType } from "./TsChannel";
+import TsServergroup, { TsServergroupType } from "./TsServergroup";
 
 export type TsCollectionType = {
   name: string;
   label: string;
-  channels: Types.Array<Types.ObjectId>;
-  channelParents: Types.Array<Types.ObjectId>;
-  servergroups: Types.Array<Types.ObjectId>;
+  channels: TsChannelType[];
+  channelParents: TsChannelType[];
+  servergroups: TsServergroupType[];
 };
 
 const { ObjectId } = mongoose.Schema.Types;

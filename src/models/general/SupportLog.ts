@@ -1,11 +1,11 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 export type SupportLogType = {
   timestamp: Date;
   channel: string;
   client: string;
-  supportClientsListed: Types.Array<string>;
-  supportClientsContact: Types.Array<string>;
+  supportClientsListed: string[];
+  supportClientsContact: string[];
 };
 
 const SupportLogSchema = new mongoose.Schema<SupportLogType>({

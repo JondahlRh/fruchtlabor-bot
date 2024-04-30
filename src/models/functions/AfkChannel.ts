@@ -1,16 +1,16 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-import TsChannel from "models/teamspeak/TsChannel";
-import TsCollection from "models/teamspeak/TsCollection";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
+import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
 
 export type AfkChannelType = {
   isDefault: boolean;
   moveChannel: {
-    member: Types.ObjectId;
-    teammember: Types.ObjectId;
+    member: TsChannelType;
+    teammember: TsChannelType;
   };
-  apply: Types.Array<Types.ObjectId>;
-  ignore: Types.Array<Types.ObjectId>;
+  apply: TsCollectionType[];
+  ignore: TsCollectionType[];
   conditions: {
     general: number;
     micMuted: number;

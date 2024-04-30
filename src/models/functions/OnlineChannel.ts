@@ -1,14 +1,16 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-import TsChannel from "models/teamspeak/TsChannel";
-import TsCollection from "models/teamspeak/TsCollection";
-import TsServergroup from "models/teamspeak/TsServergroup";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
+import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
+import TsServergroup, {
+  TsServergroupType,
+} from "models/teamspeak/TsServergroup";
 
 export type OnlineChannelType = {
-  channel: Types.ObjectId;
-  servergroups: Types.Array<Types.ObjectId>;
+  channel: TsChannelType;
+  servergroups: TsServergroupType[];
   title: string;
-  collections: Types.Array<Types.ObjectId>;
+  collections: TsCollectionType[];
 };
 
 const { ObjectId } = mongoose.Schema.Types;

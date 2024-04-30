@@ -1,12 +1,14 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-import TsChannel from "models/teamspeak/TsChannel";
-import TsCollection from "models/teamspeak/TsCollection";
-import TsServergroup from "models/teamspeak/TsServergroup";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
+import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
+import TsServergroup, {
+  TsServergroupType,
+} from "models/teamspeak/TsServergroup";
 
 export type SupportSpecialType = {
-  servergroup: Types.ObjectId;
-  contactServergroups: Types.Array<Types.ObjectId>;
+  servergroup: TsServergroupType;
+  contactServergroups: TsServergroupType[];
   messagePrefix: {
     text: string;
     color: string;
@@ -14,11 +16,11 @@ export type SupportSpecialType = {
 };
 
 export type SupportMessageType = {
-  channel: Types.ObjectId;
-  contactServergroups: Types.Array<Types.ObjectId>;
+  channel: TsChannelType;
+  contactServergroups: TsServergroupType[];
   messageBody: string;
-  ignore: Types.Array<Types.ObjectId>;
-  doNotDisturb: Types.Array<Types.ObjectId>;
+  ignore: TsCollectionType[];
+  doNotDisturb: TsCollectionType[];
   specials: SupportSpecialType[];
 };
 
