@@ -19,7 +19,7 @@ export const findOneAddgroupChannel = async (channelid: number) => {
   }
 };
 
-export const findDefaultAfkChannel = async () => {
+export const findOneDefaultAfkChannel = async () => {
   try {
     return await AfkChannel.findOne({ isDefault: true }).populate([
       {

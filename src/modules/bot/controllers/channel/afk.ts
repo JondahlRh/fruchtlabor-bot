@@ -1,6 +1,6 @@
 import {
   findAfkChannels,
-  findDefaultAfkChannel,
+  findOneDefaultAfkChannel,
 } from "services/mongodbServices/functions";
 import { findTsServergroups } from "services/mongodbServices/teamspeak";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
@@ -26,7 +26,7 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
   const afkChannels = await findAfkChannels();
   if (afkChannels === null) return;
 
-  const defaultAfkChannel = await findDefaultAfkChannel();
+  const defaultAfkChannel = await findOneDefaultAfkChannel();
   if (!defaultAfkChannel) {
     throw new Error("Afk Channel default is not definded!");
   }
