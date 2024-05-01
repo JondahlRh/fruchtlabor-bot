@@ -12,6 +12,7 @@ const ServerInfoSchema = z.object({
 
 const getChannelDescription = (
   title: string,
+  status: string,
   description: string,
   ip?: string,
   port?: number
@@ -22,9 +23,16 @@ const getChannelDescription = (
   return `[center][table][tr][td][hr][/td][/tr]
 [tr][td]                                                                                                    [/td][/tr]
 [tr][td][center][size=16][b]${title}[/b][/td][/tr]
-[tr][td][center][size=10]${description}[/td][/tr]
+[tr][td][center][size=10]${status}[/td][/tr]
 ${(ip && port && connectData) ?? ""}
-[tr][/tr]\n[tr][td][hr][/td][/tr]`;
+[tr][/tr]\n[tr][td][hr][/td][/tr]
+[tr][/tr]
+${description
+  .split("\n")
+  .map((x) => `[tr][td][center][size=10]${x}[/size][/td][/tr]`)
+  .join("")}
+[tr][/tr]\n[tr][td][hr][/td][/tr]
+`;
 };
 
 const playercount = async (teamspeak: TeamSpeak) => {
@@ -32,7 +40,7 @@ const playercount = async (teamspeak: TeamSpeak) => {
   if (serverPlayercounts === null) return;
 
   for (const serverPlayercount of serverPlayercounts) {
-    const { title, channel, server } = serverPlayercount;
+    const { title, description, channel, server } = serverPlayercount;
 
     let serverInfo;
     try {
@@ -42,13 +50,18 @@ const playercount = async (teamspeak: TeamSpeak) => {
     } catch (error) {} // eslint-disable-line
 
     let status = "Offline";
-    let channelDescription = getChannelDescription(title, "Offline");
+    let channelDescription = getChannelDescription(
+      title,
+      "Offline",
+      description
+    );
 
     if (serverInfo !== undefined) {
       status = `Spieler: ${serverInfo.players}/${serverInfo.max_players}`;
       channelDescription = getChannelDescription(
         title,
         status,
+        description,
         server.ip,
         server.port
       );
