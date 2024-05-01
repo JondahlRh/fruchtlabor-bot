@@ -16,7 +16,7 @@ const envObject = z.object({
   MONGODB_CONNECT: z.string().regex(MONGODB_REGEX),
   MONGODB_DBNAME: z.string(),
   CS_SERVER_DOMAIN: z.string(),
-  API_KEY: z.string(),
+  CS_SERVER_PASSWORD: z.string(),
 });
 
 declare global {
