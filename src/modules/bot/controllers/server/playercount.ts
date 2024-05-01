@@ -16,8 +16,8 @@ const getChannelDescription = (
   ip?: string,
   port?: number
 ) => {
-  const connectData = `[tr][/tr]\n[tr][td][center][size=8]Instaconnect: [url=steam://connect/${ip}:${port}/]hier[/url][/td][/tr]
-[tr][td][center][size=8]${process.env.CS_SERVER_DOMAIN}:${port}[/td][/tr]`;
+  const connectData = `[tr][/tr]\n[tr][td][center][size=8]Instaconnect: [url=steam://connect/${ip}:${port}?appid=730/${process.env.CS_SERVER_PASSWORD}]hier[/url][/td][/tr]
+[tr][td][center][size=8]${process.env.CS_SERVER_DOMAIN}:${port}; password ${process.env.CS_SERVER_PASSWORD}[/td][/tr]`;
 
   return `[center][table][tr][td][hr][/td][/tr]
 [tr][td]                                                                                                    [/td][/tr]

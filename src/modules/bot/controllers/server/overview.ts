@@ -24,7 +24,7 @@ type ServerCategoryServer = {
 const getFullServerlink = (ser: ServerCategoryServer) => {
   return ser.playercount < 0
     ? "[color=#ff4444]Server Offline![/color]"
-    : `[URL=steam://connect/${ser.ip}:${ser.port}/]${process.env.CS_SERVER_DOMAIN}:${ser.port}[/URL]`;
+    : `[URL=steam://connect/${ser.ip}:${ser.port}?appid=730/${process.env.CS_SERVER_PASSWORD}]${process.env.CS_SERVER_DOMAIN}:${ser.port}[/URL]`;
 };
 const getFullPlayercount = (ser: ServerCategoryServer) => {
   const playerCountString = ser.playercount.toString().padStart(2);
