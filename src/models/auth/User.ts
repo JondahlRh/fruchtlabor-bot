@@ -1,15 +1,18 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import Permission, { PermissionType } from "./Permission";
-import Role, { RoleType } from "./Role";
+import Permission, { PermissionZodSchema } from "./Permission";
+import Role, { RoleZodSchema } from "./Role";
 
-export type UserType = {
-  username: string;
-  apikey: string;
-  isOwner: boolean;
-  roles: RoleType[];
-  permissions: PermissionType[];
-};
+export const UserZodSchema = z.object({
+  username: z.string(),
+  apikey: z.string(),
+  isOwner: z.boolean(),
+  roles: z.array(RoleZodSchema),
+  permissions: z.array(PermissionZodSchema),
+});
+
+export type UserType = z.infer<typeof UserZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const UserSchema = new mongoose.Schema<UserType>({

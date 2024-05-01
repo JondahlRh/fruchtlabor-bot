@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import Permission, { PermissionType } from "./Permission";
+import Permission, { PermissionZodSchema } from "./Permission";
 
-export type RoleType = {
-  name: string;
-  permissions: PermissionType[];
-};
+export const RoleZodSchema = z.object({
+  name: z.string(),
+  permissions: z.array(PermissionZodSchema),
+});
+
+export type RoleType = z.infer<typeof RoleZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const RoleSchema = new mongoose.Schema<RoleType>({

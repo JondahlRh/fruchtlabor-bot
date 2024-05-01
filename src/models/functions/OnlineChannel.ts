@@ -1,17 +1,22 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
-import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
+import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsCollection, {
+  TsCollectionZodSchema,
+} from "models/teamspeak/TsCollection";
 import TsServergroup, {
-  TsServergroupType,
+  TsServergroupZodSchema,
 } from "models/teamspeak/TsServergroup";
 
-export type OnlineChannelType = {
-  channel: TsChannelType;
-  servergroups: TsServergroupType[];
-  title: string;
-  collections: TsCollectionType[];
-};
+export const OnlineChannelZodSchema = z.object({
+  channel: TsChannelZodSchema,
+  servergroups: z.array(TsServergroupZodSchema),
+  title: z.string(),
+  collections: z.array(TsCollectionZodSchema),
+});
+
+export type OnlineChannelType = z.infer<typeof OnlineChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const OnlineChannelSchema = new mongoose.Schema<OnlineChannelType>({

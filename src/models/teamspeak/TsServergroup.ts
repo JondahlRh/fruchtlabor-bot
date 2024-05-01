@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-export type TsServergroupType = {
-  id: number;
-  name: string;
-  description: string;
-  isTeammember: boolean;
-};
+export const TsServergroupZodSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+  isTeammember: z.boolean(),
+});
+
+export type TsServergroupType = z.infer<typeof TsServergroupZodSchema>;
 
 const TsServergroupSchema = new mongoose.Schema<TsServergroupType>({
   id: { type: Number, required: true, unique: true },

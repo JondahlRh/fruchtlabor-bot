@@ -1,28 +1,33 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
-import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
+import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsCollection, {
+  TsCollectionZodSchema,
+} from "models/teamspeak/TsCollection";
 import TsServergroup, {
-  TsServergroupType,
+  TsServergroupZodSchema,
 } from "models/teamspeak/TsServergroup";
 
-export type SupportSpecialType = {
-  servergroup: TsServergroupType;
-  contactServergroups: TsServergroupType[];
-  messagePrefix: {
-    text: string;
-    color: string;
-  };
-};
+const SupportSpecialZodSchema = z.object({
+  servergroup: TsServergroupZodSchema,
+  contactServergroups: z.array(TsServergroupZodSchema),
+  messagePrefix: z.object({
+    text: z.string(),
+    color: z.string(),
+  }),
+});
 
-export type SupportMessageType = {
-  channel: TsChannelType;
-  contactServergroups: TsServergroupType[];
-  messageBody: string;
-  ignore: TsCollectionType[];
-  doNotDisturb: TsCollectionType[];
-  specials: SupportSpecialType[];
-};
+export const SupportMessageZodSchema = z.object({
+  channel: TsChannelZodSchema,
+  contactServergroups: z.array(TsServergroupZodSchema),
+  messageBody: z.string(),
+  ignore: z.array(TsCollectionZodSchema),
+  doNotDisturb: z.array(TsCollectionZodSchema),
+  specials: z.array(SupportSpecialZodSchema),
+});
+
+export type SupportMessageType = z.infer<typeof SupportMessageZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const SupportMessageSchema = new mongoose.Schema<SupportMessageType>({

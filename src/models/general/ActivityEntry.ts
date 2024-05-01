@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-export type ActivityEntryType = {
-  uuid: string;
-  active: number;
-  online: number;
-};
+export const ActivityEntryZodSchema = z.object({
+  uuid: z.string(),
+  active: z.number(),
+  online: z.number(),
+});
+
+export type ActivityEntryType = z.infer<typeof ActivityEntryZodSchema>;
 
 const ActivityEntrySchema = new mongoose.Schema<ActivityEntryType>({
   uuid: { type: String, required: true },

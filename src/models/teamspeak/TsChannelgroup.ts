@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-export type TsChannelgroupType = {
-  id: number;
-  name: string;
-  description: string;
-};
+export const TsChannelgroupZodSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+});
+
+export type TsChannelgroupType = z.infer<typeof TsChannelgroupZodSchema>;
 
 const TsChannelgroupSchema = new mongoose.Schema<TsChannelgroupType>({
   id: { type: Number, required: true, unique: true },

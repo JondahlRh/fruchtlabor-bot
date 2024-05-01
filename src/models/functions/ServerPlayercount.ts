@@ -1,14 +1,17 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import CsServer, { CsServerType } from "models/general/CsServer";
-import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
+import CsServer, { CsServerZodSchema } from "models/general/CsServer";
+import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
 
-export type ServerPlayercountType = {
-  title: string;
-  description: string;
-  channel: TsChannelType;
-  server: CsServerType;
-};
+export const ServerPlayercountZodSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  channel: TsChannelZodSchema,
+  server: CsServerZodSchema,
+});
+
+export type ServerPlayercountType = z.infer<typeof ServerPlayercountZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const ServerPlayercountSchema = new mongoose.Schema<ServerPlayercountType>({

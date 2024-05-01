@@ -1,15 +1,18 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import TsChannel, { TsChannelType } from "./TsChannel";
-import TsServergroup, { TsServergroupType } from "./TsServergroup";
+import TsChannel, { TsChannelZodSchema } from "./TsChannel";
+import TsServergroup, { TsServergroupZodSchema } from "./TsServergroup";
 
-export type TsCollectionType = {
-  name: string;
-  label: string;
-  channels: TsChannelType[];
-  channelParents: TsChannelType[];
-  servergroups: TsServergroupType[];
-};
+export const TsCollectionZodSchema = z.object({
+  name: z.string(),
+  label: z.string(),
+  channels: z.array(TsChannelZodSchema),
+  channelParents: z.array(TsChannelZodSchema),
+  servergroups: z.array(TsServergroupZodSchema),
+});
+
+export type TsCollectionType = z.infer<typeof TsCollectionZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const TsCollectionSchema = new mongoose.Schema<TsCollectionType>({

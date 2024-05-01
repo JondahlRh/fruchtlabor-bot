@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
 import TsServergroup, {
-  TsServergroupType,
+  TsServergroupZodSchema,
 } from "models/teamspeak/TsServergroup";
 
-export type JoinMessageType = {
-  servergroup: TsServergroupType;
-  message: string;
-};
+export const JoinMessageZodSchema = z.object({
+  servergroup: TsServergroupZodSchema,
+  message: z.string(),
+});
+
+export type JoinMessageType = z.infer<typeof JoinMessageZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const JoinMessageSchema = new mongoose.Schema<JoinMessageType>({

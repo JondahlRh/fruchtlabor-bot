@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-export type CsServerType = {
-  name: string;
-  description: string;
-  ip: string;
-  port: number;
-};
+export const CsServerZodSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  ip: z.string(),
+  port: z.number(),
+});
+
+export type CsServerType = z.infer<typeof CsServerZodSchema>;
 
 const CsServerSchema = new mongoose.Schema<CsServerType>({
   name: { type: String, required: true, unique: true },
