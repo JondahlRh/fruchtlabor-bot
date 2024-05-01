@@ -3,7 +3,6 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import checkApikey from "./controllers/checkApikey";
 import { unknownRouteController, errorController } from "./controllers/error";
 import channel from "./routes/channel";
 import client from "./routes/client";
@@ -19,8 +18,6 @@ export default (teamspeak: TeamSpeak) => {
   app.use(cors());
 
   app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-  app.use(checkApikey);
 
   app.use("/v1/servergroup", servergroup(teamspeak));
   app.use("/v1/channel", channel(teamspeak));

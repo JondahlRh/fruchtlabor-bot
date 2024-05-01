@@ -1,11 +1,28 @@
 components:
   schemas:
-    AuthError:
+    AuthForbidden:
       type: object
       properties:
         message:
           type: string
-          default: Api key is not valid!
+          default: Forbidden!
+        status:
+          type: number
+          default: 403
+        data:
+          type: string
+          default: null
+      value:
+        message: Forbidden!
+        status: 403
+        data: null
+
+    AuthUnauthorized:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Unauthorized!
         status:
           type: number
           default: 401
@@ -13,7 +30,7 @@ components:
           type: string
           default: null
       value:
-        message: Api key is not valid!
+        message: Unauthorized!
         status: 401
         data: null
 
