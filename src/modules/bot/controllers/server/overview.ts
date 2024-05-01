@@ -50,7 +50,10 @@ ${WIDTH_DEFINER}
 [tr][th][size=16]${title}[/size][/th][/tr]
 [tr][th][size=12]${subtitle}[/size][/th][/tr]
 [tr][/tr]
-[tr][td][center][size=10]${description}[/size][/td][/tr]
+${description
+  .split("\n")
+  .map((x) => `[tr][td][center][size=10]${x}[/size][/td][/tr]`)
+  .join("")}
 [tr][/tr]
 [tr][td][hr][/td][/tr]
 [tr][/tr]
