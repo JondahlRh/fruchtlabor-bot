@@ -85,6 +85,23 @@ components:
         status: 400
         data: null
 
+    UnknownDatabaseError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: An unknown database error occured!
+        status:
+          type: number
+          default: 500
+        data:
+          type: string
+          default: null
+      value:
+        message: An unknown database error occured!
+        status: 500
+        data: null
+
     UnknownRouteError:
       type: object
       properties:
