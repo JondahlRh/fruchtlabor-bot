@@ -3,7 +3,7 @@ import { findOneUser } from "services/mongodbServices/auth";
 
 import { AuthForbidden, AuthUnauthorized } from "classes/htmlErrors";
 
-import restrictedNext from "../utility/restrictedNext";
+import restrictedNext from "modules/api/utility/restrictedNext";
 
 export default (permission: string): RequestHandler => {
   return async (req, res, next) => {

@@ -3,7 +3,7 @@ import { TeamSpeak } from "ts3-nodejs-library";
 
 import servergroup from "modules/api/controllers/servergroup";
 
-import authCheck from "../middlewares/authCheck";
+import authCheck from "modules/api/middlewares/authCheck";
 
 export default (teamspeak: TeamSpeak) => {
   const route = Router();
