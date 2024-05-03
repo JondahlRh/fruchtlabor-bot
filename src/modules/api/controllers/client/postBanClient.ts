@@ -13,12 +13,8 @@ import restrictedResponse from "modules/api/utility/restrictedResponse";
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {
     const requestBody = PostBanClientSchema.safeParse(req.body);
-
     if (!requestBody.success) {
-      return restrictedNext(
-        next,
-        new RequestBodyError(fromZodError(requestBody.error).toString())
-      );
+      return restrictedNext(next, new RequestBodyError(requestBody.error));
     }
 
     const { client, banreason } = requestBody.data;

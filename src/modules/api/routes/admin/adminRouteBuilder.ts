@@ -51,9 +51,7 @@ export default <T>(
   route.post(`/${path}`, async (req, res, next) => {
     const reqBody = zodSchema.safeParse(req.body);
     if (!reqBody.success) {
-      const error = new RequestBodyError(
-        fromZodError(reqBody.error).toString()
-      );
+      const error = new RequestBodyError(reqBody.error);
       return restrictedNext(next, error);
     }
 
@@ -74,9 +72,7 @@ export default <T>(
 
     const reqBody = zodSchema.partial().safeParse(req.body);
     if (!reqBody.success) {
-      const error = new RequestBodyError(
-        fromZodError(reqBody.error).toString()
-      );
+      const error = new RequestBodyError(reqBody.error);
       return restrictedNext(next, error);
     }
 
