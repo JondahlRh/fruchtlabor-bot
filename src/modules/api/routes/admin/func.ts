@@ -32,37 +32,37 @@ export default () => {
   const route = Router();
 
   route.use(
-    adminRouteBuilder(
-      "addgroupChannel",
-      AddgroupChannel,
-      AddgroupChannelZodSchema
-    )
+    "/addgroupChannel",
+    adminRouteBuilder(AddgroupChannel, AddgroupChannelZodSchema)
   );
-  route.use(adminRouteBuilder("afkChannel", AfkChannel, AfkChannelZodSchema));
+  route.use("/afkChannel", adminRouteBuilder(AfkChannel, AfkChannelZodSchema));
   route.use(
-    adminRouteBuilder("customChannel", CustomChannel, CustomChannelZodSchema)
+    "/customChannel",
+    adminRouteBuilder(CustomChannel, CustomChannelZodSchema)
   );
   route.use(
-    adminRouteBuilder("joinMessage", JoinMessage, JoinMessageZodSchema)
+    "/joinMessage",
+    adminRouteBuilder(JoinMessage, JoinMessageZodSchema)
   );
   route.use(
-    adminRouteBuilder("lobbyChannel", LobbyChannel, LobbyChannelZodSchema)
+    "/lobbyChannel",
+    adminRouteBuilder(LobbyChannel, LobbyChannelZodSchema)
   );
   route.use(
-    adminRouteBuilder("onlineChannel", OnlineChannel, OnlineChannelZodSchema)
+    "/onlineChannel",
+    adminRouteBuilder(OnlineChannel, OnlineChannelZodSchema)
   );
   route.use(
-    adminRouteBuilder("serverOverview", ServerOverview, ServerOverviewZodSchema)
+    "/serverOverview",
+    adminRouteBuilder(ServerOverview, ServerOverviewZodSchema)
   );
   route.use(
-    adminRouteBuilder(
-      "serverPlayercount",
-      ServerPlayercount,
-      ServerPlayercountZodSchema
-    )
+    "/serverPlayercount",
+    adminRouteBuilder(ServerPlayercount, ServerPlayercountZodSchema)
   );
   route.use(
-    adminRouteBuilder("supportMessage", SupportMessage, SupportMessageZodSchema)
+    "/supportMessage",
+    adminRouteBuilder(SupportMessage, SupportMessageZodSchema)
   );
 
   return route;

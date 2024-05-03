@@ -9,9 +9,9 @@ import adminRouteBuilder from "./adminRouteBuilder";
 export default () => {
   const route = Router();
 
-  route.use(adminRouteBuilder("permission", Permission, PermissionZodSchema));
-  route.use(adminRouteBuilder("role", Role, RoleZodSchema));
-  route.use(adminRouteBuilder("user", User, UserZodSchema));
+  route.use("/permission", adminRouteBuilder(Permission, PermissionZodSchema));
+  route.use("/role", adminRouteBuilder(Role, RoleZodSchema));
+  route.use("/user", adminRouteBuilder(User, UserZodSchema));
 
   return route;
 };

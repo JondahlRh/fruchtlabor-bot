@@ -17,15 +17,17 @@ export default () => {
   const route = Router();
 
   route.use(
-    adminRouteBuilder("activityEntry", ActivityEntry, ActivityEntryZodSchema)
+    "/activityEntry",
+    adminRouteBuilder(ActivityEntry, ActivityEntryZodSchema)
   );
   route.use(
-    adminRouteBuilder("activityEntryD", ActivityEntryD, ActivityEntryDZodSchema)
+    "/activityEntryD",
+    adminRouteBuilder(ActivityEntryD, ActivityEntryDZodSchema)
   );
-  route.use(adminRouteBuilder("asyncError", AsyncError, AsyncErrorZodSchema));
-  route.use(adminRouteBuilder("csServer", CsServer, CsServerZodSchema));
-  route.use(adminRouteBuilder("fruit", Fruit, FruitZodSchema));
-  route.use(adminRouteBuilder("supportLog", SupportLog, SupportLogZodSchema));
+  route.use("/asyncError", adminRouteBuilder(AsyncError, AsyncErrorZodSchema));
+  route.use("/csServer", adminRouteBuilder(CsServer, CsServerZodSchema));
+  route.use("/fruit", adminRouteBuilder(Fruit, FruitZodSchema));
+  route.use("/supportLog", adminRouteBuilder(SupportLog, SupportLogZodSchema));
 
   return route;
 };

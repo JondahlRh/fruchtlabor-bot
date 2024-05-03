@@ -19,18 +19,22 @@ import adminRouteBuilder from "./adminRouteBuilder";
 export default () => {
   const route = Router();
 
-  route.use(adminRouteBuilder("channel", TsChannel, TsChannelZodSchema));
+  route.use("/channel", adminRouteBuilder(TsChannel, TsChannelZodSchema));
   route.use(
-    adminRouteBuilder("channelgroup", TsChannelgroup, TsChannelgroupZodSchema)
+    "/channelgroup",
+    adminRouteBuilder(TsChannelgroup, TsChannelgroupZodSchema)
   );
   route.use(
-    adminRouteBuilder("collection", TsCollection, TsCollectionZodSchema)
+    "/collection",
+    adminRouteBuilder(TsCollection, TsCollectionZodSchema)
   );
   route.use(
-    adminRouteBuilder("description", TsDescription, TsDescriptionZodSchema)
+    "/description",
+    adminRouteBuilder(TsDescription, TsDescriptionZodSchema)
   );
   route.use(
-    adminRouteBuilder("servergroup", TsServergroup, TsServergroupZodSchema)
+    "/servergroup",
+    adminRouteBuilder(TsServergroup, TsServergroupZodSchema)
   );
 
   return route;

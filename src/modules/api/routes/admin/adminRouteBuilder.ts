@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { Model } from "mongoose";
 import { z } from "zod";
-import { fromZodError } from "zod-validation-error";
 
 import {
   IdError,
@@ -16,13 +15,12 @@ import restrictedNext from "modules/api/utility/restrictedNext";
 import restrictedResponse from "modules/api/utility/restrictedResponse";
 
 export default <T>(
-  path: string,
   model: Model<T>,
   zodSchema: z.ZodObject<z.ZodRawShape & { [K in keyof T]: z.ZodType<T[K]> }>
 ) => {
   const route = Router();
 
-  route.get(`/${path}`, async (req, res, next) => {
+  route.get("/", async (req, res, next) => {
     let data: Model<T>[];
     try {
       data = await model.find();
@@ -33,7 +31,7 @@ export default <T>(
     restrictedResponse(res, new ListDataResponse(data));
   });
 
-  route.get(`/${path}/:id`, async (req, res, next) => {
+  route.get("/:id", async (req, res, next) => {
     const paramId = req.params.id;
     if (!paramId) return restrictedNext(next, new RequestParamIdError());
 
@@ -48,7 +46,7 @@ export default <T>(
     restrictedResponse(res, new SingleDataResponse(data));
   });
 
-  route.post(`/${path}`, async (req, res, next) => {
+  route.post("/", async (req, res, next) => {
     const reqBody = zodSchema.safeParse(req.body);
     if (!reqBody.success) {
       const error = new RequestBodyError(reqBody.error);
@@ -66,7 +64,7 @@ export default <T>(
     restrictedResponse(res, new SingleDataResponse(dbId));
   });
 
-  route.patch(`/${path}/:id`, async (req, res, next) => {
+  route.patch("/:id", async (req, res, next) => {
     const paramId = req.params.id;
     if (!paramId) return restrictedNext(next, new RequestParamIdError());
 
@@ -89,7 +87,7 @@ export default <T>(
     restrictedResponse(res, new SingleDataResponse(dbId));
   });
 
-  route.delete(`/${path}/:id`, async (req, res, next) => {
+  route.delete("/:id", async (req, res, next) => {
     const paramId = req.params.id;
     if (!paramId) return restrictedNext(next, new RequestParamIdError());
 
