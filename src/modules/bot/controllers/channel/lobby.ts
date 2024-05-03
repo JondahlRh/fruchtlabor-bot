@@ -1,10 +1,11 @@
-import { findLobbyChannels } from "services/mongodbServices/functions";
-import { findFruits } from "services/mongodbServices/general";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import Fruit from "models/general/Fruit";
 
 import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
+
+import { findLobbyChannels } from "services/mongodbServices/functions";
+import { findFruits } from "services/mongodbServices/general";
 
 const eventQueue: TeamSpeak[] = [];
 let isProcessing = false;

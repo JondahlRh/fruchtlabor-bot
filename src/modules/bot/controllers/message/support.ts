@@ -1,8 +1,9 @@
-import { findOneSupportMessage } from "services/mongodbServices/functions";
-import { saveSupportLog } from "services/mongodbServices/general";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper";
+
+import { findOneSupportMessage } from "services/mongodbServices/functions";
+import { saveSupportLog } from "services/mongodbServices/general";
 
 const messageSupport = async (
   teamspeak: TeamSpeak,

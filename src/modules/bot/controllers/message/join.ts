@@ -1,5 +1,6 @@
-import { findJoinMessages } from "services/mongodbServices/functions";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
+
+import { findJoinMessages } from "services/mongodbServices/functions";
 
 const messageJoin = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   const joinMessages = await findJoinMessages();

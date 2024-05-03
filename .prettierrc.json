@@ -22,6 +22,8 @@
     "^classes/*",
     "^models/*",
     "^modules/*",
+    "^services/*",
+    "^types/*",
     "^utility/*",
     "^[./]"
   ],

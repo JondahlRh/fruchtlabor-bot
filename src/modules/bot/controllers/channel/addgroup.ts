@@ -1,5 +1,6 @@
-import { findOneAddgroupChannel } from "services/mongodbServices/functions";
 import { TeamSpeakClient } from "ts3-nodejs-library";
+
+import { findOneAddgroupChannel } from "services/mongodbServices/functions";
 
 const addgroup = async (client: TeamSpeakClient) => {
   const channelAddgroup = await findOneAddgroupChannel(+client.cid);

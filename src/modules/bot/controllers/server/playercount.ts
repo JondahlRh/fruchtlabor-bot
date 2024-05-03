@@ -1,7 +1,8 @@
-import { findServerPlayercounts } from "services/mongodbServices/functions";
 import query from "source-server-query";
 import { TeamSpeak } from "ts3-nodejs-library";
 import { z } from "zod";
+
+import { findServerPlayercounts } from "services/mongodbServices/functions";
 
 const ServerInfoSchema = z.object({
   name: z.string(),

@@ -1,4 +1,5 @@
 import { TeamSpeak, TeamSpeakChannel } from "ts3-nodejs-library";
+
 import { TsPermissionType } from "types/general";
 
 const tsChannelSetPermHelper = async (

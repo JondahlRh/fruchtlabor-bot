@@ -1,13 +1,14 @@
-import {
-  findAfkChannels,
-  findOneDefaultAfkChannel,
-} from "services/mongodbServices/functions";
-import { findTsServergroups } from "services/mongodbServices/teamspeak";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import { AfkChannelConditionsType } from "models/functions/AfkChannel";
 
 import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper";
+
+import {
+  findAfkChannels,
+  findOneDefaultAfkChannel,
+} from "services/mongodbServices/functions";
+import { findTsServergroups } from "services/mongodbServices/teamspeak";
 
 const checkMove = (
   client: TeamSpeakClient,

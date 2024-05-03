@@ -1,4 +1,3 @@
-import { findOnlineChannels } from "services/mongodbServices/functions";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import { TsCollectionType } from "models/teamspeak/TsCollection";
@@ -7,6 +6,8 @@ import {
   ClientData,
   clientMatchesCollectionsSorted,
 } from "modules/bot/utility/tsCollectionHelper";
+
+import { findOnlineChannels } from "services/mongodbServices/functions";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
   if (!clientData.channel || !clientData.channelParent) {

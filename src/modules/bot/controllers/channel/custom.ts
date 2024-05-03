@@ -1,7 +1,8 @@
-import { findOneCustomChannel } from "services/mongodbServices/functions";
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
+
+import { findOneCustomChannel } from "services/mongodbServices/functions";
 
 import botMove from "./botMove";
 

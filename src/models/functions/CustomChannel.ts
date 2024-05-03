@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
-import { TsPermissionZodSchema } from "types/general";
 import { z } from "zod";
 
 import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
 import TsChannelgroup, {
   TsChannelgroupZodSchema,
 } from "models/teamspeak/TsChannelgroup";
+
+import { TsPermissionZodSchema } from "types/general";
 
 export const CustomChannelZodSchema = z.object({
   channelParent: TsChannelZodSchema,

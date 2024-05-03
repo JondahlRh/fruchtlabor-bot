@@ -1,5 +1,6 @@
-import { findTsBotChannel } from "services/mongodbServices/teamspeak";
 import { TeamSpeak } from "ts3-nodejs-library";
+
+import { findTsBotChannel } from "services/mongodbServices/teamspeak";
 
 const botMove = async (teamspeak: TeamSpeak) => {
   const self = await teamspeak.self();
