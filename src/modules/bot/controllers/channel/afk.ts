@@ -7,8 +7,8 @@ import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper"
 import {
   findAfkChannels,
   findOneDefaultAfkChannel,
-} from "services/mongodbServices/functions";
-import { findTsServergroups } from "services/mongodbServices/teamspeak";
+} from "services/mongodbServices/functions/afkChannel";
+import { findTsServergroups } from "services/mongodbServices/teamspeak/tsServergroup";
 
 const checkMove = (
   client: TeamSpeakClient,
@@ -26,7 +26,6 @@ const checkMove = (
 
 const channelAfk = async (teamspeak: TeamSpeak) => {
   const afkChannels = await findAfkChannels();
-  if (afkChannels === null) return;
 
   const defaultAfkChannel = await findOneDefaultAfkChannel();
   if (!defaultAfkChannel) {
@@ -36,7 +35,6 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
   const tsServergroups = await findTsServergroups();
-  if (tsServergroups === null) return;
 
   for (const listClient of clientList) {
     if (listClient.type === 1) continue;

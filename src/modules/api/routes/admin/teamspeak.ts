@@ -1,40 +1,60 @@
 import { Router } from "express";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
-import TsChannelgroup, {
-  TsChannelgroupZodSchema,
-} from "models/teamspeak/TsChannelgroup";
-import TsCollection, {
-  TsCollectionZodSchema,
-} from "models/teamspeak/TsCollection";
-import TsDescription, {
-  TsDescriptionZodSchema,
-} from "models/teamspeak/TsDescription";
-import TsServergroup, {
-  TsServergroupZodSchema,
-} from "models/teamspeak/TsServergroup";
+import TsChannel from "models/teamspeak/TsChannel";
+import TsChannelgroup from "models/teamspeak/TsChannelgroup";
+import TsCollection from "models/teamspeak/TsCollection";
+import TsDescription from "models/teamspeak/TsDescription";
+import TsServergroup from "models/teamspeak/TsServergroup";
+
+import {
+  findTsChannelById,
+  findTsChannels,
+} from "services/mongodbServices/teamspeak/tsChannel";
+import {
+  findTsChannelgroupById,
+  findTsChannelgroups,
+} from "services/mongodbServices/teamspeak/tsChannelgroup";
+import {
+  findTsCollectionById,
+  findTsCollections,
+} from "services/mongodbServices/teamspeak/tsCollection";
+import {
+  findTsDescriptionById,
+  findTsDescriptions,
+} from "services/mongodbServices/teamspeak/tsDescription";
+import {
+  findTsServergroupById,
+  findTsServergroups,
+} from "services/mongodbServices/teamspeak/tsServergroup";
 
 import adminRouteBuilder from "./adminRouteBuilder";
 
 export default () => {
   const route = Router();
 
-  route.use("/channel", adminRouteBuilder(TsChannel, TsChannelZodSchema));
   route.use(
-    "/channelgroup",
-    adminRouteBuilder(TsChannelgroup, TsChannelgroupZodSchema)
+    "/tschannel",
+    adminRouteBuilder(TsChannel, findTsChannels, findTsChannelById)
   );
   route.use(
-    "/collection",
-    adminRouteBuilder(TsCollection, TsCollectionZodSchema)
+    "/tschannelgroup",
+    adminRouteBuilder(
+      TsChannelgroup,
+      findTsChannelgroups,
+      findTsChannelgroupById
+    )
   );
   route.use(
-    "/description",
-    adminRouteBuilder(TsDescription, TsDescriptionZodSchema)
+    "/tscollection",
+    adminRouteBuilder(TsCollection, findTsCollections, findTsCollectionById)
   );
   route.use(
-    "/servergroup",
-    adminRouteBuilder(TsServergroup, TsServergroupZodSchema)
+    "/tsdescription",
+    adminRouteBuilder(TsDescription, findTsDescriptions, findTsDescriptionById)
+  );
+  route.use(
+    "/tsservergroup",
+    adminRouteBuilder(TsServergroup, findTsServergroups, findTsServergroupById)
   );
 
   return route;

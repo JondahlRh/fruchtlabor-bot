@@ -1,12 +1,7 @@
 import { Router } from "express";
 import { Model } from "mongoose";
-import { z } from "zod";
 
-import {
-  IdError,
-  RequestBodyError,
-  RequestParamIdError,
-} from "classes/htmlErrors";
+import { IdError, RequestParamIdError } from "classes/htmlErrors";
 import UnknownDatabaseError from "classes/htmlErrors/UnknownDatabaseError";
 import ListDataResponse from "classes/htmlSuccesses/ListDataResponse";
 import SingleDataResponse from "classes/htmlSuccesses/SingleDataResponse";
@@ -14,16 +9,27 @@ import SingleDataResponse from "classes/htmlSuccesses/SingleDataResponse";
 import restrictedNext from "modules/api/utility/restrictedNext";
 import restrictedResponse from "modules/api/utility/restrictedResponse";
 
+/* 
+type ZodSchemaType<T> = z.ZodObject<{
+  [K in keyof T]: T[K] extends object[]
+    ? z.ZodArray<z.ZodString> | z.ZodType<T[K]>
+    : T[K] extends object
+      ? z.ZodString | z.ZodType<T[K]>
+      : z.ZodType<T[K]>;
+}>;
+ */
+
 export default <T>(
   model: Model<T>,
-  zodSchema: z.ZodObject<z.ZodRawShape & { [K in keyof T]: z.ZodType<T[K]> }>
+  getService: () => Promise<T[]>,
+  getByIdService: (id: string) => Promise<T | null>
 ) => {
   const route = Router();
 
   route.get("/", async (req, res, next) => {
-    let data: Model<T>[];
+    let data: T[];
     try {
-      data = await model.find();
+      data = await getService();
     } catch (error) {
       return restrictedNext(next, new UnknownDatabaseError());
     }
@@ -35,9 +41,9 @@ export default <T>(
     const paramId = req.params.id;
     if (!paramId) return restrictedNext(next, new RequestParamIdError());
 
-    let data: Model<T> | null;
+    let data: T | null;
     try {
-      data = await model.findById(paramId);
+      data = await getByIdService(paramId);
     } catch (error) {
       return restrictedNext(next, new UnknownDatabaseError());
     }
@@ -47,15 +53,9 @@ export default <T>(
   });
 
   route.post("/", async (req, res, next) => {
-    const reqBody = zodSchema.safeParse(req.body);
-    if (!reqBody.success) {
-      const error = new RequestBodyError(reqBody.error);
-      return restrictedNext(next, error);
-    }
-
     let dbId: string | undefined;
     try {
-      const data = await model.create(reqBody.data);
+      const data = await model.create(req.body);
       dbId = data._id?.toString();
     } catch (error) {
       return restrictedNext(next, new UnknownDatabaseError());
@@ -68,15 +68,9 @@ export default <T>(
     const paramId = req.params.id;
     if (!paramId) return restrictedNext(next, new RequestParamIdError());
 
-    const reqBody = zodSchema.partial().safeParse(req.body);
-    if (!reqBody.success) {
-      const error = new RequestBodyError(reqBody.error);
-      return restrictedNext(next, error);
-    }
-
     let dbId: string | undefined;
     try {
-      const data = await model.findByIdAndUpdate(paramId, reqBody.data);
+      const data = await model.findByIdAndUpdate(paramId, req.body);
       if (!data) return restrictedNext(next, new IdError(paramId));
 
       dbId = data._id?.toString();

@@ -1,17 +1,27 @@
 import { Router } from "express";
 
-import Permission, { PermissionZodSchema } from "models/auth/Permission";
-import Role, { RoleZodSchema } from "models/auth/Role";
-import User, { UserZodSchema } from "models/auth/User";
+import Permission from "models/auth/Permission";
+import Role from "models/auth/Role";
+import User from "models/auth/User";
+
+import {
+  findPermissionById,
+  findPermissions,
+} from "services/mongodbServices/auth/permission";
+import { findRoleById, findRoles } from "services/mongodbServices/auth/role";
+import { findUserById, findUsers } from "services/mongodbServices/auth/user";
 
 import adminRouteBuilder from "./adminRouteBuilder";
 
 export default () => {
   const route = Router();
 
-  route.use("/permission", adminRouteBuilder(Permission, PermissionZodSchema));
-  route.use("/role", adminRouteBuilder(Role, RoleZodSchema));
-  route.use("/user", adminRouteBuilder(User, UserZodSchema));
+  route.use(
+    "/permission",
+    adminRouteBuilder(Permission, findPermissions, findPermissionById)
+  );
+  route.use("/role", adminRouteBuilder(Role, findRoles, findRoleById));
+  route.use("/user", adminRouteBuilder(User, findUsers, findUserById));
 
   return route;
 };

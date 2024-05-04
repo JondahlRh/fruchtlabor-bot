@@ -1,15 +1,31 @@
 import { Router } from "express";
 
-import ActivityEntry, {
-  ActivityEntryZodSchema,
-} from "models/general/ActivityEntry";
-import ActivityEntryD, {
-  ActivityEntryDZodSchema,
-} from "models/general/ActivityEntryD";
-import AsyncError, { AsyncErrorZodSchema } from "models/general/AsyncError";
-import CsServer, { CsServerZodSchema } from "models/general/CsServer";
-import Fruit, { FruitZodSchema } from "models/general/Fruit";
-import SupportLog, { SupportLogZodSchema } from "models/general/SupportLog";
+import ActivityEntry from "models/general/ActivityEntry";
+import AsyncError from "models/general/AsyncError";
+import CsServer from "models/general/CsServer";
+import Fruit from "models/general/Fruit";
+import SupportLog from "models/general/SupportLog";
+
+import {
+  findActivityEntries,
+  findActivityEntryById,
+} from "services/mongodbServices/general/activityEntry";
+import {
+  findAsyncErrorById,
+  findAsyncErrors,
+} from "services/mongodbServices/general/asyncError";
+import {
+  findCsServerById,
+  findCsServers,
+} from "services/mongodbServices/general/csServer";
+import {
+  findFruitById,
+  findFruits,
+} from "services/mongodbServices/general/fruit";
+import {
+  findSupportLogById,
+  findSupportLogs,
+} from "services/mongodbServices/general/supportLog";
 
 import adminRouteBuilder from "./adminRouteBuilder";
 
@@ -17,17 +33,22 @@ export default () => {
   const route = Router();
 
   route.use(
-    "/activityEntry",
-    adminRouteBuilder(ActivityEntry, ActivityEntryZodSchema)
+    "/activityentry",
+    adminRouteBuilder(ActivityEntry, findActivityEntries, findActivityEntryById)
   );
   route.use(
-    "/activityEntryD",
-    adminRouteBuilder(ActivityEntryD, ActivityEntryDZodSchema)
+    "/asyncerror",
+    adminRouteBuilder(AsyncError, findAsyncErrors, findAsyncErrorById)
   );
-  route.use("/asyncError", adminRouteBuilder(AsyncError, AsyncErrorZodSchema));
-  route.use("/csServer", adminRouteBuilder(CsServer, CsServerZodSchema));
-  route.use("/fruit", adminRouteBuilder(Fruit, FruitZodSchema));
-  route.use("/supportLog", adminRouteBuilder(SupportLog, SupportLogZodSchema));
+  route.use(
+    "/csserver",
+    adminRouteBuilder(CsServer, findCsServers, findCsServerById)
+  );
+  route.use("/fruit", adminRouteBuilder(Fruit, findFruits, findFruitById));
+  route.use(
+    "/supportlog",
+    adminRouteBuilder(SupportLog, findSupportLogs, findSupportLogById)
+  );
 
   return route;
 };

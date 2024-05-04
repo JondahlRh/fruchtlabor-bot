@@ -2,7 +2,7 @@ import query from "source-server-query";
 import { TeamSpeak } from "ts3-nodejs-library";
 import { z } from "zod";
 
-import { findServerOverviews } from "services/mongodbServices/functions";
+import { findServerOverviews } from "services/mongodbServices/functions/serverOverview";
 
 const ServerInfoSchema = z.object({
   name: z.string(),
@@ -76,7 +76,6 @@ ${WIDTH_DEFINER}
 
 const overview = async (teamspeak: TeamSpeak) => {
   const serverOverviews = await findServerOverviews();
-  if (serverOverviews === null) return;
 
   for (const serverOverview of serverOverviews) {
     const { title, subtitle, description, channel, servers } = serverOverview;

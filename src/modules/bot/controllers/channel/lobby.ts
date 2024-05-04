@@ -4,8 +4,8 @@ import Fruit from "models/general/Fruit";
 
 import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
 
-import { findLobbyChannels } from "services/mongodbServices/functions";
-import { findFruits } from "services/mongodbServices/general";
+import { findLobbyChannels } from "services/mongodbServices/functions/lobbyChannel";
+import { findFruits } from "services/mongodbServices/general/fruit";
 
 const eventQueue: TeamSpeak[] = [];
 let isProcessing = false;
@@ -20,10 +20,7 @@ const lobby = async () => {
   if (!teamspeak) return;
 
   const fruitList = await findFruits();
-  if (fruitList === null) return;
-
   const lobbyChannels = await findLobbyChannels();
-  if (lobbyChannels === null) return;
 
   for (const lobbyChannel of lobbyChannels) {
     const channelList = await teamspeak.channelList();

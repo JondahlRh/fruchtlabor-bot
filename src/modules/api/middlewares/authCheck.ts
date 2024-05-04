@@ -4,14 +4,14 @@ import { AuthForbidden, AuthUnauthorized } from "classes/htmlErrors";
 
 import restrictedNext from "modules/api/utility/restrictedNext";
 
-import { findOneUser } from "services/mongodbServices/auth";
+import { findOneUserByApikey } from "services/mongodbServices/auth/user";
 
 export default (permission: string): RequestHandler => {
   return async (req, res, next) => {
     const apikey = req.headers.authorization?.split(" ")[1];
     if (!apikey) return restrictedNext(next, new AuthUnauthorized());
 
-    const user = await findOneUser(apikey);
+    const user = await findOneUserByApikey(apikey);
     if (!user) return restrictedNext(next, new AuthUnauthorized());
 
     if (user.isOwner) return next();

@@ -1,4 +1,4 @@
-import { insertManyActivityEntries } from "services/mongodbServices/general";
+import { insertManyActivityEntries } from "services/mongodbServices/general/activityEntry";
 
 import { AggregatedClients, CachedClient } from "..";
 

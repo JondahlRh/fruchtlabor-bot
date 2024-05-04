@@ -1,30 +1,51 @@
 import { Router } from "express";
 
-import AddgroupChannel, {
-  AddgroupChannelZodSchema,
-} from "models/functions/AddgroupChannel";
-import AfkChannel, { AfkChannelZodSchema } from "models/functions/AfkChannel";
-import CustomChannel, {
-  CustomChannelZodSchema,
-} from "models/functions/CustomChannel";
-import JoinMessage, {
-  JoinMessageZodSchema,
-} from "models/functions/JoinMessage";
-import LobbyChannel, {
-  LobbyChannelZodSchema,
-} from "models/functions/LobbyChannel";
-import OnlineChannel, {
-  OnlineChannelZodSchema,
-} from "models/functions/OnlineChannel";
-import ServerOverview, {
-  ServerOverviewZodSchema,
-} from "models/functions/ServerOverview";
-import ServerPlayercount, {
-  ServerPlayercountZodSchema,
-} from "models/functions/ServerPlayercount";
-import SupportMessage, {
-  SupportMessageZodSchema,
-} from "models/functions/SupportMessage";
+import AddgroupChannel from "models/functions/AddgroupChannel";
+import AfkChannel from "models/functions/AfkChannel";
+import CustomChannel from "models/functions/CustomChannel";
+import JoinMessage from "models/functions/JoinMessage";
+import LobbyChannel from "models/functions/LobbyChannel";
+import OnlineChannel from "models/functions/OnlineChannel";
+import ServerOverview from "models/functions/ServerOverview";
+import ServerPlayercount from "models/functions/ServerPlayercount";
+import SupportMessage from "models/functions/SupportMessage";
+
+import {
+  findAddgroupChannelById,
+  findAddgroupChannels,
+} from "services/mongodbServices/functions/addgroupChannel";
+import {
+  findAfkChannelById,
+  findAfkChannels,
+} from "services/mongodbServices/functions/afkChannel";
+import {
+  findCustomChannelById,
+  findCustomChannels,
+} from "services/mongodbServices/functions/customChannel";
+import {
+  findJoinMessageById,
+  findJoinMessages,
+} from "services/mongodbServices/functions/joinMessage";
+import {
+  findLobbyChannelById,
+  findLobbyChannels,
+} from "services/mongodbServices/functions/lobbyChannel";
+import {
+  findOnlineChannelById,
+  findOnlineChannels,
+} from "services/mongodbServices/functions/onlineChannel";
+import {
+  findServerOverviewById,
+  findServerOverviews,
+} from "services/mongodbServices/functions/serverOverview";
+import {
+  findServerPlayercountById,
+  findServerPlayercounts,
+} from "services/mongodbServices/functions/serverPlayercount";
+import {
+  findSupportMessageById,
+  findSupportMessages,
+} from "services/mongodbServices/functions/supportMessage";
 
 import adminRouteBuilder from "./adminRouteBuilder";
 
@@ -32,37 +53,56 @@ export default () => {
   const route = Router();
 
   route.use(
-    "/addgroupChannel",
-    adminRouteBuilder(AddgroupChannel, AddgroupChannelZodSchema)
-  );
-  route.use("/afkChannel", adminRouteBuilder(AfkChannel, AfkChannelZodSchema));
-  route.use(
-    "/customChannel",
-    adminRouteBuilder(CustomChannel, CustomChannelZodSchema)
-  );
-  route.use(
-    "/joinMessage",
-    adminRouteBuilder(JoinMessage, JoinMessageZodSchema)
+    "/addgroupchannel",
+    adminRouteBuilder(
+      AddgroupChannel,
+      findAddgroupChannels,
+      findAddgroupChannelById
+    )
   );
   route.use(
-    "/lobbyChannel",
-    adminRouteBuilder(LobbyChannel, LobbyChannelZodSchema)
+    "/afkchannel",
+    adminRouteBuilder(AfkChannel, findAfkChannels, findAfkChannelById)
   );
   route.use(
-    "/onlineChannel",
-    adminRouteBuilder(OnlineChannel, OnlineChannelZodSchema)
+    "/customchannel",
+    adminRouteBuilder(CustomChannel, findCustomChannels, findCustomChannelById)
   );
   route.use(
-    "/serverOverview",
-    adminRouteBuilder(ServerOverview, ServerOverviewZodSchema)
+    "/joinmessage",
+    adminRouteBuilder(JoinMessage, findJoinMessages, findJoinMessageById)
   );
   route.use(
-    "/serverPlayercount",
-    adminRouteBuilder(ServerPlayercount, ServerPlayercountZodSchema)
+    "/lobbychannel",
+    adminRouteBuilder(LobbyChannel, findLobbyChannels, findLobbyChannelById)
   );
   route.use(
-    "/supportMessage",
-    adminRouteBuilder(SupportMessage, SupportMessageZodSchema)
+    "/onlinechannel",
+    adminRouteBuilder(OnlineChannel, findOnlineChannels, findOnlineChannelById)
+  );
+  route.use(
+    "/serveroverview",
+    adminRouteBuilder(
+      ServerOverview,
+      findServerOverviews,
+      findServerOverviewById
+    )
+  );
+  route.use(
+    "/serverplayercount",
+    adminRouteBuilder(
+      ServerPlayercount,
+      findServerPlayercounts,
+      findServerPlayercountById
+    )
+  );
+  route.use(
+    "/supportmessage",
+    adminRouteBuilder(
+      SupportMessage,
+      findSupportMessages,
+      findSupportMessageById
+    )
   );
 
   return route;

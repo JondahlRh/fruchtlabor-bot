@@ -2,7 +2,7 @@ import query from "source-server-query";
 import { TeamSpeak } from "ts3-nodejs-library";
 import { z } from "zod";
 
-import { findServerPlayercounts } from "services/mongodbServices/functions";
+import { findServerPlayercounts } from "services/mongodbServices/functions/serverPlayercount";
 
 const ServerInfoSchema = z.object({
   name: z.string(),
@@ -38,7 +38,6 @@ ${description
 
 const playercount = async (teamspeak: TeamSpeak) => {
   const serverPlayercounts = await findServerPlayercounts();
-  if (serverPlayercounts === null) return;
 
   for (const serverPlayercount of serverPlayercounts) {
     const { title, description, channel, server } = serverPlayercount;
