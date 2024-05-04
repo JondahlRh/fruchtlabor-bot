@@ -4,6 +4,8 @@ import Permission from "models/auth/Permission";
 import Role from "models/auth/Role";
 import User from "models/auth/User";
 
+import authCheck from "modules/api/middlewares/authCheck";
+
 import {
   findPermissionById,
   findPermissions,
@@ -18,10 +20,19 @@ export default () => {
 
   route.use(
     "/permission",
+    authCheck("manage_permission"),
     adminRouteBuilder(Permission, findPermissions, findPermissionById)
   );
-  route.use("/role", adminRouteBuilder(Role, findRoles, findRoleById));
-  route.use("/user", adminRouteBuilder(User, findUsers, findUserById));
+  route.use(
+    "/role",
+    authCheck("manage_role"),
+    adminRouteBuilder(Role, findRoles, findRoleById)
+  );
+  route.use(
+    "/user",
+    authCheck("manage_user"),
+    adminRouteBuilder(User, findUsers, findUserById)
+  );
 
   return route;
 };

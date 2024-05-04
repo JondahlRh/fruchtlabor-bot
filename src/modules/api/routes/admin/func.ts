@@ -10,6 +10,8 @@ import ServerOverview from "models/functions/ServerOverview";
 import ServerPlayercount from "models/functions/ServerPlayercount";
 import SupportMessage from "models/functions/SupportMessage";
 
+import authCheck from "modules/api/middlewares/authCheck";
+
 import {
   findAddgroupChannelById,
   findAddgroupChannels,
@@ -54,6 +56,7 @@ export default () => {
 
   route.use(
     "/addgroupchannel",
+    authCheck("manage_addgroupchannel"),
     adminRouteBuilder(
       AddgroupChannel,
       findAddgroupChannels,
@@ -62,26 +65,32 @@ export default () => {
   );
   route.use(
     "/afkchannel",
+    authCheck("manage_afkchannel"),
     adminRouteBuilder(AfkChannel, findAfkChannels, findAfkChannelById)
   );
   route.use(
     "/customchannel",
+    authCheck("manage_customchannel"),
     adminRouteBuilder(CustomChannel, findCustomChannels, findCustomChannelById)
   );
   route.use(
     "/joinmessage",
+    authCheck("manage_joinmessage"),
     adminRouteBuilder(JoinMessage, findJoinMessages, findJoinMessageById)
   );
   route.use(
     "/lobbychannel",
+    authCheck("manage_lobbychannel"),
     adminRouteBuilder(LobbyChannel, findLobbyChannels, findLobbyChannelById)
   );
   route.use(
     "/onlinechannel",
+    authCheck("manage_onlinechannel"),
     adminRouteBuilder(OnlineChannel, findOnlineChannels, findOnlineChannelById)
   );
   route.use(
     "/serveroverview",
+    authCheck("manage_serveroverview"),
     adminRouteBuilder(
       ServerOverview,
       findServerOverviews,
@@ -90,6 +99,7 @@ export default () => {
   );
   route.use(
     "/serverplayercount",
+    authCheck("manage_serverplayercount"),
     adminRouteBuilder(
       ServerPlayercount,
       findServerPlayercounts,
@@ -98,6 +108,7 @@ export default () => {
   );
   route.use(
     "/supportmessage",
+    authCheck("manage_supportmessage"),
     adminRouteBuilder(
       SupportMessage,
       findSupportMessages,
