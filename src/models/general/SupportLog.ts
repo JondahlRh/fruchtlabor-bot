@@ -12,10 +12,10 @@ export type SupportLogType = z.infer<typeof SupportLogZodSchema>;
 
 const SupportLogSchema = new mongoose.Schema<SupportLogType>(
   {
-    channel: { type: String, require: true },
-    client: { type: String, require: true },
-    supportClientsListed: [{ type: String, require: true }],
-    supportClientsContact: [{ type: String, require: true }],
+    channel: { type: String, required: true },
+    client: { type: String, required: true },
+    supportClientsListed: [{ type: String, required: true }],
+    supportClientsContact: [{ type: String, required: true }],
   },
   { timestamps: true }
 );

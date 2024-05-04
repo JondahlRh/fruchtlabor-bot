@@ -19,8 +19,8 @@ export type CustomChannelType = z.infer<typeof CustomChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const CustomChannelSchema = new mongoose.Schema<CustomChannelType>({
-  channelParent: { type: ObjectId, ref: TsChannel, require: true },
-  channelGroup: { type: ObjectId, ref: TsChannelgroup, require: true },
+  channelParent: { type: ObjectId, ref: TsChannel, required: true },
+  channelGroup: { type: ObjectId, ref: TsChannelgroup, required: true },
   prefix: { type: String, default: "" },
   permissions: [
     {

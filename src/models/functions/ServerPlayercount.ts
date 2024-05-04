@@ -17,8 +17,8 @@ const { ObjectId } = mongoose.Schema.Types;
 const ServerPlayercountSchema = new mongoose.Schema<ServerPlayercountType>({
   title: { type: String, required: true },
   description: { type: String, default: "" },
-  channel: { type: ObjectId, ref: TsChannel, require: true },
-  server: { type: ObjectId, ref: CsServer, require: true },
+  channel: { type: ObjectId, ref: TsChannel, required: true },
+  server: { type: ObjectId, ref: CsServer, required: true },
 });
 
 export default mongoose.model<ServerPlayercountType>(

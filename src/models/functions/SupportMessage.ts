@@ -31,19 +31,19 @@ export type SupportMessageType = z.infer<typeof SupportMessageZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const SupportMessageSchema = new mongoose.Schema<SupportMessageType>({
-  channel: { type: ObjectId, ref: TsChannel, require: true },
-  contactServergroups: [{ type: ObjectId, ref: TsServergroup, require: true }],
+  channel: { type: ObjectId, ref: TsChannel, required: true },
+  contactServergroups: [{ type: ObjectId, ref: TsServergroup, required: true }],
   messageBody: { type: String, default: "" },
   ignore: [{ type: ObjectId, ref: TsCollection }],
   doNotDisturb: [{ type: ObjectId, ref: TsCollection }],
   specials: [
     {
-      servergroup: { type: ObjectId, ref: TsServergroup, require: true },
+      servergroup: { type: ObjectId, ref: TsServergroup, required: true },
       contactServergroups: [
-        { type: ObjectId, ref: TsServergroup, require: true },
+        { type: ObjectId, ref: TsServergroup, required: true },
       ],
       messagePrefix: {
-        text: { type: String, require: true },
+        text: { type: String, required: true },
         color: { type: String, default: "ff4444" },
       },
     },

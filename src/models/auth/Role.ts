@@ -12,7 +12,7 @@ export type RoleType = z.infer<typeof RoleZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const RoleSchema = new mongoose.Schema<RoleType>({
-  name: { type: String, require: true },
+  name: { type: String, required: true },
   permissions: [{ type: ObjectId, ref: Permission }],
 });
 

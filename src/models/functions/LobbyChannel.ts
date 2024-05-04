@@ -22,9 +22,9 @@ export type LobbyChannelType = z.infer<typeof LobbyChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const LobbyChannelSchema = new mongoose.Schema<LobbyChannelType>({
-  channelParent: { type: ObjectId, ref: TsChannel, require: true },
-  channelParentSiblings: [{ type: ObjectId, ref: TsChannel, require: true }],
-  description: { type: ObjectId, ref: TsDescription, require: true },
+  channelParent: { type: ObjectId, ref: TsChannel, required: true },
+  channelParentSiblings: [{ type: ObjectId, ref: TsChannel, required: true }],
+  description: { type: ObjectId, ref: TsDescription, required: true },
   prefix: { type: String, default: "" },
   minimum: { type: Number, default: 2 },
   clientLimit: { type: Number, default: -1 },

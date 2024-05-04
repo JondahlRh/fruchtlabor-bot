@@ -16,8 +16,8 @@ export type UserType = z.infer<typeof UserZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const UserSchema = new mongoose.Schema<UserType>({
-  username: { type: String, require: true },
-  apikey: { type: String, require: true },
+  username: { type: String, required: true },
+  apikey: { type: String, required: true },
   isOwner: { type: Boolean, default: false },
   roles: [{ type: ObjectId, ref: Role }],
   permissions: [{ type: ObjectId, ref: Permission }],

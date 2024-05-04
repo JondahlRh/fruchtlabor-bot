@@ -32,8 +32,8 @@ const { ObjectId } = mongoose.Schema.Types;
 const AfkChannelSchema = new mongoose.Schema<AfkChannelType>({
   isDefault: { type: Boolean, default: false },
   moveChannel: {
-    member: { type: ObjectId, ref: TsChannel, require: true },
-    teammember: { type: ObjectId, ref: TsChannel, require: true },
+    member: { type: ObjectId, ref: TsChannel, required: true },
+    teammember: { type: ObjectId, ref: TsChannel, required: true },
   },
   apply: [{ type: ObjectId, ref: TsCollection }],
   ignore: [{ type: ObjectId, ref: TsCollection }],

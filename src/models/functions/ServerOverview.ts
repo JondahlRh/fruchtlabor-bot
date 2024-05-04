@@ -19,8 +19,8 @@ const ServerOverviewSchema = new mongoose.Schema<ServerOverviewType>({
   title: { type: String, required: true },
   subtitle: { type: String, default: "" },
   description: { type: String, default: "" },
-  channel: { type: ObjectId, ref: TsChannel, require: true },
-  servers: [{ type: ObjectId, ref: CsServer, require: true }],
+  channel: { type: ObjectId, ref: TsChannel, required: true },
+  servers: [{ type: ObjectId, ref: CsServer, required: true }],
 });
 
 export default mongoose.model<ServerOverviewType>(

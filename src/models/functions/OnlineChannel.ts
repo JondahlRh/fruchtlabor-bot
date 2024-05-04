@@ -20,9 +20,9 @@ export type OnlineChannelType = z.infer<typeof OnlineChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const OnlineChannelSchema = new mongoose.Schema<OnlineChannelType>({
-  channel: { type: ObjectId, ref: TsChannel, require: true },
-  servergroups: [{ type: ObjectId, ref: TsServergroup, require: true }],
-  title: { type: String, require: true },
+  channel: { type: ObjectId, ref: TsChannel, required: true },
+  servergroups: [{ type: ObjectId, ref: TsServergroup, required: true }],
+  title: { type: String, required: true },
   collections: [{ type: ObjectId, ref: TsCollection }],
 });
 

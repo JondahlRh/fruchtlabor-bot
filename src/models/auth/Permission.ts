@@ -8,7 +8,7 @@ export const PermissionZodSchema = z.object({
 export type PermissionType = z.infer<typeof PermissionZodSchema>;
 
 const PermissionSchema = new mongoose.Schema<PermissionType>({
-  name: { type: String, require: true },
+  name: { type: String, required: true },
 });
 
 export default mongoose.model<PermissionType>("Permission", PermissionSchema);

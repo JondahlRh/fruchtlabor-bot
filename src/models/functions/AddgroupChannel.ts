@@ -17,9 +17,9 @@ export type AddgroupChannelType = z.infer<typeof AddgroupChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const AddgroupChannelSchema = new mongoose.Schema<AddgroupChannelType>({
-  channel: { type: ObjectId, ref: TsChannel, require: true },
-  moveChannel: { type: ObjectId, ref: TsChannel, require: true },
-  servergroup: { type: ObjectId, ref: TsServergroup, require: true },
+  channel: { type: ObjectId, ref: TsChannel, required: true },
+  moveChannel: { type: ObjectId, ref: TsChannel, required: true },
+  servergroup: { type: ObjectId, ref: TsServergroup, required: true },
   message: { type: String, default: "" },
 });
 
