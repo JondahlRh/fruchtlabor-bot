@@ -8,15 +8,6 @@ npm install
 
 ## required files
 
-### .env
-
-<sub>Exposed ip and port outside of docker container
-
-```
-EXPOSED_IP=""
-EXPOSED_PORT=""
-```
-
 ### .env.dev / .env.prod
 
 <sub>Environment variables for development or production
@@ -39,3 +30,9 @@ MONGODB_DBNAME=""
 CS_SERVER_DOMAIN=""
 CS_SERVER_PASSWORD=""
 ```
+
+## optional files
+
+### docker-compose.dev.yml / docker-compose.yml
+
+<sub>Docker compose setup in specific example file

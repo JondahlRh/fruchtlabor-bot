@@ -1,0 +1,13 @@
+services:
+  <name>:
+    build:
+      context: <path_to_folder>
+      dockerfile: Dockerfile.dev
+    container_name: <name>-dev
+    restart: unless-stopped
+    env_file:
+      - <path_to_folder>/.env.dev
+    ports:
+      - "<exposed_host>:<exposed_port>:3000"
+    volumes:
+      - ./app/src:/app/src
