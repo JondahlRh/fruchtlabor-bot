@@ -35,10 +35,8 @@ export const findSupportMessageById = async (id: string) => {
 
 export const findOneSupportMessageByChannelId = async (channelid: number) => {
   try {
-    return await SupportMessage.findOne().populate([
-      ...populate,
-      { path: "channel", match: { id: { $eq: channelid } } },
-    ]);
+    const data = await SupportMessage.find().populate(populate);
+    return data.find((x) => x.channel.id === channelid) ?? null;
   } catch (error) {
     return null;
   }

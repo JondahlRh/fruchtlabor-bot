@@ -20,10 +20,8 @@ export const findCustomChannelById = async (id: string) => {
 
 export const findOneCustomChannelByChannelId = async (channelid: number) => {
   try {
-    return await CustomChannel.findOne().populate([
-      ...populate,
-      { path: "channelParent", match: { id: { $eq: channelid } } },
-    ]);
+    const data = await CustomChannel.find().populate(populate);
+    return data.find((x) => x.channelParent.id === channelid) ?? null;
   } catch (error) {
     return null;
   }

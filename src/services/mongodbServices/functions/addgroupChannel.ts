@@ -20,10 +20,8 @@ export const findAddgroupChannelById = async (id: string) => {
 
 export const findOneAddgroupChannelByChannelId = async (channelid: number) => {
   try {
-    return await AddgroupChannel.findOne().populate([
-      ...populate,
-      { path: "channel", match: { id: { $eq: channelid } } },
-    ]);
+    const data = await AddgroupChannel.find().populate(populate);
+    return data.find((x) => x.channel.id === channelid) ?? null;
   } catch (error) {
     return null;
   }
