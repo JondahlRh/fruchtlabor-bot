@@ -10,7 +10,7 @@ RUN npm ci
 
 
 # development stage
-FROM dependency-stage as development-stage
+FROM node:20-alpine as development-stage
 
 ENV NODE_ENV=development
 
