@@ -8,7 +8,7 @@ import admin from "./routes/admin";
 import channel from "./routes/channel";
 import client from "./routes/client";
 import servergroup from "./routes/servergroup";
-import swaggerSpec from "./utility/swaggerConfig";
+import swaggerDocs from "./swagger";
 
 export default (teamspeak: TeamSpeak) => {
   console.log("feature enabled api");
@@ -18,7 +18,7 @@ export default (teamspeak: TeamSpeak) => {
   app.use(express.json());
   app.use(cors());
 
-  app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.use("/v1/servergroup", servergroup(teamspeak));
   app.use("/v1/channel", channel(teamspeak));
