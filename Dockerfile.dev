@@ -1,6 +1,5 @@
 # dependency stage
 FROM node:20-alpine AS dependency-stage
-
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
@@ -11,6 +10,7 @@ RUN npm ci
 
 # development stage
 FROM node:20-alpine as development-stage
+RUN apk add --no-cache libc6-compat
 
 ENV NODE_ENV=development
 

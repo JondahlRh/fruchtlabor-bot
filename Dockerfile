@@ -1,7 +1,18 @@
 # build dependency stage
 FROM node:20-alpine AS build-dependency-stage
-
 RUN apk add --no-cache libc6-compat
+
+WORKDIR /app
+
+COPY package*.json .
+RUN npm ci
+
+
+# prod dependency stage
+FROM node:20-alpine AS prod-dependency-stage
+RUN apk add --no-cache libc6-compat
+
+ENV NODE_ENV=production
 
 WORKDIR /app
 
@@ -11,6 +22,7 @@ RUN npm ci
 
 # build stage
 FROM node:20-alpine AS build-stage
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -25,21 +37,9 @@ COPY src src
 RUN npm run build
 
 
-# prod dependency stage
-FROM node:20-alpine AS prod-dependency-stage
-
-RUN apk add --no-cache libc6-compat
-
-ENV NODE_ENV=production
-
-WORKDIR /app
-
-COPY package*.json .
-RUN npm ci
-
-
 # prod stage
 FROM node:20-alpine AS prod-stage
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
