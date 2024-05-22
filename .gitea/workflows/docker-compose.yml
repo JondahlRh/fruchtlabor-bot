@@ -3,6 +3,8 @@ services:
     build:
       context: ../..
       dockerfile: Dockerfile
+      args:
+        - INTERNAL_PORT=${INTERNAL_PORT}
     container_name: fruchtlabor-ts-bot-${ENVIRONMENT}
     restart: unless-stopped
     environment:

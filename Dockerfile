@@ -49,7 +49,9 @@ COPY --from=prod-dependency-stage /app/node_modules node_modules
 COPY --from=build-stage /app/build build
 COPY src/modules/api/swagger/*.yml build
 
-ENV INTERNAL_PORT=3000
-EXPOSE 3000
+ARG INTERNAL_PORT
+
+ENV INTERNAL_PORT=${INTERNAL_PORT}
+EXPOSE ${INTERNAL_PORT}
 
 CMD ["node", "build"]
