@@ -12,6 +12,8 @@ RUN npm ci
 FROM node:20-alpine as development-stage
 RUN apk add --no-cache libc6-compat
 
+FROM ghcr.io/puppeteer/puppeteer:latest
+
 ENV NODE_ENV=development
 
 WORKDIR /app

@@ -23,3 +23,11 @@ export const findOneTsBotChannel = async () => {
     return null;
   }
 };
+
+export const findOneTsRulesChannel = async () => {
+  try {
+    return await TsChannel.findOne({ isRulesChannel: true });
+  } catch (error) {
+    return null;
+  }
+};
