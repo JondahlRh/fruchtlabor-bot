@@ -11,7 +11,7 @@ const messageJoin = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
     );
     if (!includesServergroup) continue;
 
-    client.message(joinMessage.message);
+    await client.message(joinMessage.message);
   }
 };
 

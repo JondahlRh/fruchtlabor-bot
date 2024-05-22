@@ -79,7 +79,7 @@ const messageSupport = async (
       messageSuffix = `(Diese weiteren Supporter wurden kontaktiert: ${otherSupporterString})`;
     }
 
-    supportClient.message(messageBody + messageSuffix);
+    await supportClient.message(messageBody + messageSuffix);
   }
 
   const supporterString = supportClientsListed
@@ -96,7 +96,7 @@ const messageSupport = async (
       messageSuffix = `(Diese Supporter wurden kontaktiert: ${supporterString})`;
     }
 
-    supportClient.message(
+    await supportClient.message(
       `[color=#888888][b]INFO[/b] - [/color]${messageBody}${messageSuffix}`
     );
   }
@@ -110,7 +110,7 @@ const messageSupport = async (
     message += `bitte warte kurz, wir helfen dir gleich. ${supportMessage.messageBody} ${followUpStr} Supporter wurden kontaktiert: ${supporterString}`;
   }
 
-  client.message(message);
+  await client.message(message);
 
   await createSupportLog(
     supportMessage.channel,
