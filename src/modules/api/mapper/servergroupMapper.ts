@@ -10,7 +10,7 @@ const servergroupMapper = (
 ): MappedServerGroup => {
   return {
     name: servergroup.name,
-    id: Number(servergroup.sgid),
+    id: +servergroup.sgid,
   };
 };
 

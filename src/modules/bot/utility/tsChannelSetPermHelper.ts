@@ -10,7 +10,7 @@ const tsChannelSetPermHelper = async (
   for (const { key, value } of permissions) {
     await teamspeak.channelSetPerm(channel, {
       permname: key,
-      permvalue: Number(value),
+      permvalue: +value,
     });
   }
 };

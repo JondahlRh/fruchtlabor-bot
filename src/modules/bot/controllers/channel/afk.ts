@@ -73,7 +73,7 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
 
     if (+listClient.cid === moveChannel.id) continue;
 
-    await listClient.move(String(moveChannel.id));
+    await listClient.move(moveChannel.id.toString());
     await listClient.message(
       `Du warst über ${maxIdleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`
     );

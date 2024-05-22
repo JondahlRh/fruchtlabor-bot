@@ -65,13 +65,13 @@ const lobby = async () => {
 
     const extraChanelnames = channelsToBeCreated - unusedFruitList.length;
     for (let i = 0; i < extraChanelnames; i++) {
-      unusedFruitList.push(new Fruit({ name: String(Date.now() + i) }));
+      unusedFruitList.push(new Fruit({ name: (Date.now() + i).toString() }));
     }
 
     const channelSuffixes = unusedFruitList.slice(0, channelsToBeCreated);
     const channelProperties = {
       channelFlagPermanent: true,
-      cpid: String(lobbyChannel.channelParent.id),
+      cpid: lobbyChannel.channelParent.id.toString(),
       channelDescription: lobbyChannel.description.text,
       channelOrder: channelChildren[0]?.order,
       channelFlagMaxclientsUnlimited: lobbyChannel.clientLimit === -1,

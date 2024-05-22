@@ -7,7 +7,7 @@ const messageJoin = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
 
   for (const joinMessage of joinMessages) {
     const includesServergroup = client.servergroups.includes(
-      String(joinMessage.servergroup.id)
+      joinMessage.servergroup.id.toString()
     );
     if (!includesServergroup) continue;
 

@@ -7,19 +7,19 @@ export type MappedClient = {
   dbid: number;
 };
 
-const clientMapper = (client: ClientDBInfo): MappedClient => {
+const clientMapper = (client: ClientDBInfo) => {
   return {
     name: client.clientNickname,
     uuid: client.clientUniqueIdentifier,
-    dbid: Number(client.clientDatabaseId),
+    dbid: +client.clientDatabaseId,
   };
 };
 
-const clientOnlineMapper = (client: TeamSpeakClient): MappedClient => {
+const clientOnlineMapper = (client: TeamSpeakClient) => {
   return {
     name: client.nickname,
     uuid: client.uniqueIdentifier,
-    dbid: Number(client.databaseId),
+    dbid: +client.databaseId,
   };
 };
 

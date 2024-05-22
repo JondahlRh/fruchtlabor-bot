@@ -29,7 +29,7 @@ export default (teamspeak: TeamSpeak) => {
   app.use(unknownRouteController);
   app.use(errorController);
 
-  app.listen(Number(process.env.INTERNAL_PORT), () => {
+  app.listen(+process.env.INTERNAL_PORT, () => {
     console.log(`Listening on Port ${process.env.INTERNAL_PORT}`);
   });
 };

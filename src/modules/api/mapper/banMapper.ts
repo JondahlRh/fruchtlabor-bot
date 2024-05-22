@@ -7,9 +7,9 @@ export type MappedBan = {
   ip: string | null;
 };
 
-const banMapper = (ban: BanEntry): MappedBan => {
+const banMapper = (ban: BanEntry) => {
   return {
-    id: Number(ban.banid),
+    id: +ban.banid,
     reason: ban.reason,
     uuid: ban.uid ?? null,
     ip: ban.ip ?? null,

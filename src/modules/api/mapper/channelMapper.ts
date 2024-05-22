@@ -5,10 +5,10 @@ export type MappedChannel = {
   id: number;
 };
 
-const channelMapper = (channel: TeamSpeakChannel): MappedChannel => {
+const channelMapper = (channel: TeamSpeakChannel) => {
   return {
     name: channel.name,
-    id: Number(channel.cid),
+    id: +channel.cid,
   };
 };
 

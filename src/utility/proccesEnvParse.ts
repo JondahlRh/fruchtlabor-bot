@@ -5,6 +5,8 @@ const PORT_REGEX = /^\d{1,5}$/;
 const MONGODB_REGEX = /^mongodb:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/?$/;
 
 const envObject = z.object({
+  INTERNAL_PORT: z.string().regex(PORT_REGEX),
+
   FEATUREFLAG_BOT: z.union([z.literal("true"), z.literal("false")]),
   FEATUREFLAG_API: z.union([z.literal("true"), z.literal("false")]),
   FEATUREFLAG_ACTIVITY: z.union([z.literal("true"), z.literal("false")]),
