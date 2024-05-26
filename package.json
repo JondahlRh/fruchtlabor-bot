@@ -1,6 +1,6 @@
 {
   "name": "fruchtlaborbot",
-  "version": "3.0.3",
+  "version": "3.1",
   "description": "teamspeak bot for the fruchtlabor cs community",
   "main": "index.js",
   "scripts": {
