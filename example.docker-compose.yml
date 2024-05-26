@@ -10,4 +10,4 @@ services:
     env_file:
       - <path_to_folder>/.env.prod
     ports:
-      - "<exposed_host>:<exposed_port>:3000"
+      - "<exposed_host>:<exposed_port>:<internal_port>"
