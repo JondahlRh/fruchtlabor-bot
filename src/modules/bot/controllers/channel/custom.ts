@@ -6,6 +6,9 @@ import { findOneCustomChannelByChannelId } from "services/mongodbServices/functi
 
 import botMove from "./botMove";
 
+const CHANNEL_NAME_MAX_LENGTH = 40;
+const CHANNEL_DELETE_DELAY = 5;
+
 const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   if (client.type === 1) return;
 
@@ -17,7 +20,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   let tsCustomChannel;
   try {
     const channelGroupClientList = await teamspeak.channelGroupClientList(
-      String(customChannel.channelGroup.id),
+      customChannel.channelGroup.id.toString(),
       undefined,
       client.databaseId
     );
@@ -34,11 +37,14 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
     const channelName = customChannel.prefix
       ? customChannel.prefix.concat(" - ", client.nickname)
       : client.nickname;
-    const slicedChannelName = channelName.slice(-channelName.length, 40);
+    const slicedChannelName = channelName.slice(
+      -channelName.length,
+      CHANNEL_NAME_MAX_LENGTH
+    );
 
     tsCustomChannel = await teamspeak.channelCreate(slicedChannelName, {
       cpid: client.cid,
-      channelDeleteDelay: 5,
+      channelDeleteDelay: CHANNEL_DELETE_DELAY,
     });
 
     await tsChannelSetPermHelper(
@@ -48,7 +54,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
     );
 
     await teamspeak.setClientChannelGroup(
-      String(customChannel.channelGroup.id),
+      customChannel.channelGroup.id.toString(),
       tsCustomChannel.cid,
       client.databaseId
     );

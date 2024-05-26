@@ -6,6 +6,7 @@ export const TsChannelZodSchema = z.object({
   name: z.string(),
   description: z.string(),
   isBotChannel: z.boolean(),
+  isRulesChannel: z.boolean(),
 });
 
 export type TsChannelType = z.infer<typeof TsChannelZodSchema>;
@@ -15,6 +16,7 @@ const TsChannelSchema = new mongoose.Schema<TsChannelType>({
   name: { type: String, required: true, unique: true },
   description: { type: String, default: "" },
   isBotChannel: { type: Boolean, default: false },
+  isRulesChannel: { type: Boolean, default: false },
 });
 
 export default mongoose.model<TsChannelType>("TsChannel", TsChannelSchema);

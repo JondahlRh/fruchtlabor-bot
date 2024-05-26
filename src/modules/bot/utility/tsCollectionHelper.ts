@@ -8,7 +8,7 @@ export type ClientData = {
 
 const checkChannel = (collection: TsCollectionType, clientData: ClientData) => {
   return collection.channels.some((x) => {
-    return String(x.id) === clientData.channel;
+    return x.id.toString() === clientData.channel;
   });
 };
 
@@ -17,7 +17,7 @@ const checkChannelParent = (
   clientData: ClientData
 ) => {
   return collection.channelParents.some((x) => {
-    return String(x.id) === clientData.channelParent;
+    return x.id.toString() === clientData.channelParent;
   });
 };
 
@@ -26,7 +26,7 @@ const checkServergroups = (
   clientData: ClientData
 ) => {
   return collection.servergroups.some((x) => {
-    return clientData.servergroups.includes(String(x.id));
+    return clientData.servergroups.includes(x.id.toString());
   });
 };
 

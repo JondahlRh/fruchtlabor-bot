@@ -106,12 +106,12 @@ const overview = async (teamspeak: TeamSpeak) => {
       mappedServers
     );
 
-    const channelInfo = await teamspeak.channelInfo(String(channel.id));
+    const channelInfo = await teamspeak.channelInfo(channel.id.toString());
     if (channelInfo.channelDescription === channelDescription) {
       continue;
     }
 
-    await teamspeak.channelEdit(String(channel.id), {
+    await teamspeak.channelEdit(channel.id.toString(), {
       channelDescription,
     });
   }

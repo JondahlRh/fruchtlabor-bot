@@ -39,4 +39,9 @@ export default (teamspeak: TeamSpeak) => {
     eHandler(serverController.overview)(teamspeak);
     eHandler(serverController.playercount)(teamspeak);
   });
+
+  eHandler(channelController.rules)(teamspeak);
+  schedule("0 4 * * *", () => {
+    eHandler(channelController.rules)(teamspeak);
+  });
 };

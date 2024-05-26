@@ -1,7 +1,7 @@
 import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 const getDbid = async (teamspeak: TeamSpeak, client: string) => {
-  if (Number.isNaN(Number(client))) {
+  if (Number.isNaN(+client)) {
     const clientDbFind = await teamspeak.clientDbFind(client, true);
     return clientDbFind[0]?.cldbid;
   }

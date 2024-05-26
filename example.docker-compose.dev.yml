@@ -3,6 +3,8 @@ services:
     build:
       context: <path_to_folder>
       dockerfile: Dockerfile.dev
+      args:
+        - INTERNAL_PORT=<internal_port>
     container_name: <name>-dev
     restart: unless-stopped
     env_file:
