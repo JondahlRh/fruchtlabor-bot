@@ -5,7 +5,6 @@ on:
     branches:
       - master
 
-
 env:
   ENVIRONMENT: "prod"
   EXPOSED_HOST: ${{ vars.PROD_EXPOSED_HOST }}
@@ -27,6 +26,8 @@ env:
 
   CS_SERVER_DOMAIN: ${{ vars.PROD_CS_SERVER_DOMAIN }}
   CS_SERVER_PASSWORD: ${{ secrets.PROD_CS_SERVER_PASSWORD }}
+
+  FUNCTIONS_RULES_URL: ${{ vars.PROD_FUNCTIONS_RULES_URL }}
 
 jobs:
   deployment:

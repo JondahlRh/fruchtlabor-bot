@@ -9,7 +9,7 @@ const swaggerDocs = swaggerJSDoc({
         name: 'Jondahl "Gamix" Rhenius',
         email: "jondahlrh@gmail.com",
       },
-      version: "3.1.1",
+      version: "3.1.2",
     },
     components: {
       securitySchemes: {

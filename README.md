@@ -28,6 +28,8 @@ MONGODB_DBNAME=""
 
 CS_SERVER_DOMAIN=""
 CS_SERVER_PASSWORD=""
+
+FUNCTIONS_RULES_URL=""
 ```
 
 ## optional files
