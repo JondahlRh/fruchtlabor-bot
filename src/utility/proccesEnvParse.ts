@@ -9,7 +9,6 @@ const envObject = z.object({
 
   FEATUREFLAG_BOT: z.union([z.literal("true"), z.literal("false")]),
   FEATUREFLAG_API: z.union([z.literal("true"), z.literal("false")]),
-  FEATUREFLAG_ACTIVITY: z.union([z.literal("true"), z.literal("false")]),
 
   TEAMSPEAK_IP: z.string().regex(IP_REGEX),
   TEAMSPEAK_PORT: z.string().regex(PORT_REGEX),
