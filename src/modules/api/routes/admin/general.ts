@@ -1,6 +1,5 @@
 import { Router } from "express";
 
-import ActivityEntry from "models/general/ActivityEntry";
 import AsyncError from "models/general/AsyncError";
 import CsServer from "models/general/CsServer";
 import Fruit from "models/general/Fruit";
@@ -8,10 +7,6 @@ import SupportLog from "models/general/SupportLog";
 
 import authCheck from "modules/api/middlewares/authCheck";
 
-import {
-  findActivityEntries,
-  findActivityEntryById,
-} from "services/mongodbServices/general/activityEntry";
 import {
   findAsyncErrorById,
   findAsyncErrors,
@@ -34,11 +29,6 @@ import adminRouteBuilder from "./adminRouteBuilder";
 export default () => {
   const route = Router();
 
-  route.use(
-    "/activityentry",
-    authCheck("manage_activityentry"),
-    adminRouteBuilder(ActivityEntry, findActivityEntries, findActivityEntryById)
-  );
   route.use(
     "/asyncerror",
     authCheck("manage_asyncerror"),
