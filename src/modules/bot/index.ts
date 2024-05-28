@@ -34,14 +34,14 @@ export default (teamspeak: TeamSpeak) => {
   });
 
   schedule("*/30 * * * * *", () => {
-    eHandler(channelController.online)(teamspeak);
-    eHandler(channelController.afk)(teamspeak);
-    eHandler(serverController.overview)(teamspeak);
-    eHandler(serverController.playercount)(teamspeak);
+    // eHandler(channelController.online)(teamspeak);
+    // eHandler(channelController.afk)(teamspeak);
+    // eHandler(serverController.overview)(teamspeak);
+    // eHandler(serverController.playercount)(teamspeak);
   });
 
-  eHandler(channelController.rules)(teamspeak);
+  // eHandler(channelController.rules)(teamspeak);
   schedule("0 4 * * *", () => {
-    eHandler(channelController.rules)(teamspeak);
+    // eHandler(channelController.rules)(teamspeak);
   });
 };
