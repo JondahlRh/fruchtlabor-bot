@@ -6,8 +6,8 @@ import CustomChannel from "models/functions/CustomChannel";
 import JoinMessage from "models/functions/JoinMessage";
 import LobbyChannel from "models/functions/LobbyChannel";
 import OnlineChannel from "models/functions/OnlineChannel";
-import ServerOverview from "models/functions/ServerOverview";
-import ServerPlayercount from "models/functions/ServerPlayercount";
+import ServerDescription from "models/functions/ServerDescription";
+import ServerTitle from "models/functions/ServerTitle";
 import SupportMessage from "models/functions/SupportMessage";
 
 import authCheck from "modules/api/middlewares/authCheck";
@@ -37,13 +37,13 @@ import {
   findOnlineChannels,
 } from "services/mongodbServices/functions/onlineChannel";
 import {
-  findServerOverviewById,
-  findServerOverviews,
-} from "services/mongodbServices/functions/serverOverview";
+  findServerDescriptionById,
+  findServerDescriptions,
+} from "services/mongodbServices/functions/serverDescription";
 import {
-  findServerPlayercountById,
-  findServerPlayercounts,
-} from "services/mongodbServices/functions/serverPlayercount";
+  findServerTitleById,
+  findServerTitles,
+} from "services/mongodbServices/functions/serverTitle";
 import {
   findSupportMessageById,
   findSupportMessages,
@@ -89,22 +89,18 @@ export default () => {
     adminRouteBuilder(OnlineChannel, findOnlineChannels, findOnlineChannelById)
   );
   route.use(
-    "/serveroverview",
-    authCheck("manage_serveroverview"),
+    "/serverdescription",
+    authCheck("manage_serverdescription"),
     adminRouteBuilder(
-      ServerOverview,
-      findServerOverviews,
-      findServerOverviewById
+      ServerDescription,
+      findServerDescriptions,
+      findServerDescriptionById
     )
   );
   route.use(
-    "/serverplayercount",
-    authCheck("manage_serverplayercount"),
-    adminRouteBuilder(
-      ServerPlayercount,
-      findServerPlayercounts,
-      findServerPlayercountById
-    )
+    "/servertitle",
+    authCheck("manage_servertitle"),
+    adminRouteBuilder(ServerTitle, findServerTitles, findServerTitleById)
   );
   route.use(
     "/supportmessage",

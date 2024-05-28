@@ -1,87 +1,81 @@
-import query from "source-server-query";
 import { TeamSpeak } from "ts3-nodejs-library";
-import { z } from "zod";
 
-import { findServerPlayercounts } from "services/mongodbServices/functions/serverPlayercount";
+import "services/channelDescriptionService";
+import {
+  emptyRow,
+  getBodyRows,
+  getConnectCopy,
+  getConnectLink,
+  getPlayerStatus,
+  getSpacerRow,
+  getSubtitleRow,
+  getTextRow,
+  getTitleRow,
+  horizontalRow,
+} from "services/channelDescriptionService";
+import { findServerTitles } from "services/mongodbServices/functions/serverTitle";
+import { getServerInfo } from "services/sourceServerQueryService";
 
-const ServerInfoSchema = z.object({
-  name: z.string(),
-  map: z.string(),
-  players: z.number(),
-  max_players: z.number(),
-});
+const title = async (teamspeak: TeamSpeak) => {
+  const serverTitles = await findServerTitles();
 
-const getChannelDescription = (
-  title: string,
-  status: string,
-  description: string,
-  ip?: string,
-  port?: number
-) => {
-  const connectData = `[tr][/tr]\n[tr][td][center][size=8]Instaconnect: [url=steam://connect/${ip}:${port}?appid=730/${process.env.CS_SERVER_PASSWORD}]hier[/url][/td][/tr]
-[tr][td][center][size=8]${process.env.CS_SERVER_DOMAIN}:${port}; password ${process.env.CS_SERVER_PASSWORD}[/td][/tr]`;
-
-  return `[center][table][tr][td][hr][/td][/tr]
-[tr][td]                                                                                                    [/td][/tr]
-[tr][td][center][size=16][b]${title}[/b][/td][/tr]
-[tr][td][center][size=10]${status}[/td][/tr]
-${(ip && port && connectData) ?? ""}
-[tr][/tr]\n[tr][td][hr][/td][/tr]
-[tr][/tr]
-${description
-  .split("\n")
-  .map((x) => `[tr][td][center][size=10]${x}[/size][/td][/tr]`)
-  .join("")}
-[tr][/tr]\n[tr][td][hr][/td][/tr]
-`;
-};
-
-const playercount = async (teamspeak: TeamSpeak) => {
-  const serverPlayercounts = await findServerPlayercounts();
-
-  for (const serverPlayercount of serverPlayercounts) {
-    const { title, description, channel, server } = serverPlayercount;
-
-    let serverInfo;
-    try {
-      const serverInfoRaw = await query.info(server.ip, server.port);
-
-      serverInfo = ServerInfoSchema.parse(serverInfoRaw);
-    } catch (error) {} // eslint-disable-line
-
-    let status = "Offline";
-    let channelDescription = getChannelDescription(
-      title,
-      "Offline",
-      description
+  for (const serverTitle of serverTitles) {
+    const serverData = await getServerInfo(
+      serverTitle.server.ip,
+      serverTitle.server.port
     );
 
-    if (serverInfo !== undefined) {
-      status = `Spieler: ${serverInfo.players}/${serverInfo.max_players}`;
-      channelDescription = getChannelDescription(
-        title,
-        status,
-        description,
-        server.ip,
-        server.port
+    let status = "Offline";
+    let connectData = "";
+    if (serverData !== null) {
+      status = getPlayerStatus(serverData);
+
+      connectData += emptyRow;
+
+      const connectLink = getConnectLink(
+        serverTitle.server.ip,
+        serverTitle.server.port
       );
+      connectData += getTextRow(`Instaconnect: ${connectLink}`);
+
+      const connectCopy = getConnectCopy(serverTitle.server.port);
+      connectData += getTextRow(connectCopy);
     }
 
-    const channelName = `● ${title} | ${status}`;
+    const channelName = `● ${serverTitle.prefix} | ${status}`;
 
-    const channelInfo = await teamspeak.channelInfo(channel.id.toString());
+    let channelDescription = "[center][table]\n";
+    channelDescription += horizontalRow;
+    channelDescription += getSpacerRow(120);
+    channelDescription += getTitleRow(serverTitle.title);
+    channelDescription += getSubtitleRow(status);
+    channelDescription += connectData;
+    channelDescription += emptyRow;
+    channelDescription += horizontalRow;
+
+    if (serverTitle.body.length > 0) {
+      channelDescription += emptyRow;
+      channelDescription += getBodyRows(serverTitle.body);
+      channelDescription += emptyRow;
+      channelDescription += horizontalRow;
+    }
+
+    channelDescription += "[/table]\n";
+
+    const channelInfo = await teamspeak.channelInfo(
+      serverTitle.channel.id.toString()
+    );
     if (
       channelInfo.channelName === channelName &&
       channelInfo.channelDescription === channelDescription
     ) {
       continue;
     }
-
-    await teamspeak.channelEdit(channel.id.toString(), {
+    await teamspeak.channelEdit(serverTitle.channel.id.toString(), {
       channelName,
       channelDescription,
     });
   }
 };
 
-export default playercount;
+export default title;
