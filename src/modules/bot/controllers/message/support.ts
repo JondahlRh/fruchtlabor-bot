@@ -56,7 +56,9 @@ const messageSupport = async (
   const clientString = (uid: string, name: string) =>
     `[URL=client:///${uid}]${name}[/URL]`;
 
-  const clientChannel = channelList.find((c) => c.cid === client.cid)?.name;
+  const clientChannel = channelList.find(
+    (c) => c.cid === supportMessage.channel.id.toString()
+  )?.name;
   const clientName = clientString(client.uniqueIdentifier, client.nickname);
 
   const messagePrefix = specialContact

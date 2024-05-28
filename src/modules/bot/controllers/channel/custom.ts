@@ -27,7 +27,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
 
     tsCustomChannel = channelList.find((x) => {
       return (
-        x.pid === client.cid &&
+        x.pid === customChannel.channelParent.id.toString() &&
         channelGroupClientList.some((y) => y.cid === x.cid)
       );
     });
@@ -43,7 +43,7 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
     );
 
     tsCustomChannel = await teamspeak.channelCreate(slicedChannelName, {
-      cpid: client.cid,
+      cpid: customChannel.channelGroup.id.toString(),
       channelDeleteDelay: CHANNEL_DELETE_DELAY,
     });
 
