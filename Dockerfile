@@ -41,8 +41,6 @@ RUN npm run build
 FROM node:20-alpine AS prod-stage
 RUN apk add --no-cache libc6-compat
 
-FROM ghcr.io/puppeteer/puppeteer:latest
-
 WORKDIR /app
 
 ENV NODE_ENV=production

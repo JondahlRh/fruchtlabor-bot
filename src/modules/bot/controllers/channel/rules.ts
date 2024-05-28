@@ -1,5 +1,6 @@
-import puppeteer from "puppeteer";
+import { parse } from "node-html-parser";
 import { TeamSpeak } from "ts3-nodejs-library";
+import { z } from "zod";
 
 import { findOneTsRulesChannel } from "services/mongodbServices/teamspeak/tsChannel";
 
@@ -9,18 +10,13 @@ const channelRules = async (teamspeak: TeamSpeak) => {
   const rulesChannel = await findOneTsRulesChannel();
   if (!rulesChannel) return;
 
-  const puppeteerBrowser = await puppeteer.launch();
-  const page = await puppeteerBrowser.newPage();
-  await page.goto(process.env.FUNCTIONS_RULES_URL, {
-    waitUntil: "networkidle2",
-  });
+  const rawData = await fetch(process.env.FUNCTIONS_RULES_URL);
+  const jsonData = await rawData.text();
+  const parsedData = z.string().parse(jsonData);
 
-  const htmlContent = await page.evaluate(() => {
-    // @ts-ignore
-    const element = document.querySelector(".messageText");
-    const content = element ? element.innerHTML : null;
-    return typeof content === "string" ? content : null;
-  });
+  const root = parse(parsedData);
+
+  const htmlContent = root.querySelector(".messageText")?.innerHTML;
   if (!htmlContent) return;
 
   const description =
