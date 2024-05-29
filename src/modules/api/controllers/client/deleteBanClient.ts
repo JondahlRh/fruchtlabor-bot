@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { ResponseError, TeamSpeak } from "ts3-nodejs-library";
-import { fromZodError } from "zod-validation-error";
 
 import { RequestBodyError } from "classes/htmlErrors";
 import PartialSuccessResponse, {

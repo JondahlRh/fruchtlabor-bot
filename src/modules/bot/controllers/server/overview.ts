@@ -6,7 +6,6 @@ import {
   emptyRow,
   getBodyRows,
   getConnectLink,
-  getDataEntry,
   getDataTitle,
   getPlayerStatus,
   getSpacerRow,
