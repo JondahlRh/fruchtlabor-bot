@@ -7,6 +7,16 @@ import {
   clientMatchesCollectionsSorted,
 } from "modules/bot/utility/tsCollectionHelper";
 
+import {
+  emptyRow,
+  getClientClicker,
+  getDataEntry,
+  getDataHorizontal,
+  getDataTitle,
+  getSpacerRow,
+  getTitleRow,
+  horizontalRow,
+} from "services/channelDescriptionService";
 import { findOnlineChannels } from "services/mongodbServices/functions/onlineChannel";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
@@ -25,75 +35,44 @@ const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
   return "[color=#44dd44]online[/color]";
 };
 
-const getDescClient = (
-  clientName: string,
-  clientUId: string,
-  status: string
-) => {
-  const escapedClientName = clientName
-    .replaceAll("[", "\\[")
-    .replaceAll("]", "\\]");
-  return `[tr][td][URL=client:///${clientUId}]${escapedClientName} [/URL][/td][td][center]${status}[/td][/tr]`;
-};
-
-const getDescGroup = (title: string, clients: string[]) => {
-  const clientsString =
-    clients.length === 0
-      ? `\n[tr][td][center] - [/center][/td][td][center] none [/td][/tr]`
-      : clients.join("");
-
-  return `[tr]
-[th][size=12] ${title} [/size][/th]
-[td][center][size=12] Status [/size][/td]
-[/tr]
-[tr]
-[td][hr][/td]
-[td][hr][/td]
-[/tr]${clientsString}
-[tr][/tr]`;
-};
-
-const getDescription = (title: string, descGroups: string[]) => {
-  return `[center][table]
-
-[tr]
-[td][hr][/td]
-[/tr]
-
-[tr][/tr]
-
-[tr]
-[th][size=16] ${title} [/size][/th]
-[/tr]
-
-[tr][/tr]
-
-[tr]
-[td][hr][/td]
-[/tr]
-[tr]
-[td]                                                                                                    [/td]
-[/tr]
-
-[/table][table]
-${descGroups.join("")}`;
-};
-
 const channelOnline = async (teamspeak: TeamSpeak) => {
   const onlineChannels = await findOnlineChannels();
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();
 
-  for (const onlineChannel of onlineChannels) {
-    const descGroups = [];
+  onlineChannels.forEach(async (onlineChannel) => {
+    let channelDescription = "[center][table]\n";
+    channelDescription += horizontalRow;
+    channelDescription += getSpacerRow(120);
+    channelDescription += getTitleRow(onlineChannel.title);
+    channelDescription += emptyRow;
+    channelDescription += horizontalRow;
+    channelDescription += emptyRow;
+    channelDescription += "[/table][table]\n";
+
     for (const servergroup of onlineChannel.servergroups) {
+      channelDescription += "[tr]\n";
+      channelDescription += getDataTitle(servergroup.name, false, true, 3);
+      channelDescription += getDataTitle("Status", false, true, 3);
+      channelDescription += "[/tr]\n";
+
+      channelDescription += "[tr]\n";
+      channelDescription += getDataHorizontal();
+      channelDescription += getDataHorizontal();
+      channelDescription += "[/tr]\n";
+
       const serverGroupClientList = await teamspeak.serverGroupClientList(
         servergroup.id.toString()
       );
 
-      const descClients = [];
+      serverGroupClientList.sort((a, b) =>
+        a.clientNickname.localeCompare(b.clientNickname)
+      );
+
       for (const serverGroupClient of serverGroupClientList) {
+        channelDescription += "[tr]\n";
+
         const client = clientList.find(
           (x) => x.uniqueIdentifier === serverGroupClient.clientUniqueIdentifier
         );
@@ -107,27 +86,31 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
 
         const status = getStatus(clientData, onlineChannel.collections);
 
-        descClients.push(
-          getDescClient(
-            serverGroupClient.clientNickname,
-            serverGroupClient.clientUniqueIdentifier,
-            status
-          )
+        channelDescription += getDataEntry(
+          getClientClicker(serverGroupClient),
+          false,
+          2
         );
+        channelDescription += getDataEntry(status, true);
+
+        channelDescription += "[/tr]\n";
       }
-      descGroups.push(getDescGroup(servergroup.name, descClients));
+
+      channelDescription += emptyRow;
     }
-    const description = getDescription(onlineChannel.title, descGroups);
+
+    channelDescription += "[/table]\n";
 
     const channelInfo = await teamspeak.channelInfo(
       onlineChannel.channel.id.toString()
     );
-    if (channelInfo.channelDescription === description) continue;
-
+    if (channelInfo.channelDescription === channelDescription) {
+      return;
+    }
     await teamspeak.channelEdit(onlineChannel.channel.id.toString(), {
-      channelDescription: description,
+      channelDescription,
     });
-  }
+  });
 };
 
 export default channelOnline;
