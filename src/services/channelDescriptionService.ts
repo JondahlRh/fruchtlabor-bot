@@ -1,3 +1,5 @@
+import { ServerGroupClientEntry } from "ts3-nodejs-library/lib/types/ResponseTypes";
+
 import { ServerInfoType } from "./sourceServerQueryService";
 
 export const emptyRow = "[tr][/tr]\n";
@@ -42,6 +44,38 @@ export const getPlayerStatus = (serverData: ServerInfoType) => {
   return `Spieler: ${players}/${maxplayers}`;
 };
 
-export const getDataEntry = (content: string) => {
-  return ` [td][size=10][b]${content}[/b][/td]\n`;
+export const getDataTitle = (
+  content: string,
+  leftAlign = false,
+  largeSize = false,
+  whitespaces = 0
+) => {
+  const left = leftAlign ? "[left]" : "";
+  const size = largeSize ? 12 : 10;
+  const spaces = Array(whitespaces).fill(" ").join("");
+
+  return ` [th]${left}${spaces}[size=${size}][b]${content}[/b]${spaces}[/th]\n`;
+};
+
+export const getDataEntry = (
+  content: string,
+  centerAlign = false,
+  whitespaces = 0
+) => {
+  const center = centerAlign ? "[center]" : "";
+  const spaces = Array(whitespaces).fill(" ").join("");
+
+  return ` [td]${center}${spaces}[size=10]${content}${spaces}[/td]\n`;
+};
+
+export const getDataHorizontal = () => {
+  return ` [td][hr][/td]\n`;
+};
+
+export const getClientClicker = (serverGroupClient: ServerGroupClientEntry) => {
+  const escapedClientName = serverGroupClient.clientNickname
+    .replaceAll("[", "\\[")
+    .replaceAll("]", "\\]");
+
+  return `[URL=client:///${serverGroupClient.clientUniqueIdentifier}]${escapedClientName}[/URL]`;
 };

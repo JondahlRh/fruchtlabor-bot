@@ -7,6 +7,7 @@ import {
   getBodyRows,
   getConnectLink,
   getDataEntry,
+  getDataTitle,
   getPlayerStatus,
   getSpacerRow,
   getSubtitleRow,
@@ -48,9 +49,9 @@ const title = async (teamspeak: TeamSpeak) => {
         connectData = getConnectLink(server.ip, server.port);
       }
 
-      channelDescription += getDataEntry(server.name.padEnd(24));
-      channelDescription += getDataEntry(connectData);
-      channelDescription += getDataEntry(status);
+      channelDescription += getDataTitle(server.name, true, false, 4);
+      channelDescription += getDataTitle(connectData);
+      channelDescription += getDataTitle(status, false, false, 2);
 
       channelDescription += "[/tr]\n";
     }
