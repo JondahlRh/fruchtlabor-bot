@@ -1,24 +1,21 @@
 import mongoose from "mongoose";
-import { z } from "zod";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsDescription, {
-  TsDescriptionZodSchema,
+  TsDescriptionType,
 } from "models/teamspeak/TsDescription";
 
-import { TsPermissionZodSchema } from "types/general";
+import { TsPermissionType } from "types/general";
 
-const LobbyChannelZodSchema = z.object({
-  channelParent: TsChannelZodSchema,
-  channelParentSiblings: z.array(TsChannelZodSchema),
-  description: TsDescriptionZodSchema,
-  prefix: z.string(),
-  minimum: z.number(),
-  clientLimit: z.number(),
-  permissions: z.array(TsPermissionZodSchema),
-});
-
-type LobbyChannelType = z.infer<typeof LobbyChannelZodSchema>;
+type LobbyChannelType = {
+  channelParent: TsChannelType;
+  channelParentSiblings: TsChannelType[];
+  description: TsDescriptionType;
+  prefix: string;
+  minimum: number;
+  clientLimit: number;
+  permissions: TsPermissionType[];
+};
 
 const { ObjectId } = mongoose.Schema.Types;
 const LobbyChannelSchema = new mongoose.Schema<LobbyChannelType>({

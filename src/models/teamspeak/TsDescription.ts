@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
-import { z } from "zod";
 
-export const TsDescriptionZodSchema = z.object({
-  text: z.string(),
-});
-
-type TsDescriptionType = z.infer<typeof TsDescriptionZodSchema>;
+export type TsDescriptionType = {
+  text: string;
+};
 
 const TsDescriptionSchema = new mongoose.Schema<TsDescriptionType>({
   text: { type: String, required: true },

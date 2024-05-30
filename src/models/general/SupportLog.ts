@@ -1,14 +1,11 @@
 import mongoose from "mongoose";
-import { z } from "zod";
 
-const SupportLogZodSchema = z.object({
-  channel: z.string(),
-  client: z.string(),
-  supportClientsListed: z.array(z.string()),
-  supportClientsContact: z.array(z.string()),
-});
-
-type SupportLogType = z.infer<typeof SupportLogZodSchema>;
+type SupportLogType = {
+  channel: string;
+  client: string;
+  supportClientsListed: string[];
+  supportClientsContact: string[];
+};
 
 const SupportLogSchema = new mongoose.Schema<SupportLogType>(
   {

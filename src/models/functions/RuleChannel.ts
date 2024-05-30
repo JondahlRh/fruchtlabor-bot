@@ -1,13 +1,10 @@
 import { Schema, Types, model } from "mongoose";
-import { z } from "zod";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
-const RuleChannelZodSchema = z.object({
-  channel: TsChannelZodSchema,
-});
-
-type RuleChannelType = z.infer<typeof RuleChannelZodSchema>;
+type RuleChannelType = {
+  channel: TsChannelType;
+};
 
 const RuleChannelSchema = new Schema<RuleChannelType>({
   channel: { type: Types.ObjectId, ref: TsChannel, required: true },

@@ -1,19 +1,16 @@
 import mongoose from "mongoose";
-import { z } from "zod";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsServergroup, {
-  TsServergroupZodSchema,
+  TsServergroupType,
 } from "models/teamspeak/TsServergroup";
 
-const AddgroupChannelZodSchema = z.object({
-  channel: TsChannelZodSchema,
-  moveChannel: TsChannelZodSchema,
-  servergroup: TsServergroupZodSchema,
-  message: z.string(),
-});
-
-type AddgroupChannelType = z.infer<typeof AddgroupChannelZodSchema>;
+type AddgroupChannelType = {
+  channel: TsChannelType;
+  moveChannel: TsChannelType;
+  servergroup: TsServergroupType;
+  message: string;
+};
 
 const { ObjectId } = mongoose.Schema.Types;
 const AddgroupChannelSchema = new mongoose.Schema<AddgroupChannelType>({

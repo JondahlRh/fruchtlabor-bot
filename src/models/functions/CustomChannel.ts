@@ -1,21 +1,18 @@
 import mongoose from "mongoose";
-import { z } from "zod";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsChannelgroup, {
-  TsChannelgroupZodSchema,
+  TsChannelgroupType,
 } from "models/teamspeak/TsChannelgroup";
 
-import { TsPermissionZodSchema } from "types/general";
+import { TsPermissionType } from "types/general";
 
-const CustomChannelZodSchema = z.object({
-  channelParent: TsChannelZodSchema,
-  channelGroup: TsChannelgroupZodSchema,
-  prefix: z.string(),
-  permissions: z.array(TsPermissionZodSchema),
-});
-
-type CustomChannelType = z.infer<typeof CustomChannelZodSchema>;
+type CustomChannelType = {
+  channelParent: TsChannelType;
+  channelGroup: TsChannelgroupType;
+  prefix: string;
+  permissions: TsPermissionType[];
+};
 
 const { ObjectId } = mongoose.Schema.Types;
 const CustomChannelSchema = new mongoose.Schema<CustomChannelType>({

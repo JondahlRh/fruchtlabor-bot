@@ -1,28 +1,17 @@
 import { Schema, Types, model } from "mongoose";
-import { z } from "zod";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
-const LinkZodSchema = z.object({
-  url: z.string(),
-  label: z.string(),
-});
+import { MultiCategorieType } from "types/general";
 
-const CategorieZodSchema = z.object({
-  title: z.string(),
-  links: z.array(LinkZodSchema),
-});
-
-const OrganizationChannelZodSchema = z.object({
-  channel: TsChannelZodSchema,
-  title: z.string(),
-  body: z.string(),
-  openJobAds: CategorieZodSchema,
-  closedJobAds: CategorieZodSchema,
-  categories: z.array(CategorieZodSchema),
-});
-
-type OrganizationChannelType = z.infer<typeof OrganizationChannelZodSchema>;
+type OrganizationChannelType = {
+  channel: TsChannelType;
+  title: string;
+  body: string;
+  openJobAds: MultiCategorieType;
+  closedJobAds: MultiCategorieType;
+  categories: MultiCategorieType[];
+};
 
 const LinkSchema = {
   url: { type: String, required: true },

@@ -1,25 +1,19 @@
 import { Schema, Types, model } from "mongoose";
-import { z } from "zod";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
-const TeamChannelZodSchema = z.object({
-  channel: TsChannelZodSchema,
-  name: z.string(),
-  type: z.string(),
-  extraBody: z.string(),
-  links: z.array(
-    z.object({
-      label: z.string(),
-      link: z.string(),
-    })
-  ),
-  players: z.array(z.string()),
-  standins: z.array(z.string()),
-  trainingTimes: z.array(z.string()),
-});
+import { VisibleLinkType } from "types/general";
 
-type TeamChannelType = z.infer<typeof TeamChannelZodSchema>;
+type TeamChannelType = {
+  channel: TsChannelType;
+  name: string;
+  type: string;
+  extraBody: string;
+  links: VisibleLinkType[];
+  players: string[];
+  standins: string[];
+  trainingTimes: string[];
+};
 
 const TeamChannelSchema = new Schema<TeamChannelType>({
   channel: { type: Types.ObjectId, ref: TsChannel, required: true },
@@ -29,7 +23,7 @@ const TeamChannelSchema = new Schema<TeamChannelType>({
   links: [
     {
       label: { type: String, required: true },
-      link: { type: String, required: true },
+      url: { type: String, required: true },
     },
   ],
   players: [{ type: String }],

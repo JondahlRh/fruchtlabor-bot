@@ -1,18 +1,15 @@
 import { Schema, Types, model } from "mongoose";
-import { z } from "zod";
 
-import CsServer, { CsServerZodSchema } from "models/general/CsServer";
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import CsServer, { CsServerType } from "models/general/CsServer";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
-const ServerTitleZodSchema = z.object({
-  prefix: z.string(),
-  title: z.string(),
-  body: z.string(),
-  channel: TsChannelZodSchema,
-  server: CsServerZodSchema,
-});
-
-type ServerTitleType = z.infer<typeof ServerTitleZodSchema>;
+type ServerTitleType = {
+  prefix: string;
+  title: string;
+  body: string;
+  channel: TsChannelType;
+  server: CsServerType;
+};
 
 const ServerTitleSchema = new Schema<ServerTitleType>({
   prefix: { type: String, required: true },

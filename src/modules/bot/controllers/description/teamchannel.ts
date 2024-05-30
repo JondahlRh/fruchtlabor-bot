@@ -32,7 +32,7 @@ export default async (teamspeak: TeamSpeak) => {
       for (const link of teamChannel.links) {
         channelDescription += "[tr]\n";
 
-        const url = getGeneralUrl(link.link, "hier");
+        const url = getGeneralUrl(link.url, "hier");
         channelDescription += getTextData(
           `${link.label}:`,
           "right",

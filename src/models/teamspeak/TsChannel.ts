@@ -1,15 +1,11 @@
 import mongoose from "mongoose";
-import { z } from "zod";
 
-export const TsChannelZodSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  description: z.string(),
-  isBotChannel: z.boolean(),
-  isRulesChannel: z.boolean(),
-});
-
-export type TsChannelType = z.infer<typeof TsChannelZodSchema>;
+export type TsChannelType = {
+  id: number;
+  name: string;
+  description: string;
+  isBotChannel: boolean;
+};
 
 const TsChannelSchema = new mongoose.Schema<TsChannelType>({
   id: { type: Number, required: true, unique: true },

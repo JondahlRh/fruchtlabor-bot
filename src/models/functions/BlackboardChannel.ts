@@ -1,27 +1,16 @@
 import { Schema, Types, model } from "mongoose";
-import { z } from "zod";
 
-import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
+import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
-const LinkZodSchema = z.object({
-  url: z.string(),
-  label: z.string(),
-});
+import { SingleCategorieType } from "types/general";
 
-const NewsZodSchema = z.object({
-  title: z.string(),
-  link: LinkZodSchema,
-});
-
-const BlackboardChannelZodSchema = z.object({
-  channel: TsChannelZodSchema,
-  title: z.string(),
-  body: z.string(),
-  news: z.array(NewsZodSchema),
-  generals: z.array(NewsZodSchema),
-});
-
-type BlackboardChannelType = z.infer<typeof BlackboardChannelZodSchema>;
+type BlackboardChannelType = {
+  channel: TsChannelType;
+  title: string;
+  body: string;
+  news: SingleCategorieType[];
+  generals: SingleCategorieType[];
+};
 
 const LinkSchema = {
   url: { type: String, required: true },
