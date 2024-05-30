@@ -42,6 +42,7 @@ export default (teamspeak: TeamSpeak) => {
   });
 
   schedule("0 4 * * *", () => {
+    eHandler(descriptionController.organizationchannel)(teamspeak);
     eHandler(descriptionController.blackboardchannel)(teamspeak);
     eHandler(descriptionController.rulechannel)(teamspeak);
     eHandler(descriptionController.teamchannel)(teamspeak);
