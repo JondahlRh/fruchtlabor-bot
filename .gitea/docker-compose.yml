@@ -1,11 +1,12 @@
 services:
   app:
     build:
-      context: ../..
+      context: ..
       dockerfile: Dockerfile
       args:
         - INTERNAL_PORT=${INTERNAL_PORT}
-    container_name: fruchtlabor-ts-bot-${ENVIRONMENT}
+    image: ${NAME}:latest
+    container_name: ${NAME}
     restart: unless-stopped
     environment:
       - EXPOSED_HOST=${EXPOSED_HOST}

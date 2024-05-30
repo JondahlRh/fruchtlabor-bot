@@ -6,7 +6,8 @@ on:
       - master
 
 env:
-  ENVIRONMENT: "prod"
+  NAME: "fruchtlabor-ts-bot-prod"
+
   EXPOSED_HOST: ${{ vars.PROD_EXPOSED_HOST }}
   EXPOSED_PORT: ${{ vars.PROD_EXPOSED_PORT }}
   INTERNAL_PORT: ${{ vars.PROD_INTERNAL_PORT }}
@@ -36,7 +37,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build and Run docker container
-        run: docker compose -f .gitea/workflows/docker-compose.yml up --build -d
+        run: docker compose -f .gitea/docker-compose.yml up --build -d
       - name: Ping
         run: |
           echo "Ping service on ${EXPOSED_HOST}:${EXPOSED_PORT} in 10 seconds..."
