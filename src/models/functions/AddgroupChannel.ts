@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsServergroup, {
@@ -12,15 +12,14 @@ type AddgroupChannelType = {
   message: string;
 };
 
-const { ObjectId } = mongoose.Schema.Types;
-const AddgroupChannelSchema = new mongoose.Schema<AddgroupChannelType>({
-  channel: { type: ObjectId, ref: TsChannel, required: true },
-  moveChannel: { type: ObjectId, ref: TsChannel, required: true },
-  servergroup: { type: ObjectId, ref: TsServergroup, required: true },
+const AddgroupChannelSchema = new Schema<AddgroupChannelType>({
+  channel: { type: Types.ObjectId, ref: TsChannel, required: true },
+  moveChannel: { type: Types.ObjectId, ref: TsChannel, required: true },
+  servergroup: { type: Types.ObjectId, ref: TsServergroup, required: true },
   message: { type: String, default: "" },
 });
 
-export default mongoose.model<AddgroupChannelType>(
+export default model<AddgroupChannelType>(
   "AddgroupChannel",
   AddgroupChannelSchema
 );

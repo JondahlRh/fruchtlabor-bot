@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 export type TsChannelgroupType = {
   id: number;
@@ -6,13 +6,13 @@ export type TsChannelgroupType = {
   description: string;
 };
 
-const TsChannelgroupSchema = new mongoose.Schema<TsChannelgroupType>({
+const TsChannelgroupSchema = new Schema<TsChannelgroupType>({
   id: { type: Number, required: true, unique: true },
   name: { type: String, required: true, unique: true },
   description: { type: String, default: "" },
 });
 
-export default mongoose.model<TsChannelgroupType>(
+export default model<TsChannelgroupType>(
   "TsChannelgroup",
   TsChannelgroupSchema
 );

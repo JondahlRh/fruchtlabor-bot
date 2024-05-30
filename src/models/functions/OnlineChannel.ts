@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
@@ -13,15 +13,11 @@ type OnlineChannelType = {
   collections: TsCollectionType[];
 };
 
-const { ObjectId } = mongoose.Schema.Types;
-const OnlineChannelSchema = new mongoose.Schema<OnlineChannelType>({
-  channel: { type: ObjectId, ref: TsChannel, required: true },
-  servergroups: [{ type: ObjectId, ref: TsServergroup, required: true }],
+const OnlineChannelSchema = new Schema<OnlineChannelType>({
+  channel: { type: Types.ObjectId, ref: TsChannel, required: true },
+  servergroups: [{ type: Types.ObjectId, ref: TsServergroup }],
   title: { type: String, required: true },
-  collections: [{ type: ObjectId, ref: TsCollection }],
+  collections: [{ type: Types.ObjectId, ref: TsCollection }],
 });
 
-export default mongoose.model<OnlineChannelType>(
-  "OnlineChannel",
-  OnlineChannelSchema
-);
+export default model<OnlineChannelType>("OnlineChannel", OnlineChannelSchema);

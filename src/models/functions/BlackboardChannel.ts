@@ -1,5 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 
+import { VisibleLinkSchema } from "models/general/general";
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
 import { SingleCategorieType } from "types/general";
@@ -12,14 +13,9 @@ type BlackboardChannelType = {
   generals: SingleCategorieType[];
 };
 
-const LinkSchema = {
-  url: { type: String, required: true },
-  label: { type: String, required: true },
-};
-
 const NewsSchema = {
   title: { type: String, required: true },
-  link: LinkSchema,
+  link: VisibleLinkSchema,
 };
 
 const BlackboardChannelSchema = new Schema<BlackboardChannelType>({

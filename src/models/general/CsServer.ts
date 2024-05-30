@@ -1,17 +1,19 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 export type CsServerType = {
   name: string;
   description: string;
-  ip: string;
+  host: string;
   port: number;
 };
 
-const CsServerSchema = new mongoose.Schema<CsServerType>({
+const CsServerSchema = new Schema<CsServerType>({
   name: { type: String, required: true, unique: true },
   description: { type: String, default: "" },
-  ip: { type: String, required: true },
+  host: { type: String, required: true },
   port: { type: Number, required: true, validate: /^\d{1,5}$/ },
 });
 
-export default mongoose.model<CsServerType>("CsServer", CsServerSchema);
+CsServerSchema.index({ host: 1, port: 1 }, { unique: true });
+
+export default model<CsServerType>("CsServer", CsServerSchema);

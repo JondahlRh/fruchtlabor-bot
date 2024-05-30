@@ -48,14 +48,14 @@ const title = async (teamspeak: TeamSpeak) => {
 
     for (const server of serverDescription.servers) {
       channelDescription += "[tr]\n";
-      const serverData = await getServerInfo(server.ip, server.port);
+      const serverData = await getServerInfo(server.host, server.port);
 
       let status = "";
       let connectData = "[color=#ff4444]Server Offline![/color]";
       if (serverData !== null) {
         status = `(${getPlayerCountLabel(serverData)})`;
         connectData = getCsServerConnectLink(
-          server.ip,
+          server.host,
           server.port,
           "Instaconnect"
         );

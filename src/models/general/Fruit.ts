@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 type FruitType = {
   name: string;
 };
 
-const FruitSchema = new mongoose.Schema<FruitType>({
-  name: { type: String, required: true },
+const FruitSchema = new Schema<FruitType>({
+  name: { type: String, required: true, unique: true },
 });
 
-export default mongoose.model<FruitType>("Fruit", FruitSchema);
+export default model<FruitType>("Fruit", FruitSchema);

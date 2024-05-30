@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
+import { PermissionSchema } from "models/general/general";
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsChannelgroup, {
   TsChannelgroupType,
@@ -14,20 +15,11 @@ type CustomChannelType = {
   permissions: TsPermissionType[];
 };
 
-const { ObjectId } = mongoose.Schema.Types;
-const CustomChannelSchema = new mongoose.Schema<CustomChannelType>({
-  channelParent: { type: ObjectId, ref: TsChannel, required: true },
-  channelGroup: { type: ObjectId, ref: TsChannelgroup, required: true },
+const CustomChannelSchema = new Schema<CustomChannelType>({
+  channelParent: { type: Types.ObjectId, ref: TsChannel, required: true },
+  channelGroup: { type: Types.ObjectId, ref: TsChannelgroup, required: true },
   prefix: { type: String, default: "" },
-  permissions: [
-    {
-      key: { type: String, required: true },
-      value: { type: Number, required: true },
-    },
-  ],
+  permissions: [PermissionSchema],
 });
 
-export default mongoose.model<CustomChannelType>(
-  "CustomChannel",
-  CustomChannelSchema
-);
+export default model<CustomChannelType>("CustomChannel", CustomChannelSchema);

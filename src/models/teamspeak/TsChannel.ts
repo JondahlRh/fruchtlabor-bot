@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 export type TsChannelType = {
   id: number;
@@ -7,11 +7,11 @@ export type TsChannelType = {
   isBotChannel: boolean;
 };
 
-const TsChannelSchema = new mongoose.Schema<TsChannelType>({
+const TsChannelSchema = new Schema<TsChannelType>({
   id: { type: Number, required: true, unique: true },
   name: { type: String, required: true, unique: true },
   description: { type: String, default: "" },
-  isBotChannel: { type: Boolean, default: false },
+  isBotChannel: { type: Boolean, default: false, unique: true },
 });
 
-export default mongoose.model<TsChannelType>("TsChannel", TsChannelSchema);
+export default model<TsChannelType>("TsChannel", TsChannelSchema);

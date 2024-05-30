@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 export type TsServergroupType = {
   id: number;
@@ -7,14 +7,11 @@ export type TsServergroupType = {
   isTeammember: boolean;
 };
 
-const TsServergroupSchema = new mongoose.Schema<TsServergroupType>({
+const TsServergroupSchema = new Schema<TsServergroupType>({
   id: { type: Number, required: true, unique: true },
   name: { type: String, required: true, unique: true },
   description: { type: String, default: "" },
   isTeammember: { type: Boolean, default: false },
 });
 
-export default mongoose.model<TsServergroupType>(
-  "TsServergroup",
-  TsServergroupSchema
-);
+export default model<TsServergroupType>("TsServergroup", TsServergroupSchema);

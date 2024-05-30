@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 import Permission, { PermissionType } from "./Permission";
 import Role, { RoleType } from "./Role";
@@ -11,13 +11,12 @@ type UserType = {
   permissions: PermissionType[];
 };
 
-const { ObjectId } = mongoose.Schema.Types;
-const UserSchema = new mongoose.Schema<UserType>({
+const UserSchema = new Schema<UserType>({
   username: { type: String, required: true },
   apikey: { type: String, required: true },
   isOwner: { type: Boolean, default: false },
-  roles: [{ type: ObjectId, ref: Role }],
-  permissions: [{ type: ObjectId, ref: Permission }],
+  roles: [{ type: Types.ObjectId, ref: Role }],
+  permissions: [{ type: Types.ObjectId, ref: Permission }],
 });
 
-export default mongoose.model<UserType>("User", UserSchema);
+export default model<UserType>("User", UserSchema);

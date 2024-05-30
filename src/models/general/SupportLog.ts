@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 type SupportLogType = {
   channel: string;
@@ -7,7 +7,7 @@ type SupportLogType = {
   supportClientsContact: string[];
 };
 
-const SupportLogSchema = new mongoose.Schema<SupportLogType>(
+const SupportLogSchema = new Schema<SupportLogType>(
   {
     channel: { type: String, required: true },
     client: { type: String, required: true },
@@ -17,4 +17,4 @@ const SupportLogSchema = new mongoose.Schema<SupportLogType>(
   { timestamps: true }
 );
 
-export default mongoose.model<SupportLogType>("SupportLog", SupportLogSchema);
+export default model<SupportLogType>("SupportLog", SupportLogSchema);

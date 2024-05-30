@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 type AsyncErrorType = {
   function: string;
@@ -7,7 +7,7 @@ type AsyncErrorType = {
   stack: string;
 };
 
-const AsyncErrorSchema = new mongoose.Schema<AsyncErrorType>(
+const AsyncErrorSchema = new Schema<AsyncErrorType>(
   {
     function: { type: String, required: true },
     message: { type: String, required: true },
@@ -17,4 +17,4 @@ const AsyncErrorSchema = new mongoose.Schema<AsyncErrorType>(
   { timestamps: true }
 );
 
-export default mongoose.model<AsyncErrorType>("AsyncError", AsyncErrorSchema);
+export default model<AsyncErrorType>("AsyncError", AsyncErrorSchema);

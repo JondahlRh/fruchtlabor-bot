@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 import Permission, { PermissionType } from "./Permission";
 
@@ -7,10 +7,9 @@ export type RoleType = {
   permissions: PermissionType[];
 };
 
-const { ObjectId } = mongoose.Schema.Types;
-const RoleSchema = new mongoose.Schema<RoleType>({
+const RoleSchema = new Schema<RoleType>({
   name: { type: String, required: true },
-  permissions: [{ type: ObjectId, ref: Permission }],
+  permissions: [{ type: Types.ObjectId, ref: Permission }],
 });
 
-export default mongoose.model<RoleType>("Role", RoleSchema);
+export default model<RoleType>("Role", RoleSchema);

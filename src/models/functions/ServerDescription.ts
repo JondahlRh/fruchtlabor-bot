@@ -20,7 +20,7 @@ const ServerDescriptionSchema = new Schema<ServerDescriptionType>({
   subtitle: { type: String, required: true },
   body: { type: String, default: "" },
   channel: { type: Types.ObjectId, ref: TsChannel, required: true },
-  servers: [{ type: Types.ObjectId, ref: CsServer, required: true }],
+  servers: [{ type: Types.ObjectId, ref: CsServer }],
   description: { type: Types.ObjectId, ref: TsDescription },
 });
 

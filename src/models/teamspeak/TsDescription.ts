@@ -1,14 +1,13 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 export type TsDescriptionType = {
+  name: string;
   text: string;
 };
 
-const TsDescriptionSchema = new mongoose.Schema<TsDescriptionType>({
+const TsDescriptionSchema = new Schema<TsDescriptionType>({
+  name: { type: String, required: true, unique: true },
   text: { type: String, required: true },
 });
 
-export default mongoose.model<TsDescriptionType>(
-  "TsDescription",
-  TsDescriptionSchema
-);
+export default model<TsDescriptionType>("TsDescription", TsDescriptionSchema);

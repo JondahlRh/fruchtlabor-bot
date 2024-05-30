@@ -1,5 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 
+import { VisibleLinkSchema } from "models/general/general";
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 
 import { MultiCategorieType } from "types/general";
@@ -13,14 +14,9 @@ type OrganizationChannelType = {
   categories: MultiCategorieType[];
 };
 
-const LinkSchema = {
-  url: { type: String, required: true },
-  label: { type: String, required: true },
-};
-
 const CategorieSchema = {
   title: { type: String, required: true },
-  links: [LinkSchema],
+  links: [VisibleLinkSchema],
 };
 
 const OrganizationChannelSchema = new Schema<OrganizationChannelType>({

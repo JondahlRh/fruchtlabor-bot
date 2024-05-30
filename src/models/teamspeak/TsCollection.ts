@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 import TsChannel, { TsChannelType } from "./TsChannel";
 import TsServergroup, { TsServergroupType } from "./TsServergroup";
@@ -11,16 +11,12 @@ export type TsCollectionType = {
   servergroups: TsServergroupType[];
 };
 
-const { ObjectId } = mongoose.Schema.Types;
-const TsCollectionSchema = new mongoose.Schema<TsCollectionType>({
+const TsCollectionSchema = new Schema<TsCollectionType>({
   name: { type: String, required: true, unique: true },
   label: { type: String, default: "" },
-  channels: [{ type: ObjectId, ref: TsChannel }],
-  channelParents: [{ type: ObjectId, ref: TsChannel }],
-  servergroups: [{ type: ObjectId, ref: TsServergroup }],
+  channels: [{ type: Types.ObjectId, ref: TsChannel }],
+  channelParents: [{ type: Types.ObjectId, ref: TsChannel }],
+  servergroups: [{ type: Types.ObjectId, ref: TsServergroup }],
 });
 
-export default mongoose.model<TsCollectionType>(
-  "TsCollection",
-  TsCollectionSchema
-);
+export default model<TsCollectionType>("TsCollection", TsCollectionSchema);

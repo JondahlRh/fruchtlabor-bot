@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 import TsChannel, { TsChannelType } from "models/teamspeak/TsChannel";
 import TsCollection, { TsCollectionType } from "models/teamspeak/TsCollection";
@@ -20,15 +20,14 @@ type AfkChannelType = {
   conditions: AfkChannelConditionsType;
 };
 
-const { ObjectId } = mongoose.Schema.Types;
-const AfkChannelSchema = new mongoose.Schema<AfkChannelType>({
+const AfkChannelSchema = new Schema<AfkChannelType>({
   isDefault: { type: Boolean, default: false },
   moveChannel: {
-    member: { type: ObjectId, ref: TsChannel, required: true },
-    teammember: { type: ObjectId, ref: TsChannel, required: true },
+    member: { type: Types.ObjectId, ref: TsChannel, required: true },
+    teammember: { type: Types.ObjectId, ref: TsChannel, required: true },
   },
-  apply: [{ type: ObjectId, ref: TsCollection }],
-  ignore: [{ type: ObjectId, ref: TsCollection }],
+  apply: [{ type: Types.ObjectId, ref: TsCollection }],
+  ignore: [{ type: Types.ObjectId, ref: TsCollection }],
   conditions: {
     general: { type: Number, default: -1 },
     micMuted: { type: Number, default: -1 },
@@ -36,4 +35,4 @@ const AfkChannelSchema = new mongoose.Schema<AfkChannelType>({
   },
 });
 
-export default mongoose.model<AfkChannelType>("AfkChannel", AfkChannelSchema);
+export default model<AfkChannelType>("AfkChannel", AfkChannelSchema);

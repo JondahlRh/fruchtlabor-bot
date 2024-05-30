@@ -20,7 +20,7 @@ const title = async (teamspeak: TeamSpeak) => {
 
   for (const serverTitle of serverTitles) {
     const serverData = await getServerInfo(
-      serverTitle.server.ip,
+      serverTitle.server.host,
       serverTitle.server.port
     );
 
@@ -32,7 +32,7 @@ const title = async (teamspeak: TeamSpeak) => {
       connectData += getEmptyRow();
 
       const connectLink = getCsServerConnectLink(
-        serverTitle.server.ip,
+        serverTitle.server.host,
         serverTitle.server.port,
         "hier"
       );
