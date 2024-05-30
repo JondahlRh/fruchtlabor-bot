@@ -2,13 +2,14 @@ import { parse } from "node-html-parser";
 import { TeamSpeak } from "ts3-nodejs-library";
 import { z } from "zod";
 
-import { findOneTsRulesChannel } from "services/mongodbServices/teamspeak/tsChannel";
+import { findRuleChannels } from "services/mongodbServices/functions/ruleChannel";
 
 const HR_AND_SPACER = "[tr][td][hr][/td][/tr][tr][/tr]";
 
-const channelRules = async (teamspeak: TeamSpeak) => {
-  const rulesChannel = await findOneTsRulesChannel();
-  if (!rulesChannel) return;
+export default async (teamspeak: TeamSpeak) => {
+  const rulesChannels = await findRuleChannels();
+  const ruleChannel = rulesChannels[0];
+  if (!ruleChannel) return;
 
   const rawData = await fetch(process.env.FUNCTIONS_RULES_URL);
   const jsonData = await rawData.text();
@@ -42,12 +43,12 @@ const channelRules = async (teamspeak: TeamSpeak) => {
       .replaceAll("</a>", "]hier[/url]") +
     "[/table]";
 
-  const channelInfo = await teamspeak.channelInfo(rulesChannel.id.toString());
+  const channelInfo = await teamspeak.channelInfo(
+    ruleChannel.channel.id.toString()
+  );
   if (channelInfo.channelDescription === description) return;
 
-  await teamspeak.channelEdit(rulesChannel.id.toString(), {
+  await teamspeak.channelEdit(ruleChannel.channel.id.toString(), {
     channelDescription: description,
   });
 };
-
-export default channelRules;

@@ -1,3 +1,4 @@
+import rulechannel from "./rulechannel";
 import teamchannel from "./teamchannel";
 
-export default { teamchannel };
+export default { rulechannel, teamchannel };

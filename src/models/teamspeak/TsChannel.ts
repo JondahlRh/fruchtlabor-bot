@@ -16,7 +16,6 @@ const TsChannelSchema = new mongoose.Schema<TsChannelType>({
   name: { type: String, required: true, unique: true },
   description: { type: String, default: "" },
   isBotChannel: { type: Boolean, default: false },
-  isRulesChannel: { type: Boolean, default: false },
 });
 
 export default mongoose.model<TsChannelType>("TsChannel", TsChannelSchema);
