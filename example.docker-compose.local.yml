@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile|Dockerfile.dev
+      args:
+        - INTERNAL_PORT=<internal_port>
+    image: fruchtlabor-ts-bot-local:latest
+    container_name: fruchtlabor-ts-bot-local
+    restart: unless-stopped
+    environment:
+      - FEATUREFLAG_BOT=true|false
+      - FEATUREFLAG_API=true|false
+
+      - TEAMSPEAK_IP=""
+      - TEAMSPEAK_PORT=""
+      - TEAMSPEAK_QUERYPORT=""
+      - TEAMSPEAKQUERY_USERNAME=""
+      - TEAMSPEAKQUERY_PASSWORD=""
+      - TEAMSPEAK_NICKNAME=""
+
+      - MONGODB_CONNECT=mongodb://<mongo_username>:<mongo_password>@<mongo_host>:<mongo_port>
+      - MONGODB_DBNAME=""
+
+      - CS_SERVER_DOMAIN=""
+      - CS_SERVER_PASSWORD=""
+
+      - FUNCTIONS_RULES_URL=""
+    ports:
+      - "<exposed_host>:<exposed_port>:<internal_port>"
