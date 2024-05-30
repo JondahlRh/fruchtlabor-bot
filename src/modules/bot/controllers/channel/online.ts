@@ -3,20 +3,21 @@ import { TeamSpeak } from "ts3-nodejs-library";
 import { TsCollectionType } from "models/teamspeak/TsCollection";
 
 import {
+  getHorizontalLineData,
+  getTextData,
+} from "modules/bot/utility/descriptionTemplates/data";
+import {
+  getEmptyRow,
+  getHorizontalLineRow,
+  getSpacerRow,
+  getTextRow,
+} from "modules/bot/utility/descriptionTemplates/row";
+import { getClientUrl } from "modules/bot/utility/descriptionTemplates/url";
+import {
   ClientData,
   clientMatchesCollectionsSorted,
 } from "modules/bot/utility/tsCollectionHelper";
 
-import {
-  emptyRow,
-  getClientClicker,
-  getDataEntry,
-  getDataHorizontal,
-  getDataTitle,
-  getSpacerRow,
-  getTitleRow,
-  horizontalRow,
-} from "services/channelDescriptionService";
 import { findOnlineChannels } from "services/mongodbServices/functions/onlineChannel";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
@@ -43,23 +44,23 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
 
   onlineChannels.forEach(async (onlineChannel) => {
     let channelDescription = "[center][table]\n";
-    channelDescription += horizontalRow;
+    channelDescription += getHorizontalLineRow();
     channelDescription += getSpacerRow(120);
-    channelDescription += getTitleRow(onlineChannel.title);
-    channelDescription += emptyRow;
-    channelDescription += horizontalRow;
-    channelDescription += emptyRow;
+    channelDescription += getTextRow(onlineChannel.title, "center", 16, true);
+    channelDescription += getEmptyRow();
+    channelDescription += getHorizontalLineRow();
+    channelDescription += getEmptyRow();
     channelDescription += "[/table][table]\n";
 
     for (const servergroup of onlineChannel.servergroups) {
       channelDescription += "[tr]\n";
-      channelDescription += getDataTitle(servergroup.name, "center", true, 3);
-      channelDescription += getDataTitle("Status", "center", true, 3);
+      channelDescription += getTextData(servergroup.name, "center", 12, true);
+      channelDescription += getTextData("Status", "center", 12, true);
       channelDescription += "[/tr]\n";
 
       channelDescription += "[tr]\n";
-      channelDescription += getDataHorizontal();
-      channelDescription += getDataHorizontal();
+      channelDescription += getHorizontalLineData();
+      channelDescription += getHorizontalLineData();
       channelDescription += "[/tr]\n";
 
       const serverGroupClientList = await teamspeak.serverGroupClientList(
@@ -86,17 +87,17 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
 
         const status = getStatus(clientData, onlineChannel.collections);
 
-        channelDescription += getDataEntry(
-          getClientClicker(serverGroupClient),
-          "left",
-          2
+        const clientUrl = getClientUrl(
+          serverGroupClient.clientNickname,
+          serverGroupClient.clientUniqueIdentifier
         );
-        channelDescription += getDataEntry(status, "center");
+        channelDescription += getTextData(clientUrl, "left");
+        channelDescription += getTextData(status);
 
         channelDescription += "[/tr]\n";
       }
 
-      channelDescription += emptyRow;
+      channelDescription += getEmptyRow();
     }
 
     channelDescription += "[/table]\n";

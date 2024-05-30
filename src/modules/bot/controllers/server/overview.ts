@@ -1,39 +1,48 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import "services/channelDescriptionService";
-import "services/channelDescriptionService";
+import { getTextData } from "modules/bot/utility/descriptionTemplates/data";
+import { getPlayerCountLabel } from "modules/bot/utility/descriptionTemplates/general";
 import {
-  emptyRow,
-  getBodyRows,
-  getConnectLink,
-  getDataTitle,
-  getPlayerStatus,
+  getEmptyRow,
+  getHorizontalLineRow,
   getSpacerRow,
-  getSubtitleRow,
-  getTitleRow,
-  horizontalRow,
-} from "services/channelDescriptionService";
+  getTextRow,
+} from "modules/bot/utility/descriptionTemplates/row";
+import { getCsServerConnectLink } from "modules/bot/utility/descriptionTemplates/url";
+
 import { findServerDescriptions } from "services/mongodbServices/functions/serverDescription";
 import { getServerInfo } from "services/sourceServerQueryService";
+
+const TABLE_WIDTH = 120;
 
 const title = async (teamspeak: TeamSpeak) => {
   const serverDescriptions = await findServerDescriptions();
 
   for (const serverDescription of serverDescriptions) {
     let channelDescription = "[center][table]\n";
-    channelDescription += horizontalRow;
-    channelDescription += getSpacerRow(150);
-    channelDescription += getTitleRow(serverDescription.title);
-    channelDescription += getSubtitleRow(serverDescription.subtitle);
+    channelDescription += getHorizontalLineRow();
+    channelDescription += getSpacerRow(TABLE_WIDTH);
+    channelDescription += getTextRow(
+      serverDescription.title,
+      "center",
+      16,
+      true
+    );
+    channelDescription += getTextRow(
+      serverDescription.subtitle,
+      "center",
+      12,
+      true
+    );
 
     if (serverDescription.body.length > 0) {
-      channelDescription += emptyRow;
-      channelDescription += getBodyRows(serverDescription.body);
+      channelDescription += getEmptyRow();
+      channelDescription += getTextRow(serverDescription.body, "center", 8);
     }
 
-    channelDescription += emptyRow;
-    channelDescription += horizontalRow;
-    channelDescription += emptyRow;
+    channelDescription += getEmptyRow();
+    channelDescription += getHorizontalLineRow();
+    channelDescription += getEmptyRow();
 
     channelDescription += "[/table][table]\n";
 
@@ -44,30 +53,38 @@ const title = async (teamspeak: TeamSpeak) => {
       let status = "";
       let connectData = "[color=#ff4444]Server Offline![/color]";
       if (serverData !== null) {
-        status = `(${getPlayerStatus(serverData)})`;
-        connectData = getConnectLink(server.ip, server.port);
+        status = `(${getPlayerCountLabel(serverData)})`;
+        connectData = getCsServerConnectLink(
+          server.ip,
+          server.port,
+          "Instaconnect"
+        );
       }
 
-      channelDescription += getDataTitle(server.name, "left", false, 4);
-      channelDescription += getDataTitle(connectData, "center");
-      channelDescription += getDataTitle(status, "center", false, 2);
+      channelDescription += getTextData(server.name, "left", 10, true);
+      channelDescription += getTextData(connectData, "center", 10, true);
+      channelDescription += getTextData(status, "center", 10, true);
 
       channelDescription += "[/tr]\n";
     }
 
     channelDescription += "[/table][table]\n";
 
-    channelDescription += getSpacerRow(150);
-    channelDescription += horizontalRow;
+    channelDescription += getSpacerRow(TABLE_WIDTH);
+    channelDescription += getHorizontalLineRow();
 
     if (
       serverDescription.description &&
       serverDescription.description.text.length > 0
     ) {
-      channelDescription += emptyRow;
-      channelDescription += getBodyRows(serverDescription.description.text);
-      channelDescription += emptyRow;
-      channelDescription += horizontalRow;
+      channelDescription += getEmptyRow();
+      channelDescription += getTextRow(
+        serverDescription.description.text,
+        "center",
+        8
+      );
+      channelDescription += getEmptyRow();
+      channelDescription += getHorizontalLineRow();
     }
 
     channelDescription += "[/table]\n";

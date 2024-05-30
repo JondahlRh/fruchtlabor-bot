@@ -1,16 +1,15 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
+import { getTextData } from "modules/bot/utility/descriptionTemplates/data";
 import {
-  emptyRow,
-  getBodyRows,
-  getDataEntry,
+  getEmptyRow,
+  getHorizontalLineRow,
   getListRow,
   getSpacerRow,
-  getSubtitleRow,
-  getTitleRow,
-  getUrlLink,
-  horizontalRow,
-} from "services/channelDescriptionService";
+  getTextRow,
+} from "modules/bot/utility/descriptionTemplates/row";
+import { getGeneralUrl } from "modules/bot/utility/descriptionTemplates/url";
+
 import { findTeamChannels } from "services/mongodbServices/functions/teamChannel";
 
 export default async (teamspeak: TeamSpeak) => {
@@ -18,20 +17,31 @@ export default async (teamspeak: TeamSpeak) => {
 
   teamChannels.forEach(async (teamChannel) => {
     let channelDescription = "[center][table]\n";
-    channelDescription += horizontalRow;
+    channelDescription += getHorizontalLineRow();
     channelDescription += getSpacerRow(150);
-    channelDescription += getTitleRow(`${teamChannel.type} von FruchtLabor`);
+    channelDescription += getTextRow(
+      `${teamChannel.type} von FruchtLabor`,
+      "center",
+      16,
+      true
+    );
 
     if (teamChannel.links.length > 0) {
       channelDescription += "[/table][table]\n";
 
       for (const link of teamChannel.links) {
         channelDescription += "[tr]\n";
-        channelDescription += getDataEntry(`${link.label}:`, "right");
-        channelDescription += getDataEntry(
-          getUrlLink(link.link, "hier"),
-          "left"
+
+        const url = getGeneralUrl(link.link, "hier");
+        channelDescription += getTextData(
+          `${link.label}:`,
+          "right",
+          10,
+          false,
+          0
         );
+        channelDescription += getTextData(url, "left", 10, false, 0);
+
         channelDescription += "[/tr]\n";
       }
 
@@ -39,38 +49,39 @@ export default async (teamspeak: TeamSpeak) => {
     }
 
     channelDescription += getSpacerRow(150);
-    channelDescription += horizontalRow;
+    channelDescription += getHorizontalLineRow();
 
     channelDescription += "[/table][table]\n";
 
     channelDescription += getSpacerRow(60);
-    channelDescription += getSubtitleRow("Aktuelles LineUp:");
-    channelDescription += horizontalRow;
+    channelDescription += getTextRow("Aktuelles LineUp:", "center", 12, true);
+    channelDescription += getHorizontalLineRow();
     channelDescription += getListRow(teamChannel.players, 5, "TBA");
+
     channelDescription += getSpacerRow(60);
-    channelDescription += getSubtitleRow("Stand-Ins:");
-    channelDescription += horizontalRow;
+    channelDescription += getTextRow("Stand-Ins:", "center", 12, true);
+    channelDescription += getHorizontalLineRow();
     channelDescription += getListRow(teamChannel.standins, 1, "TBA");
 
     channelDescription += "[/table][table]\n";
     channelDescription += getSpacerRow(150);
-    channelDescription += horizontalRow;
+    channelDescription += getHorizontalLineRow();
     channelDescription += "[/table][table]\n";
 
     channelDescription += getSpacerRow(60);
-    channelDescription += getSubtitleRow("Trainingszeiten:");
-    channelDescription += horizontalRow;
+    channelDescription += getTextRow("Trainingszeiten:", "center", 12, true);
+    channelDescription += getHorizontalLineRow();
     channelDescription += getListRow(teamChannel.trainingTimes, 1, "flexibel");
 
     channelDescription += "[/table][table]\n";
     channelDescription += getSpacerRow(150);
-    channelDescription += horizontalRow;
+    channelDescription += getHorizontalLineRow();
 
     if (teamChannel.extraBody.length > 0) {
-      channelDescription += emptyRow;
-      channelDescription += getBodyRows(teamChannel.extraBody);
-      channelDescription += emptyRow;
-      channelDescription += horizontalRow;
+      channelDescription += getEmptyRow();
+      channelDescription += getTextRow(teamChannel.extraBody, "center", 8);
+      channelDescription += getEmptyRow();
+      channelDescription += getHorizontalLineRow();
     }
 
     channelDescription += "[/table][table]\n";
