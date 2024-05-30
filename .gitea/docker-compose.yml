@@ -9,9 +9,6 @@ services:
     container_name: ${NAME}
     restart: unless-stopped
     environment:
-      - EXPOSED_HOST=${EXPOSED_HOST}
-      - EXPOSED_PORT=${EXPOSED_PORT}
-
       - FEATUREFLAG_BOT=${FEATUREFLAG_BOT}
       - FEATUREFLAG_API=${FEATUREFLAG_API}
 
