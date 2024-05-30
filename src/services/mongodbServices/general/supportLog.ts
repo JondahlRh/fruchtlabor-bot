@@ -5,7 +5,7 @@ import { TsChannelType } from "models/teamspeak/TsChannel";
 
 export const findSupportLogs = async () => {
   try {
-    return await SupportLog.find();
+    return await SupportLog.find().lean();
   } catch (error) {
     return [];
   }
@@ -13,7 +13,7 @@ export const findSupportLogs = async () => {
 
 export const findSupportLogById = async (id: string) => {
   try {
-    return await SupportLog.findById(id);
+    return await SupportLog.findById(id).lean();
   } catch (error) {
     return null;
   }

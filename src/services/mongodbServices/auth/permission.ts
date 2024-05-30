@@ -2,7 +2,7 @@ import Permission from "models/auth/Permission";
 
 export const findPermissions = async () => {
   try {
-    return await Permission.find();
+    return await Permission.find().lean();
   } catch (error) {
     return [];
   }
@@ -10,7 +10,7 @@ export const findPermissions = async () => {
 
 export const findPermissionById = async (id: string) => {
   try {
-    return await Permission.findById(id);
+    return await Permission.findById(id).lean();
   } catch (error) {
     return null;
   }

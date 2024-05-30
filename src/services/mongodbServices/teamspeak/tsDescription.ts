@@ -2,7 +2,7 @@ import TsDescription from "models/teamspeak/TsDescription";
 
 export const findTsDescriptions = async () => {
   try {
-    return await TsDescription.find();
+    return await TsDescription.find().lean();
   } catch (error) {
     return [];
   }
@@ -10,7 +10,7 @@ export const findTsDescriptions = async () => {
 
 export const findTsDescriptionById = async (id: string) => {
   try {
-    return await TsDescription.findById(id);
+    return await TsDescription.findById(id).lean();
   } catch (error) {
     return null;
   }

@@ -2,7 +2,7 @@ import AsyncError from "models/general/AsyncError";
 
 export const findAsyncErrors = async () => {
   try {
-    return await AsyncError.find();
+    return await AsyncError.find().lean();
   } catch (error) {
     return [];
   }
@@ -10,7 +10,7 @@ export const findAsyncErrors = async () => {
 
 export const findAsyncErrorById = async (id: string) => {
   try {
-    return await AsyncError.findById(id);
+    return await AsyncError.findById(id).lean();
   } catch (error) {
     return null;
   }

@@ -2,7 +2,7 @@ import TsChannel from "models/teamspeak/TsChannel";
 
 export const findTsChannels = async () => {
   try {
-    return await TsChannel.find();
+    return await TsChannel.find().lean();
   } catch (error) {
     return [];
   }
@@ -10,7 +10,7 @@ export const findTsChannels = async () => {
 
 export const findTsChannelById = async (id: string) => {
   try {
-    return await TsChannel.findById(id);
+    return await TsChannel.findById(id).lean();
   } catch (error) {
     return null;
   }
@@ -18,7 +18,7 @@ export const findTsChannelById = async (id: string) => {
 
 export const findOneTsBotChannel = async () => {
   try {
-    return await TsChannel.findOne({ isBotChannel: true });
+    return await TsChannel.findOne({ isBotChannel: true }).lean();
   } catch (error) {
     return null;
   }
@@ -26,7 +26,7 @@ export const findOneTsBotChannel = async () => {
 
 export const findOneTsRulesChannel = async () => {
   try {
-    return await TsChannel.findOne({ isRulesChannel: true });
+    return await TsChannel.findOne({ isRulesChannel: true }).lean();
   } catch (error) {
     return null;
   }

@@ -11,7 +11,7 @@ const populate = [
 
 export const findOnlineChannels = async () => {
   try {
-    return await OnlineChannel.find().populate(populate);
+    return await OnlineChannel.find().populate(populate).lean();
   } catch (error) {
     return [];
   }
@@ -19,7 +19,7 @@ export const findOnlineChannels = async () => {
 
 export const findOnlineChannelById = async (id: string) => {
   try {
-    return await OnlineChannel.findById(id).populate(populate);
+    return await OnlineChannel.findById(id).populate(populate).lean();
   } catch (error) {
     return null;
   }

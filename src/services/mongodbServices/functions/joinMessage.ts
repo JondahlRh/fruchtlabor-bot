@@ -4,7 +4,7 @@ const populate = ["servergroup"];
 
 export const findJoinMessages = async () => {
   try {
-    return await JoinMessage.find().populate(populate);
+    return await JoinMessage.find().populate(populate).lean();
   } catch (error) {
     return [];
   }
@@ -12,7 +12,7 @@ export const findJoinMessages = async () => {
 
 export const findJoinMessageById = async (id: string) => {
   try {
-    return await JoinMessage.findById(id).populate(populate);
+    return await JoinMessage.findById(id).populate(populate).lean();
   } catch (error) {
     return null;
   }

@@ -17,7 +17,7 @@ const populate = [
 
 export const findAfkChannels = async () => {
   try {
-    return await AfkChannel.find().populate(populate);
+    return await AfkChannel.find().populate(populate).lean();
   } catch (error) {
     return [];
   }
@@ -25,7 +25,7 @@ export const findAfkChannels = async () => {
 
 export const findAfkChannelById = async (id: string) => {
   try {
-    return await AfkChannel.findById(id).populate(populate);
+    return await AfkChannel.findById(id).populate(populate).lean();
   } catch (error) {
     return null;
   }
@@ -33,7 +33,9 @@ export const findAfkChannelById = async (id: string) => {
 
 export const findOneDefaultAfkChannel = async () => {
   try {
-    return await AfkChannel.findOne({ isDefault: true }).populate(populate);
+    return await AfkChannel.findOne({ isDefault: true })
+      .populate(populate)
+      .lean();
   } catch (error) {
     return null;
   }

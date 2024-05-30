@@ -4,7 +4,7 @@ const populate = ["channelGroup", "channelParent"];
 
 export const findCustomChannels = async () => {
   try {
-    return await CustomChannel.find().populate(populate);
+    return await CustomChannel.find().populate(populate).lean();
   } catch (error) {
     return [];
   }
@@ -12,7 +12,7 @@ export const findCustomChannels = async () => {
 
 export const findCustomChannelById = async (id: string) => {
   try {
-    return await CustomChannel.findById(id).populate(populate);
+    return await CustomChannel.findById(id).populate(populate).lean();
   } catch (error) {
     return null;
   }
@@ -20,7 +20,7 @@ export const findCustomChannelById = async (id: string) => {
 
 export const findOneCustomChannelByChannelId = async (channelid: number) => {
   try {
-    const data = await CustomChannel.find().populate(populate);
+    const data = await CustomChannel.find().populate(populate).lean();
     return data.find((x) => x.channelParent.id === channelid) ?? null;
   } catch (error) {
     return null;

@@ -42,10 +42,10 @@ const channelRules = async (teamspeak: TeamSpeak) => {
       .replaceAll("</a>", "]hier[/url]") +
     "[/table]";
 
-  const channelInfo = await teamspeak.channelInfo(rulesChannel.id);
+  const channelInfo = await teamspeak.channelInfo(rulesChannel.id.toString());
   if (channelInfo.channelDescription === description) return;
 
-  await teamspeak.channelEdit(rulesChannel.id, {
+  await teamspeak.channelEdit(rulesChannel.id.toString(), {
     channelDescription: description,
   });
 };
