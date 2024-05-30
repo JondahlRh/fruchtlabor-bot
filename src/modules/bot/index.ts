@@ -2,6 +2,7 @@ import { schedule } from "node-cron";
 import { TeamSpeak } from "ts3-nodejs-library";
 
 import channelController from "./controllers/channel";
+import descriptionController from "./controllers/description";
 import messageController from "./controllers/message";
 import serverController from "./controllers/server";
 import eHandler from "./utility/asyncErrorHandler";
@@ -43,5 +44,6 @@ export default (teamspeak: TeamSpeak) => {
   eHandler(channelController.rules)(teamspeak);
   schedule("0 4 * * *", () => {
     eHandler(channelController.rules)(teamspeak);
+    eHandler(descriptionController.teamchannel)(teamspeak);
   });
 };

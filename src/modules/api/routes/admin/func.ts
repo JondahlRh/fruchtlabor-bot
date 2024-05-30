@@ -9,6 +9,7 @@ import OnlineChannel from "models/functions/OnlineChannel";
 import ServerDescription from "models/functions/ServerDescription";
 import ServerTitle from "models/functions/ServerTitle";
 import SupportMessage from "models/functions/SupportMessage";
+import TeamChannel from "models/functions/TeamChannel";
 
 import authCheck from "modules/api/middlewares/authCheck";
 
@@ -48,6 +49,10 @@ import {
   findSupportMessageById,
   findSupportMessages,
 } from "services/mongodbServices/functions/supportMessage";
+import {
+  findTeamChannelById,
+  findTeamChannels,
+} from "services/mongodbServices/functions/teamChannel";
 
 import adminRouteBuilder from "./adminRouteBuilder";
 
@@ -101,6 +106,11 @@ export default () => {
     "/servertitle",
     authCheck("manage_servertitle"),
     adminRouteBuilder(ServerTitle, findServerTitles, findServerTitleById)
+  );
+  route.use(
+    "/teamchannel",
+    authCheck("manage_teamchannel"),
+    adminRouteBuilder(TeamChannel, findTeamChannels, findTeamChannelById)
   );
   route.use(
     "/supportmessage",
