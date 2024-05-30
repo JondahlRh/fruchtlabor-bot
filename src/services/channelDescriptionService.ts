@@ -46,26 +46,24 @@ export const getPlayerStatus = (serverData: ServerInfoType) => {
 
 export const getDataTitle = (
   content: string,
-  leftAlign = false,
+  align: "left" | "center" | "right",
   largeSize = false,
   whitespaces = 0
 ) => {
-  const left = leftAlign ? "[left]" : "";
   const size = largeSize ? 12 : 10;
   const spaces = Array(whitespaces).fill(" ").join("");
 
-  return ` [th]${left}${spaces}[size=${size}][b]${content}[/b]${spaces}[/th]\n`;
+  return ` [th][${align}]${spaces}[size=${size}][b]${content}[/b]${spaces}[/th]\n`;
 };
 
 export const getDataEntry = (
   content: string,
-  centerAlign = false,
+  align: "left" | "center" | "right",
   whitespaces = 0
 ) => {
-  const center = centerAlign ? "[center]" : "";
   const spaces = Array(whitespaces).fill(" ").join("");
 
-  return ` [td]${center}${spaces}[size=10]${content}${spaces}[/td]\n`;
+  return ` [td][${align}]${spaces}[size=10]${content}${spaces}[/td]\n`;
 };
 
 export const getDataHorizontal = () => {
@@ -78,4 +76,27 @@ export const getClientClicker = (serverGroupClient: ServerGroupClientEntry) => {
     .replaceAll("]", "\\]");
 
   return `[URL=client:///${serverGroupClient.clientUniqueIdentifier}]${escapedClientName}[/URL]`;
+};
+
+export const getUrlLink = (url: string, label: string) => {
+  return `[url=${url}]${label}[/url]`;
+};
+
+export const getListRow = (
+  items: string[],
+  minDisplayCount: number,
+  defaultValue: string
+) => {
+  let description = "[tr][td][list]";
+
+  while (items.length < minDisplayCount) {
+    items.push(defaultValue);
+  }
+
+  for (const value of items) {
+    description += `  [*] ${value}`;
+  }
+
+  description += "[/list][/td][/tr]";
+  return description;
 };

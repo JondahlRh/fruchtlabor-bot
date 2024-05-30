@@ -48,9 +48,9 @@ const title = async (teamspeak: TeamSpeak) => {
         connectData = getConnectLink(server.ip, server.port);
       }
 
-      channelDescription += getDataTitle(server.name, true, false, 4);
-      channelDescription += getDataTitle(connectData);
-      channelDescription += getDataTitle(status, false, false, 2);
+      channelDescription += getDataTitle(server.name, "left", false, 4);
+      channelDescription += getDataTitle(connectData, "center");
+      channelDescription += getDataTitle(status, "center", false, 2);
 
       channelDescription += "[/tr]\n";
     }

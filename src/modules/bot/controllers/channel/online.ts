@@ -53,8 +53,8 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
 
     for (const servergroup of onlineChannel.servergroups) {
       channelDescription += "[tr]\n";
-      channelDescription += getDataTitle(servergroup.name, false, true, 3);
-      channelDescription += getDataTitle("Status", false, true, 3);
+      channelDescription += getDataTitle(servergroup.name, "center", true, 3);
+      channelDescription += getDataTitle("Status", "center", true, 3);
       channelDescription += "[/tr]\n";
 
       channelDescription += "[tr]\n";
@@ -88,10 +88,10 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
 
         channelDescription += getDataEntry(
           getClientClicker(serverGroupClient),
-          false,
+          "left",
           2
         );
-        channelDescription += getDataEntry(status, true);
+        channelDescription += getDataEntry(status, "center");
 
         channelDescription += "[/tr]\n";
       }
