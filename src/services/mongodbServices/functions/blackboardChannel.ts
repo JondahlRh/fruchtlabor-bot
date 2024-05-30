@@ -9,11 +9,3 @@ export const findBlackboardChannels = async () => {
     return [];
   }
 };
-
-export const findBlackboardChannelById = async (id: string) => {
-  try {
-    return await BlackboardChannel.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

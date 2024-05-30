@@ -3,22 +3,6 @@ import { TeamSpeakClient } from "ts3-nodejs-library";
 import SupportLog from "models/general/SupportLog";
 import { TsChannelType } from "models/teamspeak/TsChannel";
 
-export const findSupportLogs = async () => {
-  try {
-    return await SupportLog.find().lean();
-  } catch (error) {
-    return [];
-  }
-};
-
-export const findSupportLogById = async (id: string) => {
-  try {
-    return await SupportLog.findById(id).lean();
-  } catch (error) {
-    return null;
-  }
-};
-
 export const createSupportLog = async (
   channel: TsChannelType,
   client: TeamSpeakClient,

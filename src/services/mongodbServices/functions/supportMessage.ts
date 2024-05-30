@@ -17,22 +17,6 @@ const populate = [
   },
 ];
 
-export const findSupportMessages = async () => {
-  try {
-    return await SupportMessage.find().populate(populate).lean();
-  } catch (error) {
-    return [];
-  }
-};
-
-export const findSupportMessageById = async (id: string) => {
-  try {
-    return await SupportMessage.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};
-
 export const findOneSupportMessageByChannelId = async (channelid: number) => {
   try {
     const data = await SupportMessage.find().populate(populate).lean();

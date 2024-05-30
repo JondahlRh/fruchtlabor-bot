@@ -9,14 +9,14 @@ import TsServergroup, {
   TsServergroupZodSchema,
 } from "models/teamspeak/TsServergroup";
 
-export const OnlineChannelZodSchema = z.object({
+const OnlineChannelZodSchema = z.object({
   channel: TsChannelZodSchema,
   servergroups: z.array(TsServergroupZodSchema),
   title: z.string(),
   collections: z.array(TsCollectionZodSchema),
 });
 
-export type OnlineChannelType = z.infer<typeof OnlineChannelZodSchema>;
+type OnlineChannelType = z.infer<typeof OnlineChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const OnlineChannelSchema = new mongoose.Schema<OnlineChannelType>({

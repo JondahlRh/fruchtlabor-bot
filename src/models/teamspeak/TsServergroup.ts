@@ -8,7 +8,7 @@ export const TsServergroupZodSchema = z.object({
   isTeammember: z.boolean(),
 });
 
-export type TsServergroupType = z.infer<typeof TsServergroupZodSchema>;
+type TsServergroupType = z.infer<typeof TsServergroupZodSchema>;
 
 const TsServergroupSchema = new mongoose.Schema<TsServergroupType>({
   id: { type: Number, required: true, unique: true },

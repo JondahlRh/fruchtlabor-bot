@@ -1,13 +1,6 @@
 import { TeamSpeakServerGroup } from "ts3-nodejs-library";
 
-export type MappedServerGroup = {
-  name: string;
-  id: number;
-};
-
-const servergroupMapper = (
-  servergroup: TeamSpeakServerGroup
-): MappedServerGroup => {
+const servergroupMapper = (servergroup: TeamSpeakServerGroup) => {
   return {
     name: servergroup.name,
     id: +servergroup.sgid,

@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import { z } from "zod";
 
-export const AsyncErrorZodSchema = z.object({
+const AsyncErrorZodSchema = z.object({
   function: z.string(),
   message: z.string(),
   name: z.string(),
   stack: z.string(),
 });
 
-export type AsyncErrorType = z.infer<typeof AsyncErrorZodSchema>;
+type AsyncErrorType = z.infer<typeof AsyncErrorZodSchema>;
 
 const AsyncErrorSchema = new mongoose.Schema<AsyncErrorType>(
   {

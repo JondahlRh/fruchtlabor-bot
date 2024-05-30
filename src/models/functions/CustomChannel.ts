@@ -8,14 +8,14 @@ import TsChannelgroup, {
 
 import { TsPermissionZodSchema } from "types/general";
 
-export const CustomChannelZodSchema = z.object({
+const CustomChannelZodSchema = z.object({
   channelParent: TsChannelZodSchema,
   channelGroup: TsChannelgroupZodSchema,
   prefix: z.string(),
   permissions: z.array(TsPermissionZodSchema),
 });
 
-export type CustomChannelType = z.infer<typeof CustomChannelZodSchema>;
+type CustomChannelType = z.infer<typeof CustomChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const CustomChannelSchema = new mongoose.Schema<CustomChannelType>({

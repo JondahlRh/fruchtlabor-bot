@@ -5,7 +5,7 @@ export const TsDescriptionZodSchema = z.object({
   text: z.string(),
 });
 
-export type TsDescriptionType = z.infer<typeof TsDescriptionZodSchema>;
+type TsDescriptionType = z.infer<typeof TsDescriptionZodSchema>;
 
 const TsDescriptionSchema = new mongoose.Schema<TsDescriptionType>({
   text: { type: String, required: true },

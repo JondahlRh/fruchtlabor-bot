@@ -9,11 +9,3 @@ export const findRuleChannels = async () => {
     return [];
   }
 };
-
-export const findRuleChannelById = async (id: string) => {
-  try {
-    return await RuleChannel.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

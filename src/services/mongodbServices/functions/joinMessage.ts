@@ -9,11 +9,3 @@ export const findJoinMessages = async () => {
     return [];
   }
 };
-
-export const findJoinMessageById = async (id: string) => {
-  try {
-    return await JoinMessage.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

@@ -9,11 +9,3 @@ export const findTeamChannels = async () => {
     return [];
   }
 };
-
-export const findTeamChannelById = async (id: string) => {
-  try {
-    return await TeamChannel.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

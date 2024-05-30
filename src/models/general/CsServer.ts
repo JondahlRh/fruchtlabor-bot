@@ -8,7 +8,7 @@ export const CsServerZodSchema = z.object({
   port: z.number(),
 });
 
-export type CsServerType = z.infer<typeof CsServerZodSchema>;
+type CsServerType = z.infer<typeof CsServerZodSchema>;
 
 const CsServerSchema = new mongoose.Schema<CsServerType>({
   name: { type: String, required: true, unique: true },

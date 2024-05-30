@@ -7,7 +7,7 @@ import TsDescription, {
   TsDescriptionZodSchema,
 } from "models/teamspeak/TsDescription";
 
-export const ServerDescriptionZodSchema = z.object({
+const ServerDescriptionZodSchema = z.object({
   title: z.string(),
   subtitle: z.string(),
   body: z.string(),
@@ -16,7 +16,7 @@ export const ServerDescriptionZodSchema = z.object({
   description: TsDescriptionZodSchema.optional(),
 });
 
-export type ServerDescriptionType = z.infer<typeof ServerDescriptionZodSchema>;
+type ServerDescriptionType = z.infer<typeof ServerDescriptionZodSchema>;
 
 const ServerDescriptionSchema = new Schema<ServerDescriptionType>({
   title: { type: String, required: true },

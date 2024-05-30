@@ -23,14 +23,6 @@ export const findAfkChannels = async () => {
   }
 };
 
-export const findAfkChannelById = async (id: string) => {
-  try {
-    return await AfkChannel.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};
-
 export const findOneDefaultAfkChannel = async () => {
   try {
     return await AfkChannel.findOne({ isDefault: true })

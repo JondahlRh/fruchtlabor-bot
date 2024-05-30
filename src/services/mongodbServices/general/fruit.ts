@@ -7,11 +7,3 @@ export const findFruits = async () => {
     return [];
   }
 };
-
-export const findFruitById = async (id: string) => {
-  try {
-    return await Fruit.findById(id).lean();
-  } catch (error) {
-    return null;
-  }
-};

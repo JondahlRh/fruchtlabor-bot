@@ -4,7 +4,7 @@ import { z } from "zod";
 import Permission, { PermissionZodSchema } from "./Permission";
 import Role, { RoleZodSchema } from "./Role";
 
-export const UserZodSchema = z.object({
+const UserZodSchema = z.object({
   username: z.string(),
   apikey: z.string(),
   isOwner: z.boolean(),
@@ -12,7 +12,7 @@ export const UserZodSchema = z.object({
   permissions: z.array(PermissionZodSchema),
 });
 
-export type UserType = z.infer<typeof UserZodSchema>;
+type UserType = z.infer<typeof UserZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const UserSchema = new mongoose.Schema<UserType>({

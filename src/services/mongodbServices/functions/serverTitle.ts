@@ -9,11 +9,3 @@ export const findServerTitles = async () => {
     return [];
   }
 };
-
-export const findServerTitleById = async (id: string) => {
-  try {
-    return await ServerTitle.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

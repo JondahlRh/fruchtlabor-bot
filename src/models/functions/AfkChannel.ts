@@ -12,7 +12,7 @@ const AfkChannelConditionsZodSchema = z.object({
   sndMuted: z.number(),
 });
 
-export const AfkChannelZodSchema = z.object({
+const AfkChannelZodSchema = z.object({
   isDefault: z.boolean(),
   moveChannel: z.object({
     member: TsChannelZodSchema,
@@ -23,7 +23,7 @@ export const AfkChannelZodSchema = z.object({
   conditions: AfkChannelConditionsZodSchema,
 });
 
-export type AfkChannelType = z.infer<typeof AfkChannelZodSchema>;
+type AfkChannelType = z.infer<typeof AfkChannelZodSchema>;
 export type AfkChannelConditionsType = z.infer<
   typeof AfkChannelConditionsZodSchema
 >;

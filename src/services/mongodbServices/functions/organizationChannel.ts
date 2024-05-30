@@ -9,11 +9,3 @@ export const findOrganizationChannels = async () => {
     return [];
   }
 };
-
-export const findOrganizationChannelById = async (id: string) => {
-  try {
-    return await OrganizationChannel.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

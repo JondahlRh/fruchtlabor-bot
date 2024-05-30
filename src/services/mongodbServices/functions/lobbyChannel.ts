@@ -9,11 +9,3 @@ export const findLobbyChannels = async () => {
     return [];
   }
 };
-
-export const findLobbyChannelById = async (id: string) => {
-  try {
-    return await LobbyChannel.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

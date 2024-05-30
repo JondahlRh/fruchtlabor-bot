@@ -13,7 +13,7 @@ const NewsZodSchema = z.object({
   link: LinkZodSchema,
 });
 
-export const BlackboardChannelZodSchema = z.object({
+const BlackboardChannelZodSchema = z.object({
   channel: TsChannelZodSchema,
   title: z.string(),
   body: z.string(),
@@ -21,7 +21,7 @@ export const BlackboardChannelZodSchema = z.object({
   generals: z.array(NewsZodSchema),
 });
 
-export type BlackboardChannelType = z.infer<typeof BlackboardChannelZodSchema>;
+type BlackboardChannelType = z.infer<typeof BlackboardChannelZodSchema>;
 
 const LinkSchema = {
   url: { type: String, required: true },

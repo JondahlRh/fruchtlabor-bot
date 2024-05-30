@@ -8,7 +8,7 @@ export const RoleZodSchema = z.object({
   permissions: z.array(PermissionZodSchema),
 });
 
-export type RoleType = z.infer<typeof RoleZodSchema>;
+type RoleType = z.infer<typeof RoleZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const RoleSchema = new mongoose.Schema<RoleType>({

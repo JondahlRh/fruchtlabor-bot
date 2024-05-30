@@ -16,11 +16,3 @@ export const findOnlineChannels = async () => {
     return [];
   }
 };
-
-export const findOnlineChannelById = async (id: string) => {
-  try {
-    return await OnlineChannel.findById(id).populate(populate).lean();
-  } catch (error) {
-    return null;
-  }
-};

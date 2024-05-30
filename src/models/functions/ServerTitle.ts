@@ -4,7 +4,7 @@ import { z } from "zod";
 import CsServer, { CsServerZodSchema } from "models/general/CsServer";
 import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
 
-export const ServerTitleZodSchema = z.object({
+const ServerTitleZodSchema = z.object({
   prefix: z.string(),
   title: z.string(),
   body: z.string(),
@@ -12,7 +12,7 @@ export const ServerTitleZodSchema = z.object({
   server: CsServerZodSchema,
 });
 
-export type ServerTitleType = z.infer<typeof ServerTitleZodSchema>;
+type ServerTitleType = z.infer<typeof ServerTitleZodSchema>;
 
 const ServerTitleSchema = new Schema<ServerTitleType>({
   prefix: { type: String, required: true },

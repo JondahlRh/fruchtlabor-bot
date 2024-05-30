@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import TsChannel, { TsChannelZodSchema } from "models/teamspeak/TsChannel";
 
-export const TeamChannelZodSchema = z.object({
+const TeamChannelZodSchema = z.object({
   channel: TsChannelZodSchema,
   name: z.string(),
   type: z.string(),
@@ -19,7 +19,7 @@ export const TeamChannelZodSchema = z.object({
   trainingTimes: z.array(z.string()),
 });
 
-export type TeamChannelType = z.infer<typeof TeamChannelZodSchema>;
+type TeamChannelType = z.infer<typeof TeamChannelZodSchema>;
 
 const TeamChannelSchema = new Schema<TeamChannelType>({
   channel: { type: Types.ObjectId, ref: TsChannel, required: true },

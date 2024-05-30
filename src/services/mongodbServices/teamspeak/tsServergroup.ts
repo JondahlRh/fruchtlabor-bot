@@ -7,11 +7,3 @@ export const findTsServergroups = async () => {
     return [];
   }
 };
-
-export const findTsServergroupById = async (id: string) => {
-  try {
-    return await TsServergroup.findById(id).lean();
-  } catch (error) {
-    return null;
-  }
-};

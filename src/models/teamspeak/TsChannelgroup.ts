@@ -7,7 +7,7 @@ export const TsChannelgroupZodSchema = z.object({
   description: z.string(),
 });
 
-export type TsChannelgroupType = z.infer<typeof TsChannelgroupZodSchema>;
+type TsChannelgroupType = z.infer<typeof TsChannelgroupZodSchema>;
 
 const TsChannelgroupSchema = new mongoose.Schema<TsChannelgroupType>({
   id: { type: Number, required: true, unique: true },

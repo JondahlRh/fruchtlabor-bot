@@ -18,7 +18,7 @@ const SupportSpecialZodSchema = z.object({
   }),
 });
 
-export const SupportMessageZodSchema = z.object({
+const SupportMessageZodSchema = z.object({
   channel: TsChannelZodSchema,
   contactServergroups: z.array(TsServergroupZodSchema),
   messageBody: z.string(),
@@ -27,7 +27,7 @@ export const SupportMessageZodSchema = z.object({
   specials: z.array(SupportSpecialZodSchema),
 });
 
-export type SupportMessageType = z.infer<typeof SupportMessageZodSchema>;
+type SupportMessageType = z.infer<typeof SupportMessageZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const SupportMessageSchema = new mongoose.Schema<SupportMessageType>({

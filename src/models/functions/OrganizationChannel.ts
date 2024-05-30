@@ -13,7 +13,7 @@ const CategorieZodSchema = z.object({
   links: z.array(LinkZodSchema),
 });
 
-export const OrganizationChannelZodSchema = z.object({
+const OrganizationChannelZodSchema = z.object({
   channel: TsChannelZodSchema,
   title: z.string(),
   body: z.string(),
@@ -22,9 +22,7 @@ export const OrganizationChannelZodSchema = z.object({
   categories: z.array(CategorieZodSchema),
 });
 
-export type OrganizationChannelType = z.infer<
-  typeof OrganizationChannelZodSchema
->;
+type OrganizationChannelType = z.infer<typeof OrganizationChannelZodSchema>;
 
 const LinkSchema = {
   url: { type: String, required: true },

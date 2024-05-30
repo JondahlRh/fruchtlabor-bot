@@ -8,7 +8,7 @@ import TsDescription, {
 
 import { TsPermissionZodSchema } from "types/general";
 
-export const LobbyChannelZodSchema = z.object({
+const LobbyChannelZodSchema = z.object({
   channelParent: TsChannelZodSchema,
   channelParentSiblings: z.array(TsChannelZodSchema),
   description: TsDescriptionZodSchema,
@@ -18,7 +18,7 @@ export const LobbyChannelZodSchema = z.object({
   permissions: z.array(TsPermissionZodSchema),
 });
 
-export type LobbyChannelType = z.infer<typeof LobbyChannelZodSchema>;
+type LobbyChannelType = z.infer<typeof LobbyChannelZodSchema>;
 
 const { ObjectId } = mongoose.Schema.Types;
 const LobbyChannelSchema = new mongoose.Schema<LobbyChannelType>({
