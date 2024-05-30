@@ -37,7 +37,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build and Run docker container
-        run: docker compose -f .gitea/docker-compose.yml up --build -d
+        run: docker compose -f .gitea/docker-compose.yml -p ${NAME} up --build -d
       - name: Ping
         run: |
           echo "Ping service on ${EXPOSED_HOST}:${EXPOSED_PORT} in 10 seconds..."
