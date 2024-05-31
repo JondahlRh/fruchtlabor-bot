@@ -19,7 +19,7 @@ const JwtPayloadZodSchema = z.object({
 
 type JwtPayloadType = z.infer<typeof JwtPayloadZodSchema>;
 
-export default (permission: string): RequestHandler => {
+export default (permission?: string): RequestHandler => {
   const checkPermission = (data: { permissions: PermissionType[] }) => {
     return data.permissions.some((x) => x.name === permission);
   };
@@ -47,9 +47,14 @@ export default (permission: string): RequestHandler => {
     }
     if (!isValidApikey) return restrictedNext(next, new AuthUnauthorized());
 
-    const hasPermission =
-      user.isOwner || checkPermission(user) || user.roles.some(checkPermission);
-    if (hasPermission) return next();
+    const isOwner = user.isOwner;
+    if (isOwner) return next();
+
+    if (!permission) return restrictedNext(next, new AuthUnauthorized());
+
+    if (checkPermission(user) || user.roles.some(checkPermission)) {
+      return next();
+    }
 
     restrictedNext(next, new AuthForbidden());
   };
