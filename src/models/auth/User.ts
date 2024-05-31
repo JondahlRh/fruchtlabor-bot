@@ -12,8 +12,8 @@ type UserType = {
 };
 
 const UserSchema = new Schema<UserType>({
-  username: { type: String, required: true },
-  apikey: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
+  apikey: { type: String, required: true, unique: true },
   isOwner: { type: Boolean, default: false },
   roles: [{ type: Types.ObjectId, ref: Role }],
   permissions: [{ type: Types.ObjectId, ref: Permission }],
