@@ -15,7 +15,6 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "nanoid": "^3.3.7",
     "node-cron": "^3.0.3",

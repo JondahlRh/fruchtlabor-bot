@@ -24,8 +24,6 @@ const envObject = z.object({
   CS_SERVER_PASSWORD: z.string(),
 
   FUNCTIONS_RULES_URL: z.string(),
-
-  JWT_SECRET: z.string(),
 });
 
 declare global {
