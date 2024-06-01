@@ -6,7 +6,8 @@ on:
       - master
 
 env:
-  NAME: "fruchtlabor-ts-bot-prod"
+  NAME: fruchtlabor-ts-bot
+  ENVIRONMENT: prod
 
   EXPOSED_HOST: ${{ vars.PROD_EXPOSED_HOST }}
   EXPOSED_PORT: ${{ vars.PROD_EXPOSED_PORT }}

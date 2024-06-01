@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
       args:
         - INTERNAL_PORT=${INTERNAL_PORT}
-    image: ${NAME}:latest
-    container_name: ${NAME}
+    image: ${NAME}-${ENVIRONMENT}:latest
+    container_name: ${NAME}-${ENVIRONMENT}
     restart: unless-stopped
     environment:
       - FEATUREFLAG_BOT=${FEATUREFLAG_BOT}
