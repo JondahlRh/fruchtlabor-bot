@@ -2,9 +2,9 @@ import User from "models/auth/User";
 
 const populate = [{ path: "roles", populate: ["permissions"] }, "permissions"];
 
-export const findOneUserByUsername = async (username: string) => {
+export const findOneUserById = async (_id: string) => {
   try {
-    return await User.findOne({ username }).populate(populate).lean();
+    return await User.findById(_id).populate(populate).lean();
   } catch (error) {
     return null;
   }
@@ -18,8 +18,14 @@ export const createUser = async (
   roles: string[]
 ) => {
   try {
-    await User.create({ username, apikey, isOwner, permissions, roles });
-    return { success: true };
+    const user = await User.create({
+      username,
+      apikey,
+      isOwner,
+      permissions,
+      roles,
+    });
+    return { success: true, _id: user._id };
   } catch (error) {
     return { success: false };
   }

@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
-import jwt from "jsonwebtoken";
 import { z } from "zod";
 
 import { AuthForbidden, AuthUnauthorized } from "classes/htmlErrors";
@@ -10,14 +9,9 @@ import { PermissionType } from "models/auth/Permission";
 
 import restrictedNext from "modules/api/utility/restrictedNext";
 
-import { findOneUserByUsername } from "services/mongodbServices/auth/user";
+import { findOneUserById } from "services/mongodbServices/auth/user";
 
-const JwtPayloadZodSchema = z.object({
-  username: z.string(),
-  apikey: z.string(),
-});
-
-type JwtPayloadType = z.infer<typeof JwtPayloadZodSchema>;
+const TokenDataSChema = z.tuple([z.string(), z.string()]);
 
 export default (permission?: string): RequestHandler => {
   const checkPermission = (data: { permissions: PermissionType[] }) => {
@@ -25,23 +19,19 @@ export default (permission?: string): RequestHandler => {
   };
 
   return async (req, res, next) => {
-    const apikey = req.headers.authorization?.split(" ")[1];
-    if (!apikey) return restrictedNext(next, new AuthUnauthorized());
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return restrictedNext(next, new AuthUnauthorized());
 
-    let apikeyData: JwtPayloadType;
-    try {
-      const decodedJwtToken = jwt.verify(apikey, process.env.JWT_SECRET);
-      apikeyData = JwtPayloadZodSchema.parse(decodedJwtToken);
-    } catch (error) {
-      return restrictedNext(next, new AuthUnauthorized());
-    }
+    const tokenData = TokenDataSChema.safeParse(token.split(":"));
+    if (!tokenData.success) return restrictedNext(next, new AuthUnauthorized());
+    const [tokenId, tokenApikey] = tokenData.data;
 
-    const user = await findOneUserByUsername(apikeyData.username);
+    const user = await findOneUserById(tokenId);
     if (!user) return restrictedNext(next, new AuthUnauthorized());
 
     let isValidApikey = false;
     try {
-      isValidApikey = await bcrypt.compare(apikeyData.apikey, user.apikey);
+      isValidApikey = await bcrypt.compare(tokenApikey, user.apikey);
     } catch (error) {
       return restrictedNext(next, new UnknownServerError());
     }

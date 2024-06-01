@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
-import jwt from "jsonwebtoken";
 import { customAlphabet } from "nanoid";
 import { z } from "zod";
 
@@ -15,7 +14,7 @@ import restrictedResponse from "modules/api/utility/restrictedResponse";
 import { createUser } from "services/mongodbServices/auth/user";
 
 const ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz";
-const nanoid = customAlphabet(ALPHABET, 16);
+const nanoid = customAlphabet(ALPHABET, 32);
 
 const GenerateTokenSchema = z.object({
   username: z.string(),
@@ -32,9 +31,14 @@ export default (): RequestHandler => {
     }
 
     const { username, isOwner, roles, permissions } = requestBody.data;
-
     const apikey = nanoid();
-    const encryptedApikey = await bcrypt.hash(apikey, 12);
+
+    let encryptedApikey: string;
+    try {
+      encryptedApikey = await bcrypt.hash(apikey, 12);
+    } catch (error) {
+      return restrictedNext(next, new UnknownServerError());
+    }
 
     const createdUser = await createUser(
       username,
@@ -48,16 +52,8 @@ export default (): RequestHandler => {
       return restrictedNext(next, new UnknownDatabaseError());
     }
 
-    let token: string;
-    try {
-      token = jwt.sign({ username, apikey }, process.env.JWT_SECRET);
-    } catch (error) {
-      return restrictedNext(next, new UnknownServerError());
-    }
+    const token = createdUser._id + ":" + apikey;
 
-    return restrictedResponse(
-      res,
-      new SingleDataResponse({ username, apikey, token })
-    );
+    return restrictedResponse(res, new SingleDataResponse({ username, token }));
   };
 };
