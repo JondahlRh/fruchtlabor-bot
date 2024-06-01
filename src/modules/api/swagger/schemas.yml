@@ -37,3 +37,23 @@ components:
         banreason:
           type: "string"
           description: Ban reason
+
+    GenerateTokenSchema:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          description: TeamSpeak client dbid or tsid
+        isOwner:
+          type: "boolean"
+          description: TeamSpeak client dbid or tsid
+        roles:
+          type: "array"
+          items:
+            type: "string"
+            description: Role ids
+        permissions:
+          type: "array"
+          items:
+            type: "string"
+            description: Permission ids

@@ -31,3 +31,20 @@ components:
             tsidBanSuccesful:
               type: string
               nullable: true
+
+    PostGenerateTokenResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Client bann added!
+        status:
+          type: number
+          default: 200
+        data:
+          type: object
+          properties:
+            username:
+              type: string
+            token:
+              type: string

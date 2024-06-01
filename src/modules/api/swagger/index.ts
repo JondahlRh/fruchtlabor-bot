@@ -21,7 +21,7 @@ const swaggerDocs = swaggerJSDoc({
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ["./**/*.yml"],
+  apis: ["src/modules/api/swagger/*.yml"],
 });
 
 export default swaggerDocs;

@@ -1,0 +1,44 @@
+/v1/auth/generateToken:
+  post:
+    summary: Generates a user with a token
+    tags:
+      - auth
+    requestBody:
+      description: "The request body"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GenerateTokenSchema"
+    responses:
+      200:
+        description: "Single data response"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: "#/components/schemas/PostGenerateTokenResponse"
+      400:
+        description: "RequestBodyError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestBodyError"
+            examples:
+              RequestBodyError:
+                $ref: "#/components/schemas/RequestBodyError"
+      500:
+        description: "UnknownDatabaseError or UnknownServerError."
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/UnknownDatabaseError"
+                - $ref: "#/components/schemas/UnknownServerError"
+            examples:
+              UnknownDatabaseError:
+                $ref: "#/components/schemas/UnknownDatabaseError"
+              UnknownServerError:
+                $ref: "#/components/schemas/UnknownServerError"

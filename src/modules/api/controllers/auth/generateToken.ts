@@ -6,7 +6,7 @@ import { z } from "zod";
 import { RequestBodyError } from "classes/htmlErrors";
 import UnknownDatabaseError from "classes/htmlErrors/UnknownDatabaseError";
 import UnknownServerError from "classes/htmlErrors/UnknownServerError";
-import SingleDataResponse from "classes/htmlSuccesses/SingleDataResponse";
+import PostGenerateTokenResponse from "classes/htmlSuccesses/PostGenerateTokenResponse";
 
 import restrictedNext from "modules/api/utility/restrictedNext";
 import restrictedResponse from "modules/api/utility/restrictedResponse";
@@ -54,6 +54,9 @@ export default (): RequestHandler => {
 
     const token = createdUser._id + ":" + apikey;
 
-    return restrictedResponse(res, new SingleDataResponse({ username, token }));
+    return restrictedResponse(
+      res,
+      new PostGenerateTokenResponse(username, token)
+    );
   };
 };

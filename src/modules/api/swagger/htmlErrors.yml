@@ -102,6 +102,23 @@ components:
         status: 500
         data: null
 
+    UnknownServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          default: An unknown server error occured!
+        status:
+          type: number
+          default: 500
+        data:
+          type: string
+          default: null
+      value:
+        message: An unknown server error occured!
+        status: 500
+        data: null
+
     UnknownRouteError:
       type: object
       properties:
