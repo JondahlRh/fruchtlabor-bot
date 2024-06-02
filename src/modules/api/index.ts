@@ -5,6 +5,7 @@ import { TeamSpeak } from "ts3-nodejs-library";
 
 import { unknownRouteController, errorController } from "./controllers/error";
 import auth from "./routes/auth";
+import bot from "./routes/bot";
 import channel from "./routes/channel";
 import client from "./routes/client";
 import servergroup from "./routes/servergroup";
@@ -21,6 +22,7 @@ export default (teamspeak: TeamSpeak) => {
   app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.use("/v1/auth", auth());
+  app.use("/v1/bot", bot(teamspeak));
 
   app.use("/v1/servergroup", servergroup(teamspeak));
   app.use("/v1/channel", channel(teamspeak));

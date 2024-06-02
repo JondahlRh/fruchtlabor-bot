@@ -1,0 +1,77 @@
+/v1/bot/blackboardchannel:
+  post:
+    summary: "Execute blackboardchannel descrtiption changer"
+    tags:
+      - bot
+    responses:
+      200:
+        description: "Successful"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "boolean"
+                  example: true
+      500:
+        description: "UnknownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnknownTeamSpeakError"
+            examples:
+              UnknownTeamSpeakError:
+                $ref: "#/components/schemas/UnknownTeamSpeakError"
+
+/v1/bot/organizationchannel:
+  post:
+    summary: "Execute organizationchannel descrtiption changer"
+    tags:
+      - bot
+    responses:
+      200:
+        description: "Successful"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "boolean"
+                  example: true
+      500:
+        description: "UnknownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnknownTeamSpeakError"
+            examples:
+              UnknownTeamSpeakError:
+                $ref: "#/components/schemas/UnknownTeamSpeakError"
+
+/v1/bot/teamchannel:
+  post:
+    summary: "Execute teamchannel descrtiption changer"
+    tags:
+      - bot
+    responses:
+      200:
+        description: "Successful"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                data:
+                  type: "boolean"
+                  example: true
+      500:
+        description: "UnknownTeamSpeakError"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnknownTeamSpeakError"
+            examples:
+              UnknownTeamSpeakError:
+                $ref: "#/components/schemas/UnknownTeamSpeakError"
