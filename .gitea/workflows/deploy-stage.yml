@@ -1,0 +1,53 @@
+name: fruchtlabor teamspeak bot deploy - stage
+run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+on:
+  push:
+    branches:
+      - stage
+
+env:
+  NAME: fruchtlabor-ts-bot
+  ENVIRONMENT: stage
+
+  EXPOSED_HOST: ${{ vars.STAGE_EXPOSED_HOST }}
+  EXPOSED_PORT: ${{ vars.STAGE_EXPOSED_PORT }}
+  INTERNAL_PORT: ${{ vars.STAGE_INTERNAL_PORT }}
+
+  FEATUREFLAG_BOT: ${{ vars.STAGE_FEATUREFLAG_BOT }}
+  FEATUREFLAG_API: ${{ vars.STAGE_FEATUREFLAG_API }}
+
+  TEAMSPEAK_IP: ${{ vars.STAGE_TEAMSPEAK_IP }}
+  TEAMSPEAK_PORT: ${{ vars.STAGE_TEAMSPEAK_PORT }}
+  TEAMSPEAK_QUERYPORT: ${{ vars.STAGE_TEAMSPEAK_QUERYPORT }}
+  TEAMSPEAKQUERY_USERNAME: ${{ secrets.STAGE_TEAMSPEAKQUERY_USERNAME }}
+  TEAMSPEAKQUERY_PASSWORD: ${{ secrets.STAGE_TEAMSPEAKQUERY_PASSWORD }}
+  TEAMSPEAK_NICKNAME: ${{ vars.STAGE_TEAMSPEAK_NICKNAME }}
+
+  MONGODB_CONNECT: ${{ secrets.STAGE_MONGODB_CONNECT }}
+  MONGODB_DBNAME: ${{ vars.STAGE_MONGODB_DBNAME }}
+
+  CS_SERVER_DOMAIN: ${{ vars.STAGE_CS_SERVER_DOMAIN }}
+  CS_SERVER_PASSWORD: ${{ secrets.STAGE_CS_SERVER_PASSWORD }}
+
+  FUNCTIONS_RULES_URL: ${{ vars.STAGE_FUNCTIONS_RULES_URL }}
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build and Run docker container
+        run: docker compose -f .gitea/docker-compose.yml -p ${NAME} up --build -d
+      - name: Ping
+        run: |
+          echo "Ping service on ${EXPOSED_HOST}:${EXPOSED_PORT} in 10 seconds..."
+          sleep 10
+
+          HTTP_RESPONSE=$(curl --write-out "%{http_code}" --silent --output /dev/null "${EXPOSED_HOST}:${EXPOSED_PORT}")
+          if [ "$HTTP_RESPONSE" -lt 500 ]; then
+            echo "Address is available."
+          else
+            echo "Address is not available."
+            exit 1
+          fi
