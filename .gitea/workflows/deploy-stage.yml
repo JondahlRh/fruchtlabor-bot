@@ -6,8 +6,7 @@ on:
       - stage
 
 env:
-  NAME: fruchtlabor-ts-bot
-  ENVIRONMENT: stage
+  NAME: fruchtlabor-ts-bot-stage
 
   EXPOSED_HOST: ${{ vars.STAGE_EXPOSED_HOST }}
   EXPOSED_PORT: ${{ vars.STAGE_EXPOSED_PORT }}
