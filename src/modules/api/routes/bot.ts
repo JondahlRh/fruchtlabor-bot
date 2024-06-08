@@ -9,14 +9,9 @@ export default (teamspeak: TeamSpeak) => {
   const route = Router();
 
   route.post(
-    "/blackboardchannel",
-    authCheck("exec_blackboardchannel"),
-    bot(teamspeak).blackboardchannel
-  );
-  route.post(
-    "/organizationchannel",
-    authCheck("exec_organizationchannel"),
-    bot(teamspeak).organizationchannel
+    "/infodescription",
+    authCheck("exec_infodescription"),
+    bot(teamspeak).infodescription
   );
   route.post(
     "/teamchannel",

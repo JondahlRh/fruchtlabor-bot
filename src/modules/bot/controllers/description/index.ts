@@ -1,13 +1,11 @@
-import blackboarchannelDescription from "./blackboardchannel";
 import forumsyncDescription from "./forumsync";
+import infoDescription from "./info";
 import onlineDescription from "./online";
-import organizationchannelDescription from "./organizationchannel";
 import teamchannelDescription from "./teamchannel";
 
 export default {
-  blackboarchannelDescription,
   forumsyncDescription,
+  infoDescription,
   onlineDescription,
-  organizationchannelDescription,
   teamchannelDescription,
 };
