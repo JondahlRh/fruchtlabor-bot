@@ -36,7 +36,9 @@ const getJobAdsTable = (jobAd: JobAd) => {
   return description + getSpacerRow(TABLE_WIDTH);
 };
 
-export default async (teamspeak: TeamSpeak) => {
+export default async function organizationchannelDescription(
+  teamspeak: TeamSpeak
+) {
   const organizationChannels = await findOrganizationChannels();
 
   organizationChannels.forEach(async (organizationChannel) => {
@@ -92,4 +94,4 @@ export default async (teamspeak: TeamSpeak) => {
       channelDescription,
     });
   });
-};
+}

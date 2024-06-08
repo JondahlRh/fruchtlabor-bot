@@ -2,7 +2,10 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import { findJoinMessages } from "services/mongodbServices/functions/joinMessage";
 
-const messageJoin = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
+export default async function joinMessage(
+  teamspeak: TeamSpeak,
+  client: TeamSpeakClient
+) {
   const joinMessages = await findJoinMessages();
 
   for (const joinMessage of joinMessages) {
@@ -13,6 +16,4 @@ const messageJoin = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
 
     await client.message(joinMessage.message);
   }
-};
-
-export default messageJoin;
+}

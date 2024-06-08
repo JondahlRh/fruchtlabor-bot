@@ -1,4 +1,4 @@
-import join from "./join";
-import support from "./support";
+import joinMessage from "./join";
+import supportMessage from "./support";
 
-export default { support, join };
+export default { joinMessage, supportMessage };

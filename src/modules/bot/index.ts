@@ -4,11 +4,12 @@ import { TeamSpeak } from "ts3-nodejs-library";
 import channelController from "./controllers/channel";
 import descriptionController from "./controllers/description";
 import messageController from "./controllers/message";
+import moveController from "./controllers/move";
 import serverController from "./controllers/server";
 import eHandler from "./utility/asyncErrorHandler";
 
 export const moveDefaultChannel = (teamspeak: TeamSpeak) => {
-  eHandler(channelController.botMove)(teamspeak);
+  eHandler(moveController.botMove)(teamspeak);
 };
 
 export default (teamspeak: TeamSpeak) => {
@@ -17,34 +18,34 @@ export default (teamspeak: TeamSpeak) => {
   moveDefaultChannel(teamspeak);
 
   teamspeak.on("clientconnect", (event) => {
-    eHandler(messageController.join)(teamspeak, event.client);
-    eHandler(channelController.custom)(teamspeak, event.client);
-    eHandler(messageController.support)(teamspeak, event.client);
-    eHandler(channelController.addgroup)(event.client);
+    eHandler(messageController.joinMessage)(teamspeak, event.client);
+    eHandler(channelController.customChannel)(teamspeak, event.client);
+    eHandler(messageController.supportMessage)(teamspeak, event.client);
+    eHandler(channelController.addgroupChannel)(event.client);
   });
 
   teamspeak.on("clientdisconnect", () => {
-    eHandler(channelController.lobby)(teamspeak);
+    eHandler(channelController.lobbyChannel)(teamspeak);
   });
 
   teamspeak.on("clientmoved", (event) => {
-    eHandler(channelController.custom)(teamspeak, event.client);
-    eHandler(channelController.lobby)(teamspeak);
-    eHandler(messageController.support)(teamspeak, event.client);
-    eHandler(channelController.addgroup)(event.client);
+    eHandler(channelController.customChannel)(teamspeak, event.client);
+    eHandler(channelController.lobbyChannel)(teamspeak);
+    eHandler(messageController.supportMessage)(teamspeak, event.client);
+    eHandler(channelController.addgroupChannel)(event.client);
   });
 
   schedule("*/30 * * * * *", () => {
-    eHandler(channelController.online)(teamspeak);
-    eHandler(channelController.afk)(teamspeak);
-    eHandler(serverController.overview)(teamspeak);
-    eHandler(serverController.playercount)(teamspeak);
+    eHandler(descriptionController.onlineDescription)(teamspeak);
+    eHandler(moveController.afkMove)(teamspeak);
+    eHandler(serverController.overviewServer)(teamspeak);
+    eHandler(serverController.detailsServer)(teamspeak);
   });
 
   schedule("0 4 * * *", () => {
-    eHandler(descriptionController.organizationchannel)(teamspeak);
-    eHandler(descriptionController.blackboardchannel)(teamspeak);
-    eHandler(descriptionController.rulechannel)(teamspeak);
-    eHandler(descriptionController.teamchannel)(teamspeak);
+    eHandler(descriptionController.organizationchannelDescription)(teamspeak);
+    eHandler(descriptionController.blackboarchannelDescription)(teamspeak);
+    eHandler(descriptionController.forumsyncDescription)(teamspeak);
+    eHandler(descriptionController.teamchannelDescription)(teamspeak);
   });
 };

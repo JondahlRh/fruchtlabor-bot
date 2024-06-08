@@ -1,8 +1,5 @@
-import addgroup from "./addgroup";
-import afk from "./afk";
-import botMove from "./botMove";
-import custom from "./custom";
-import lobby from "./lobby";
-import online from "./online";
+import addgroupChannel from "./addgroup";
+import customChannel from "./custom";
+import lobbyChannel from "./lobby";
 
-export default { custom, botMove, lobby, online, addgroup, afk };
+export default { addgroupChannel, customChannel, lobbyChannel };

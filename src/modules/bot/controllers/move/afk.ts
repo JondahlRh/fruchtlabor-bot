@@ -24,7 +24,7 @@ const checkMove = (
   return -1;
 };
 
-const channelAfk = async (teamspeak: TeamSpeak) => {
+export default async function afkMove(teamspeak: TeamSpeak) {
   const afkChannels = await findAfkChannels();
 
   const defaultAfkChannel = await findOneDefaultAfkChannel();
@@ -78,6 +78,4 @@ const channelAfk = async (teamspeak: TeamSpeak) => {
       `Du warst über ${maxIdleTimeMinutes} Minuten abwesend und wurdest in den Afk Channel gemoved!`
     );
   }
-};
-
-export default channelAfk;
+}

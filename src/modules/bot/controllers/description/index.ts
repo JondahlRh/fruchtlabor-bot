@@ -1,11 +1,13 @@
-import blackboardchannel from "./blackboardchannel";
-import organizationchannel from "./organizationchannel";
-import rulechannel from "./rulechannel";
-import teamchannel from "./teamchannel";
+import blackboarchannelDescription from "./blackboardchannel";
+import forumsyncDescription from "./forumsync";
+import onlineDescription from "./online";
+import organizationchannelDescription from "./organizationchannel";
+import teamchannelDescription from "./teamchannel";
 
 export default {
-  blackboardchannel,
-  organizationchannel,
-  rulechannel,
-  teamchannel,
+  blackboarchannelDescription,
+  forumsyncDescription,
+  onlineDescription,
+  organizationchannelDescription,
+  teamchannelDescription,
 };

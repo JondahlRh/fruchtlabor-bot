@@ -109,9 +109,7 @@ const lobby = async () => {
   lobby();
 };
 
-const channelLobby = async (teamspeak: TeamSpeak) => {
+export default async function lobbyChannel(teamspeak: TeamSpeak) {
   eventQueue.push(teamspeak);
   lobby();
-};
-
-export default channelLobby;
+}

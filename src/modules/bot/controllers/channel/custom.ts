@@ -4,12 +4,15 @@ import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
 
 import { findOneCustomChannelByChannelId } from "services/mongodbServices/functions/customChannel";
 
-import botMove from "./botMove";
+import botMove from "../move/bot";
 
 const CHANNEL_NAME_MAX_LENGTH = 40;
 const CHANNEL_DELETE_DELAY = 5;
 
-const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
+export default async function customChannel(
+  teamspeak: TeamSpeak,
+  client: TeamSpeakClient
+) {
   if (client.type === 1) return;
 
   const customChannel = await findOneCustomChannelByChannelId(+client.cid);
@@ -63,6 +66,4 @@ const channelCustom = async (teamspeak: TeamSpeak, client: TeamSpeakClient) => {
   await teamspeak.clientMove(client, tsCustomChannel.cid);
 
   await botMove(teamspeak);
-};
-
-export default channelCustom;
+}

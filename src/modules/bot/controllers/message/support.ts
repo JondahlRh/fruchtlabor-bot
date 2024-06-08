@@ -5,10 +5,10 @@ import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper"
 import { findOneSupportMessageByChannelId } from "services/mongodbServices/functions/supportMessage";
 import { createSupportLog } from "services/mongodbServices/general/supportLog";
 
-const messageSupport = async (
+export default async function supportMessage(
   teamspeak: TeamSpeak,
   client: TeamSpeakClient
-) => {
+) {
   if (client.type === 1) return;
 
   const supportMessage = await findOneSupportMessageByChannelId(+client.cid);
@@ -120,6 +120,4 @@ const messageSupport = async (
     supportClientsContact,
     supportClientsListed
   );
-};
-
-export default messageSupport;
+}

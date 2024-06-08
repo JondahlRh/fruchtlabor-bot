@@ -36,7 +36,7 @@ const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
   return "[color=#44dd44]online[/color]";
 };
 
-const channelOnline = async (teamspeak: TeamSpeak) => {
+export default async function onlineDescription(teamspeak: TeamSpeak) {
   const onlineChannels = await findOnlineChannels();
 
   const clientList = await teamspeak.clientList();
@@ -112,6 +112,4 @@ const channelOnline = async (teamspeak: TeamSpeak) => {
       channelDescription,
     });
   });
-};
-
-export default channelOnline;
+}

@@ -12,7 +12,7 @@ import { getGeneralUrl } from "modules/bot/utility/descriptionTemplates/url";
 
 import { findTeamChannels } from "services/mongodbServices/functions/teamChannel";
 
-export default async (teamspeak: TeamSpeak) => {
+export default async function teamchannelDescription(teamspeak: TeamSpeak) {
   const teamChannels = await findTeamChannels();
 
   teamChannels.forEach(async (teamChannel) => {
@@ -96,4 +96,4 @@ export default async (teamspeak: TeamSpeak) => {
       channelDescription,
     });
   });
-};
+}
