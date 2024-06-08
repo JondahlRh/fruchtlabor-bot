@@ -15,7 +15,7 @@ import { getCsServerConnectLink } from "modules/bot/utility/descriptionTemplates
 import { findServerTitles } from "services/mongodbServices/functions/serverTitle";
 import { getServerInfo } from "services/sourceServerQueryService";
 
-const title = async (teamspeak: TeamSpeak) => {
+export default async function detailsServer(teamspeak: TeamSpeak) {
   const serverTitles = await findServerTitles();
 
   for (const serverTitle of serverTitles) {
@@ -76,6 +76,4 @@ const title = async (teamspeak: TeamSpeak) => {
       channelDescription,
     });
   }
-};
-
-export default title;
+}

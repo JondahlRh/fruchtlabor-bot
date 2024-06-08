@@ -12,7 +12,9 @@ import { findBlackboardChannels } from "services/mongodbServices/functions/black
 
 const TABLE_WIDTH = 120;
 
-export default async (teamspeak: TeamSpeak) => {
+export default async function blackboarchannelDescription(
+  teamspeak: TeamSpeak
+) {
   const blackboardChannels = await findBlackboardChannels();
 
   blackboardChannels.forEach(async (blackboardChannel) => {
@@ -65,4 +67,4 @@ export default async (teamspeak: TeamSpeak) => {
       channelDescription,
     });
   });
-};
+}

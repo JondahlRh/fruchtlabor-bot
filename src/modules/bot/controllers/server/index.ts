@@ -1,4 +1,4 @@
-import overview from "./overview";
-import playercount from "./playercount";
+import detailsServer from "./details";
+import overviewServer from "./overview";
 
-export default { overview, playercount };
+export default { detailsServer, overviewServer };

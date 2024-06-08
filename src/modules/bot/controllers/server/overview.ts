@@ -15,7 +15,7 @@ import { getServerInfo } from "services/sourceServerQueryService";
 
 const TABLE_WIDTH = 120;
 
-const title = async (teamspeak: TeamSpeak) => {
+export default async function overviewServer(teamspeak: TeamSpeak) {
   const serverDescriptions = await findServerDescriptions();
 
   for (const serverDescription of serverDescriptions) {
@@ -99,6 +99,4 @@ const title = async (teamspeak: TeamSpeak) => {
       channelDescription,
     });
   }
-};
-
-export default title;
+}

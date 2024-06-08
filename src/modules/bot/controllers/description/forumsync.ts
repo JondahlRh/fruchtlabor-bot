@@ -6,7 +6,7 @@ import { findRuleChannels } from "services/mongodbServices/functions/ruleChannel
 
 const HR_AND_SPACER = "[tr][td][hr][/td][/tr][tr][/tr]";
 
-export default async (teamspeak: TeamSpeak) => {
+export default async function forumsyncDescription(teamspeak: TeamSpeak) {
   const rulesChannels = await findRuleChannels();
   const ruleChannel = rulesChannels[0];
   if (!ruleChannel) return;
@@ -51,4 +51,4 @@ export default async (teamspeak: TeamSpeak) => {
   await teamspeak.channelEdit(ruleChannel.channel.id.toString(), {
     channelDescription: description,
   });
-};
+}

@@ -2,7 +2,7 @@ import { TeamSpeak } from "ts3-nodejs-library";
 
 import { findOneTsBotChannel } from "services/mongodbServices/teamspeak/tsChannel";
 
-const botMove = async (teamspeak: TeamSpeak) => {
+export default async function botMove(teamspeak: TeamSpeak) {
   const self = await teamspeak.self();
   const botChannel = await findOneTsBotChannel();
 
@@ -11,6 +11,4 @@ const botMove = async (teamspeak: TeamSpeak) => {
   if (+self.cid !== botChannel.id) {
     await teamspeak.clientMove(self, botChannel.id.toString());
   }
-};
-
-export default botMove;
+}
