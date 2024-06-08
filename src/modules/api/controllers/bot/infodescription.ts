@@ -6,12 +6,12 @@ import SingleDataResponse from "classes/htmlSuccesses/SingleDataResponse";
 
 import restrictedNext from "modules/api/utility/restrictedNext";
 import restrictedResponse from "modules/api/utility/restrictedResponse";
-import organizationchannel from "modules/bot/controllers/description/organizationchannel";
+import infoDescription from "modules/bot/controllers/description/info";
 
 export default (teamspeak: TeamSpeak): RequestHandler => {
   return async (req, res, next) => {
     try {
-      await organizationchannel(teamspeak);
+      await infoDescription(teamspeak);
     } catch (error) {
       return restrictedNext(next, new UnknownTeamSpeakError());
     }
