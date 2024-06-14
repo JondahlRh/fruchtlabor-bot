@@ -3,7 +3,7 @@ export const getCsServerConnectLink = (
   port: number,
   label: string
 ) => {
-  return `[url=steam://connect/${host}:${port}?appid=730/${process.env.CS_SERVER_PASSWORD}]${label}[/url]`;
+  return `[url=steam://connect/${host}:${port}/${process.env.CS_SERVER_PASSWORD}?appid=730]${label}[/url]`;
 };
 
 export const getClientUrl = (name: string, uid: string) => {
