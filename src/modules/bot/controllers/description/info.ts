@@ -11,7 +11,7 @@ import {
 } from "modules/bot/utility/descriptionTemplates/row";
 import { getGeneralUrl } from "modules/bot/utility/descriptionTemplates/url";
 
-import { findInfoDescriptions } from "services/mongodbServices/functions/infoDescription";
+import { cachedFindInfoDescriptions } from "services/mongodbServices/functions/infoDescription";
 
 const TABLE_WIDTH = 120;
 
@@ -55,7 +55,7 @@ const getEntry = (entry: Entry) => {
 };
 
 export default async function infoDescription(teamspeak: TeamSpeak) {
-  const infoDescriptions = await findInfoDescriptions();
+  const infoDescriptions = await cachedFindInfoDescriptions();
 
   for (const infoDescription of infoDescriptions) {
     const { title, subtitle, description, channel, entrySections } =

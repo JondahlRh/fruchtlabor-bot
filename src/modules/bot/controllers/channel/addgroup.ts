@@ -1,9 +1,11 @@
 import { TeamSpeakClient } from "ts3-nodejs-library";
 
-import { findOneAddgroupChannelByChannelId } from "services/mongodbServices/functions/addgroupChannel";
+import { cachedFindOneAddgroupChannelByChannelId } from "services/mongodbServices/functions/addgroupChannel";
 
 export default async function addgroupChannel(client: TeamSpeakClient) {
-  const channelAddgroup = await findOneAddgroupChannelByChannelId(+client.cid);
+  const channelAddgroup = await cachedFindOneAddgroupChannelByChannelId(
+    +client.cid
+  );
   if (channelAddgroup === null) return;
 
   await client.move(channelAddgroup.moveChannel.id.toString());

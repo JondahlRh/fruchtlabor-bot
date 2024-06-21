@@ -15,19 +15,20 @@ const populate = [
   },
 ];
 
-export const findAfkChannels = async () => {
+export const cachedFindAfkChannels = async () => {
   try {
-    return await AfkChannel.find().populate(populate).lean();
+    return await AfkChannel.find().populate(populate).lean().cache();
   } catch (error) {
     return [];
   }
 };
 
-export const findOneDefaultAfkChannel = async () => {
+export const cachedFindOneDefaultAfkChannel = async () => {
   try {
     return await AfkChannel.findOne({ isDefault: true })
       .populate(populate)
-      .lean();
+      .lean()
+      .cache();
   } catch (error) {
     return null;
   }

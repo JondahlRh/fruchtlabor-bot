@@ -17,9 +17,11 @@ const populate = [
   },
 ];
 
-export const findOneSupportMessageByChannelId = async (channelid: number) => {
+export const cachedFindOneSupportMessageByChannelId = async (
+  channelid: number
+) => {
   try {
-    const data = await SupportMessage.find().populate(populate).lean();
+    const data = await SupportMessage.find().populate(populate).lean().cache();
     return data.find((x) => x.channel.id === channelid) ?? null;
   } catch (error) {
     return null;

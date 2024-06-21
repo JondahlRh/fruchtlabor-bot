@@ -18,7 +18,7 @@ import {
   clientMatchesCollectionsSorted,
 } from "modules/bot/utility/tsCollectionHelper";
 
-import { findOnlineChannels } from "services/mongodbServices/functions/onlineChannel";
+import { cachedFindOnlineChannels } from "services/mongodbServices/functions/onlineChannel";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
   if (!clientData.channel || !clientData.channelParent) {
@@ -37,7 +37,7 @@ const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
 };
 
 export default async function onlineDescription(teamspeak: TeamSpeak) {
-  const onlineChannels = await findOnlineChannels();
+  const onlineChannels = await cachedFindOnlineChannels();
 
   const clientList = await teamspeak.clientList();
   const channelList = await teamspeak.channelList();

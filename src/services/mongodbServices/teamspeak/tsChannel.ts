@@ -1,8 +1,8 @@
 import TsChannel from "models/teamspeak/TsChannel";
 
-export const findOneTsBotChannel = async () => {
+export const cachedFindOneTsBotChannel = async () => {
   try {
-    return await TsChannel.findOne({ isBotChannel: true }).lean();
+    return await TsChannel.findOne({ isBotChannel: true }).lean().cache("1h");
   } catch (error) {
     return null;
   }

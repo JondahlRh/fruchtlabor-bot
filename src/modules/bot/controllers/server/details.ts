@@ -12,11 +12,11 @@ import {
 } from "modules/bot/utility/descriptionTemplates/row";
 import { getCsServerConnectLink } from "modules/bot/utility/descriptionTemplates/url";
 
-import { findServerTitles } from "services/mongodbServices/functions/serverTitle";
+import { cachedFindServerTitles } from "services/mongodbServices/functions/serverTitle";
 import { getServerInfo } from "services/sourceServerQueryService";
 
 export default async function detailsServer(teamspeak: TeamSpeak) {
-  const serverTitles = await findServerTitles();
+  const serverTitles = await cachedFindServerTitles();
 
   for (const serverTitle of serverTitles) {
     const serverData = await getServerInfo(

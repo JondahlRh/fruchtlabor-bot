@@ -10,13 +10,13 @@ import {
 } from "modules/bot/utility/descriptionTemplates/row";
 import { getCsServerConnectLink } from "modules/bot/utility/descriptionTemplates/url";
 
-import { findServerDescriptions } from "services/mongodbServices/functions/serverDescription";
+import { cachedFindServerDescriptions } from "services/mongodbServices/functions/serverDescription";
 import { getServerInfo } from "services/sourceServerQueryService";
 
 const TABLE_WIDTH = 120;
 
 export default async function overviewServer(teamspeak: TeamSpeak) {
-  const serverDescriptions = await findServerDescriptions();
+  const serverDescriptions = await cachedFindServerDescriptions();
 
   for (const serverDescription of serverDescriptions) {
     let channelDescription = "[center][table]\n";

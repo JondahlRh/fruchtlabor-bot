@@ -2,9 +2,9 @@ import ServerDescription from "models/functions/ServerDescription";
 
 const populate = ["channel", "servers", "description"];
 
-export const findServerDescriptions = async () => {
+export const cachedFindServerDescriptions = async () => {
   try {
-    return await ServerDescription.find().populate(populate).lean();
+    return await ServerDescription.find().populate(populate).lean().cache();
   } catch (error) {
     return [];
   }

@@ -1,10 +1,10 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import { findOneTsBotChannel } from "services/mongodbServices/teamspeak/tsChannel";
+import { cachedFindOneTsBotChannel } from "services/mongodbServices/teamspeak/tsChannel";
 
 export default async function botMove(teamspeak: TeamSpeak) {
   const self = await teamspeak.self();
-  const botChannel = await findOneTsBotChannel();
+  const botChannel = await cachedFindOneTsBotChannel();
 
   if (botChannel === null) throw new Error("Bot Channel is not definded");
 

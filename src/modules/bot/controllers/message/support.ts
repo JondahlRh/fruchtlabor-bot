@@ -2,7 +2,7 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import { clientMatchesCollection } from "modules/bot/utility/tsCollectionHelper";
 
-import { findOneSupportMessageByChannelId } from "services/mongodbServices/functions/supportMessage";
+import { cachedFindOneSupportMessageByChannelId } from "services/mongodbServices/functions/supportMessage";
 import { createSupportLog } from "services/mongodbServices/general/supportLog";
 
 export default async function supportMessage(
@@ -11,7 +11,9 @@ export default async function supportMessage(
 ) {
   if (client.type === 1) return;
 
-  const supportMessage = await findOneSupportMessageByChannelId(+client.cid);
+  const supportMessage = await cachedFindOneSupportMessageByChannelId(
+    +client.cid
+  );
   if (supportMessage === null) return;
 
   const clientList = await teamspeak.clientList();

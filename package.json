@@ -22,7 +22,9 @@
     "source-server-query": "^3.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "ts-cache-mongoose": "^1.6.2",
     "ts3-nodejs-library": "^3.5.1",
+    "tslib": "^2.6.3",
     "zod": "^3.23.8",
     "zod-validation-error": "^3.3.0"
   },

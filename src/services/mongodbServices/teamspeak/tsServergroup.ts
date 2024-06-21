@@ -1,8 +1,8 @@
 import TsServergroup from "models/teamspeak/TsServergroup";
 
-export const findTsServergroups = async () => {
+export const cachedFindTsServergroups = async () => {
   try {
-    return await TsServergroup.find().lean();
+    return await TsServergroup.find().lean().cache();
   } catch (error) {
     return [];
   }

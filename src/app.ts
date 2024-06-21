@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { TeamSpeak } from "ts3-nodejs-library";
+import cache from "ts-cache-mongoose";
 
 import api from "./modules/api";
 import bot, { moveDefaultChannel } from "./modules/bot";
@@ -9,6 +10,11 @@ export default async () => {
     dbName: process.env.MONGODB_DBNAME,
   });
   console.log("connected to MongoDB");
+
+  cache.init(mongoose, {
+    defaultTTL: "60 seconds",
+    engine: "memory",
+  });
 
   const teamspeak = await TeamSpeak.connect({
     host: process.env.TEAMSPEAK_IP,

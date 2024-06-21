@@ -2,9 +2,9 @@ import InfoDescription from "models/functions/InfoDescription";
 
 const populate = ["channel"];
 
-export const findInfoDescriptions = async () => {
+export const cachedFindInfoDescriptions = async () => {
   try {
-    return await InfoDescription.find().populate(populate).lean();
+    return await InfoDescription.find().populate(populate).lean().cache();
   } catch (error) {
     return [];
   }

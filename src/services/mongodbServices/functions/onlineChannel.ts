@@ -9,9 +9,9 @@ const populate = [
   },
 ];
 
-export const findOnlineChannels = async () => {
+export const cachedFindOnlineChannels = async () => {
   try {
-    return await OnlineChannel.find().populate(populate).lean();
+    return await OnlineChannel.find().populate(populate).lean().cache();
   } catch (error) {
     return [];
   }

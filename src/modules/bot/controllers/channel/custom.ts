@@ -2,7 +2,7 @@ import { TeamSpeak, TeamSpeakClient } from "ts3-nodejs-library";
 
 import tsChannelSetPermHelper from "modules/bot/utility/tsChannelSetPermHelper";
 
-import { findOneCustomChannelByChannelId } from "services/mongodbServices/functions/customChannel";
+import { cachedFindOneCustomChannelByChannelId } from "services/mongodbServices/functions/customChannel";
 
 import botMove from "../move/bot";
 
@@ -15,7 +15,9 @@ export default async function customChannel(
 ) {
   if (client.type === 1) return;
 
-  const customChannel = await findOneCustomChannelByChannelId(+client.cid);
+  const customChannel = await cachedFindOneCustomChannelByChannelId(
+    +client.cid
+  );
   if (customChannel === null) return;
 
   const channelList = await teamspeak.channelList();
