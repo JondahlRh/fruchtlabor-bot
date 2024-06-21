@@ -97,6 +97,13 @@ export default async function onlineDescription(teamspeak: TeamSpeak) {
         channelDescription += "[/tr]\n";
       }
 
+      if (serverGroupClientList.length === 0) {
+        channelDescription += "[tr]\n";
+        channelDescription += getTextData("-");
+        channelDescription += getTextData("none");
+        channelDescription += "[/tr]\n";
+      }
+
       channelDescription += getEmptyRow();
     }
 
