@@ -7,3 +7,11 @@ export const cachedFindOneTsBotChannel = async () => {
     return null;
   }
 };
+
+export const findByIdTsChannel = async (id: string) => {
+  try {
+    return await TsChannel.findById(id).lean();
+  } catch (error) {
+    return null;
+  }
+};

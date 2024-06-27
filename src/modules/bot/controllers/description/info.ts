@@ -1,6 +1,6 @@
 import { TeamSpeak } from "ts3-nodejs-library";
 
-import { Entry } from "models/functions/InfoDescription";
+import { Entry, InfoDescriptionType } from "models/functions/InfoDescription";
 
 import { getTextData } from "modules/bot/utility/descriptionTemplates/data";
 import {
@@ -54,45 +54,52 @@ const getEntry = (entry: Entry) => {
   return description;
 };
 
+export const singleInfoDescription = async (
+  teamspeak: TeamSpeak,
+  infoDescription: InfoDescriptionType
+) => {
+  const { title, subtitle, description, channel, entrySections } =
+    infoDescription;
+
+  let channelDescription = "[center][table]\n";
+  channelDescription += getHorizontalLineRow();
+  channelDescription += getSpacerRow(TABLE_WIDTH);
+  channelDescription += getTextRow(title, "center", 16, true);
+  channelDescription += getEmptyRow();
+
+  if (subtitle) {
+    channelDescription += getTextRow(subtitle, "center", 12);
+    channelDescription += getEmptyRow();
+  }
+
+  channelDescription += getHorizontalLineRow();
+  channelDescription += getEmptyRow();
+
+  if (description) {
+    channelDescription += getTextRow(description, "center", 10);
+    channelDescription += getEmptyRow();
+    channelDescription += getHorizontalLineRow();
+    channelDescription += getEmptyRow();
+  }
+
+  for (const entrySection of entrySections) {
+    for (const entry of entrySection) {
+      channelDescription += getEntry(entry);
+      channelDescription += getEmptyRow();
+    }
+    channelDescription += getHorizontalLineRow();
+    channelDescription += getEmptyRow();
+  }
+
+  const channelInfo = await teamspeak.channelInfo(channel.id.toString());
+  if (channelInfo.channelDescription === channelDescription) return;
+  await teamspeak.channelEdit(channel.id.toString(), { channelDescription });
+};
+
 export default async function infoDescription(teamspeak: TeamSpeak) {
   const infoDescriptions = await cachedFindInfoDescriptions();
 
   for (const infoDescription of infoDescriptions) {
-    const { title, subtitle, description, channel, entrySections } =
-      infoDescription;
-
-    let channelDescription = "[center][table]\n";
-    channelDescription += getHorizontalLineRow();
-    channelDescription += getSpacerRow(TABLE_WIDTH);
-    channelDescription += getTextRow(title, "center", 16, true);
-    channelDescription += getEmptyRow();
-
-    if (subtitle) {
-      channelDescription += getTextRow(subtitle, "center", 12);
-      channelDescription += getEmptyRow();
-    }
-
-    channelDescription += getHorizontalLineRow();
-    channelDescription += getEmptyRow();
-
-    if (description) {
-      channelDescription += getTextRow(description, "center", 10);
-      channelDescription += getEmptyRow();
-      channelDescription += getHorizontalLineRow();
-      channelDescription += getEmptyRow();
-    }
-
-    for (const entrySection of entrySections) {
-      for (const entry of entrySection) {
-        channelDescription += getEntry(entry);
-        channelDescription += getEmptyRow();
-      }
-      channelDescription += getHorizontalLineRow();
-      channelDescription += getEmptyRow();
-    }
-
-    const channelInfo = await teamspeak.channelInfo(channel.id.toString());
-    if (channelInfo.channelDescription === channelDescription) return;
-    await teamspeak.channelEdit(channel.id.toString(), { channelDescription });
+    singleInfoDescription(teamspeak, infoDescription);
   }
 }

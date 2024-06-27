@@ -14,7 +14,7 @@ export type Entry = {
   links: Link[];
 };
 
-type InfoDescriptionType = {
+export type InfoDescriptionType = {
   name: string;
   channel: TsChannelType;
   title: string;
