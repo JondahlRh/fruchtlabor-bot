@@ -48,10 +48,9 @@ const getEntry = (entry: Entry) => {
   }
   if (entry.type === "table") {
     description += "[/table][table]\n";
-    description += getSpacerRow(TABLE_WIDTH);
   }
 
-  return description;
+  return description + getSpacerRow(TABLE_WIDTH);
 };
 
 export const singleInfoDescription = async (
@@ -76,7 +75,7 @@ export const singleInfoDescription = async (
   channelDescription += getEmptyRow();
 
   if (description) {
-    channelDescription += getTextRow(description, "center", 10);
+    channelDescription += getTextRow(description, "center", 10, true);
     channelDescription += getEmptyRow();
     channelDescription += getHorizontalLineRow();
     channelDescription += getEmptyRow();
@@ -85,7 +84,6 @@ export const singleInfoDescription = async (
   for (const entrySection of entrySections) {
     for (const entry of entrySection) {
       channelDescription += getEntry(entry);
-      channelDescription += getEmptyRow();
     }
     channelDescription += getHorizontalLineRow();
     channelDescription += getEmptyRow();
