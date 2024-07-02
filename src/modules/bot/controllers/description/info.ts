@@ -16,10 +16,10 @@ import { cachedFindInfoDescriptions } from "services/mongodbServices/functions/i
 const TABLE_WIDTH = 120;
 
 const getEntry = (entry: Entry) => {
-  let description = getTextRow(entry.title, "center", 12, true);
+  let description = getTextRow(entry.title, "center", 14, true);
 
   if (entry.subtitle) {
-    description += getTextRow(entry.subtitle, "center", 10);
+    description += getTextRow(entry.subtitle, "center", 12);
   }
 
   if (entry.type === "table") {
