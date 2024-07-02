@@ -19,7 +19,7 @@ const getEntry = (entry: Entry) => {
   let description = getTextRow(entry.title, "center", 12, true);
 
   if (entry.subtitle) {
-    description += getTextRow(entry.subtitle, "center", 10, true);
+    description += getTextRow(entry.subtitle, "center", 10);
   }
 
   if (entry.type === "table") {
