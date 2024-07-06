@@ -47,7 +47,7 @@ ENV NODE_ENV=production
 
 COPY --from=prod-dependency-stage /app/node_modules node_modules
 COPY --from=build-stage /app/build build
-COPY src/modules/api/swagger/*.yml build
+COPY src/modules/api/swagger/*.yml build/modules/api/swagger/
 
 ARG INTERNAL_PORT
 
