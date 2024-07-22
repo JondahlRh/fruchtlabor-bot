@@ -28,5 +28,3 @@ services:
       - FUNCTIONS_RULES_URL=${FUNCTIONS_RULES_URL}
     ports:
       - "${EXPOSED_HOST}:${EXPOSED_PORT}:${INTERNAL_PORT}"
-    volumes:
-      - ${NAME}:/app/src

@@ -1,5 +1,10 @@
 import swaggerJSDoc from "swagger-jsdoc";
 
+const SWAGGER_YML_PATH =
+  process.env.NODE_ENV === "development"
+    ? "src/modules/api/swagger/*.yml"
+    : "build/modules/api/swagger/*.yml";
+
 const swaggerDocs = swaggerJSDoc({
   definition: {
     openapi: "3.1.0",
@@ -21,7 +26,7 @@ const swaggerDocs = swaggerJSDoc({
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ["src/modules/api/swagger/*.yml"],
+  apis: [SWAGGER_YML_PATH],
 });
 
 export default swaggerDocs;
