@@ -29,4 +29,4 @@ services:
     ports:
       - "${EXPOSED_HOST}:${EXPOSED_PORT}:${INTERNAL_PORT}"
     volumes:
-      - ../src:/app/src
+      - ${NAME}:/app/src
