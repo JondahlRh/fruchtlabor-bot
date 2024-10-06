@@ -19,7 +19,6 @@ import {
 } from "modules/bot/utility/tsCollectionHelper";
 
 import { cachedFindOnlineChannels } from "services/mongodbServices/functions/onlineChannel";
-import { createOnlineHistory } from "services/mongodbServices/general/onlineHistory";
 
 const getStatus = (clientData: ClientData, statusList: TsCollectionType[]) => {
   if (!clientData.channel || !clientData.channelParent) {
@@ -87,11 +86,6 @@ export default async function onlineDescription(teamspeak: TeamSpeak) {
         };
 
         const status = getStatus(clientData, onlineChannel.collections);
-        await createOnlineHistory(
-          serverGroupClient.clientUniqueIdentifier,
-          onlineChannel._id,
-          status
-        );
 
         const clientUrl = getClientUrl(
           serverGroupClient.clientNickname,
