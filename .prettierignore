@@ -1,0 +1,11 @@
+# env-files
+.env*
+
+# dependenice files
+node_modules
+
+# build
+build
+
+# local docker compose
+docker-compose.*local*.yml

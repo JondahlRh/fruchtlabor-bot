@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: ${NAME}:latest
+    container_name: ${NAME}
+    restart: unless-stopped
+    environment:
+      - INTERNAL_PORT=${INTERNAL_PORT}
+
+      - TEAMSPEAK_HOST=${TEAMSPEAK_HOST}
+      - TEAMSPEAK_PORT=${TEAMSPEAK_PORT}
+      - TEAMSPEAK_QUERYPORT=${TEAMSPEAK_QUERYPORT}
+      - TEAMSPEAK_USERNAME=${TEAMSPEAK_USERNAME}
+      - TEAMSPEAK_PASSWORD=${TEAMSPEAK_PASSWORD}
+      - TEAMSPEAK_NICKNAME=${TEAMSPEAK_NICKNAME}
+    ports:
+      - "${EXPOSED_HOST}:${EXPOSED_PORT}:${INTERNAL_PORT}"

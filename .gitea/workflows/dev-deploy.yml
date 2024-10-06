@@ -1,0 +1,29 @@
+name: fruchtlabor teamspeak bot deploy - dev
+run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+on:
+  push:
+    branches:
+      - dev
+
+env:
+  NAME: fruchtlabor-teamspeak-bot-dev
+
+  EXPOSED_HOST: ${{ vars.DEV_EXPOSED_HOST }}
+  EXPOSED_PORT: ${{ vars.DEV_EXPOSED_PORT }}
+  INTERNAL_PORT: ${{ vars.DEV_INTERNAL_PORT }}
+
+  TEAMSPEAK_HOST: ${{ vars.DEV_TEAMSPEAK_HOST }}
+  TEAMSPEAK_PORT: ${{ vars.DEV_TEAMSPEAK_PORT }}
+  TEAMSPEAK_QUERYPORT: ${{ vars.DEV_TEAMSPEAK_QUERYPORT }}
+  TEAMSPEAK_USERNAME: ${{ vars.DEV_TEAMSPEAK_USERNAME }}
+  TEAMSPEAK_PASSWORD: ${{ secrets.DEV_TEAMSPEAK_PASSWORD }}
+  TEAMSPEAK_NICKNAME: ${{ vars.DEV_TEAMSPEAK_NICKNAME }}
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build and Run docker container
+        run: docker compose -f .gitea/docker-compose.yml -p ${NAME} up --build -d
