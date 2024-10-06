@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { TeamSpeak } from "ts3-nodejs-library";
 import cache from "ts-cache-mongoose";
 
+import exitHandler from "utility/exitHandler";
+
 import api from "./modules/api";
 import bot, { moveDefaultChannel } from "./modules/bot";
 
@@ -35,4 +37,8 @@ export default async () => {
   if (process.env.FEATUREFLAG_API === "true") {
     api(teamspeak);
   }
+
+  process.on("SIGTERM", async () => await exitHandler(teamspeak));
+  process.on("SIGINT", async () => await exitHandler(teamspeak));
+  process.on("exit", async () => await exitHandler(teamspeak));
 };
